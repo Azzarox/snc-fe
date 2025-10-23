@@ -52,9 +52,6 @@ const posts = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
       <main className="container mx-auto px-4 py-6 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Sidebar - Hidden on mobile */}
@@ -127,6 +124,5 @@ export default function Home() {
           </aside>
         </div>
       </main>
-    </div>
   )
 }

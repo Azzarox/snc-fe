@@ -1,6 +1,8 @@
 import { Button } from "@shadcn/components/ui/button"
 import { Input } from "@shadcn/components/ui/input"
 import { Bell, Search, Menu } from "lucide-react"
+import { ThemeToggle } from "../common/ThemeToggle"
+import { Link } from "react-router"
 
 export default function Header() {
   return (
@@ -9,14 +11,16 @@ export default function Header() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo and Brand */}
           <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-primary-foreground" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
-                </svg>
+            <Link to="/">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 text-primary-foreground" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+                  </svg>
+                </div>
+                <span className="text-xl font-bold text-card-foreground">StringHub</span>
               </div>
-              <span className="text-xl font-bold text-card-foreground">StringHub</span>
-            </div>
+            </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6">
@@ -59,13 +63,15 @@ export default function Header() {
             </Button>
 
             <div className="hidden md:flex items-center gap-3">
-              <Button variant="outline">Sign In</Button>
-              <Button>Join Now</Button>
+              <Link to={'/login'}><Button className="cursor-pointer" variant="outline">Sign In</Button></Link>
+              <Link to={'/register'}><Button className="cursor-pointer">Join Now</Button></Link>
             </div>
 
             <Button variant="ghost" size="icon" className="md:hidden">
               <Menu className="h-5 w-5" />
             </Button>
+
+            <ThemeToggle />
           </div>
         </div>
       </div>
