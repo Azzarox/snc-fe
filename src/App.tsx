@@ -6,6 +6,8 @@ import './App.css';
 import { Button } from '@shadcn/components/ui/button';
 import { ThemeToggle } from './components/common/ThemeToggle';
 import Home from './components/Layout/Home';
+import RegisterPage from './components/auth/Register/RegisterPage';
+import LoginPage from './components/auth/Login/LoginPage';
 
 function App() {
     const [count, setCount] = useState(0);
@@ -22,7 +24,10 @@ function App() {
                     <Button className='cursor-pointer'>Click me</Button>
                 </div>
             </div> */}
-            <Home/>
+
+            {/* <Home/> */}
+            <RegisterPage></RegisterPage>
+            <LoginPage></LoginPage>
         </>
     );
 }
