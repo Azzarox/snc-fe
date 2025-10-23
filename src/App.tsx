@@ -5,6 +5,7 @@ import viteLogo from '/vite.svg';
 import './App.css';
 import { Button } from '@shadcn/components/ui/button';
 import { ThemeToggle } from './components/common/ThemeToggle';
+import Home from './components/Layout/Home';
 
 function App() {
     const [count, setCount] = useState(0);
@@ -15,12 +16,13 @@ function App() {
 
     return (
         <>
-            <div className="flex min-h-svh flex-col items-center justify-center">
+            {/* <div className="flex min-h-svh flex-col items-center justify-center">
                 <div className='flex flex-row gap-x-2 items-center justify-center'>
                     <ThemeToggle />
                     <Button className='cursor-pointer'>Click me</Button>
                 </div>
-            </div>
+            </div> */}
+            <Home/>
         </>
     );
 }
