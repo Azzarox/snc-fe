@@ -24,13 +24,11 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-
+    //
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@shadcn/*": ["@shadcn/*"],
     }
   },
-  "include": ["src"]
+  "include": ["src", "@shadcn/**/*"]
 }
