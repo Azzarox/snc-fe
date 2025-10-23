@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
 
 function App() {
     const [count, setCount] = useState(0);
+    const [msg, setMsg]= useState('')
+    useEffect(() => {
+        fetch('/@api/hello').then(res => res.json()).then(res => setMsg(res.msg)).catch((err) => console.error('something went wrong'))
+    }, []) 
 
     return (
         <>
@@ -18,6 +22,7 @@ function App() {
             </div>
             <h1>Vite + React</h1>
             <div className="card">
+                <h1 className='text-6xl'>{msg}</h1>
                 <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
                 </button>
