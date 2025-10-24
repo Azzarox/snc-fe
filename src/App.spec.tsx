@@ -1,9 +1,16 @@
-import App from './App'
-import {render} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import App from './App';
 
-describe('asd', () => {
-    it('should be true', () => {
-        render(<App></App>)
-        expect(true).toBeTruthy();
-    })
-})
+describe('App routing', () => {
+  it('renders the home page with available routes', () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
+  });
+});
