@@ -31,5 +31,6 @@
 			"@/*": ["./src/*"]
 		}
 	},
-	"include": ["src", "@shadcn/**/*"]
+	"include": ["src", "@shadcn/**/*"],
+	"exclude": ["**/*.spec.ts", "**/*.spec.tsx", "test"]
 }
