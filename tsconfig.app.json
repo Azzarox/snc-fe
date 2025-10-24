@@ -31,5 +31,5 @@
 			"@/*": ["./src/*"]
 		}
 	},
-	"include": ["src", "@shadcn/**/*"]
+	"include": ["src", "@shadcn/**/*", "src/test/__mocks__"]
 }
