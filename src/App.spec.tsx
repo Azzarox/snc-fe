@@ -1,6 +1,9 @@
-import {render} from '@testing-library/react'
 import App from './App'
+import {render} from '@testing-library/react';
+
 describe('asd', () => {
-    render(<App/>)
-    expect(true).toBeTruthy();
+    it('should be true', () => {
+        render(<App></App>)
+        expect(true).toBeTruthy();
+    })
 })
