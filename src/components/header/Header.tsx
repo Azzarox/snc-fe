@@ -4,7 +4,7 @@ import { Bell, Search, Menu } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { Link } from 'react-router';
 
-export default function Header() {
+const Header = () => {
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
 			<div className="container mx-auto px-4 max-w-7xl">
@@ -118,4 +118,6 @@ export default function Header() {
 			</div>
 		</header>
 	);
-}
+};
+
+export default Header;

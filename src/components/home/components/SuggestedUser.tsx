@@ -21,7 +21,7 @@ const users = [
 	},
 ];
 
-export function SuggestedUsers() {
+const SuggestedUsers = () => {
 	return (
 		<div className="bg-card rounded-lg border border-border p-4">
 			<h2 className="font-semibold text-card-foreground mb-4">
@@ -58,4 +58,6 @@ export function SuggestedUsers() {
 			</div>
 		</div>
 	);
-}
+};
+
+export default SuggestedUsers;

@@ -16,7 +16,7 @@ interface Post {
 	shares: number;
 }
 
-export default function FeedPost({ post }: { post: Post }) {
+const FeedPost = ({ post }: { post: Post }) => {
 	return (
 		<article className="bg-card rounded-lg border border-border overflow-hidden">
 			{/* Post Header */}
@@ -82,4 +82,6 @@ export default function FeedPost({ post }: { post: Post }) {
 			</div>
 		</article>
 	);
-}
+};
+
+export default FeedPost;
