@@ -8,7 +8,7 @@ const topics = [
 	{ tag: 'JazzGuitar', posts: '890' },
 ];
 
-export function TrendingTopics() {
+const TrendingTopics = () => {
 	return (
 		<div className="bg-card rounded-lg border border-border p-4">
 			<div className="flex items-center gap-2 mb-4">
@@ -39,3 +39,5 @@ export function TrendingTopics() {
 		</div>
 	);
 }
+
+export default TrendingTopics;

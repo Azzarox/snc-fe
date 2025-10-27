@@ -1,6 +1,6 @@
-import FeedPost from './FeedPost';
-import { SuggestedUsers } from './SuggestedUser';
-import { TrendingTopics } from './TrendingTopics';
+import FeedPost from './components/FeedPost';
+import SuggestedUsers from './components/SuggestedUser';
+import TrendingTopics from './components/TrendingTopics';
 
 const posts = [
 	{
@@ -49,7 +49,7 @@ const posts = [
 	},
 ];
 
-export default function Home() {
+const HomePage = () => {
 	return (
 		<main className="container mx-auto px-4 py-6 max-w-7xl">
 			<div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -127,3 +127,6 @@ export default function Home() {
 		</main>
 	);
 }
+
+
+export default HomePage;
