@@ -18,6 +18,7 @@ import { Input } from '@shadcn/components/ui/input';
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from '@/services/auth/authService';
+import { useState } from 'react';
 
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	const {
@@ -29,14 +30,27 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 		mode: "onTouched",
 	});
 
+	const [errorsState, setErrorsState] = useState([] as string[]);
+
 	const onSubmit = async (data: RegisterFormData) => {
 		const res = await authService.registerUser(data);
-		console.log(res)
+		if (!res.success && res.errors) {
+			setErrorsState(errorsState);
+		}
+
+		if (!res.success) {
+			setErrorsState([res.message]);
+		}
+
+		console.log(res.data);
 	}
 
 	return (
+		
 		<Card {...props}>
 			<CardHeader>
+				
+			{/* TODO: Remove later */} <CardDescription className='text-red-500 text-xl'>{errorsState}</CardDescription>
 				<CardTitle>Create an account</CardTitle>
 				<CardDescription>
 					Enter your information below to create your account

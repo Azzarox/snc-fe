@@ -1,6 +1,14 @@
 import type { RegisterFormData } from "@/schemas/auth/registerSchema";
 
-const registerUser = async (body: RegisterFormData) => {
+type Response<T> = {
+    status: number,
+    success: boolean,
+    message: string
+    data?: T,
+    errors?: { [key: string]: any }
+}
+
+const registerUser = async (body: RegisterFormData): Promise<Response<{username: string, password: string}>> => {
     const res = await fetch('/@api/auth/register', {
         method: 'POST',
         headers: {
@@ -9,7 +17,8 @@ const registerUser = async (body: RegisterFormData) => {
         body: JSON.stringify(body)
     })
 
-    return await res.json();
+    const data = await res.json();
+    return data;
 }
 
 
