@@ -58,7 +58,6 @@ const SuggestedUsers = () => {
 			</div>
 		</div>
 	);
-}
-
+};
 
 export default SuggestedUsers;

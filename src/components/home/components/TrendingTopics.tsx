@@ -38,6 +38,6 @@ const TrendingTopics = () => {
 			</div>
 		</div>
 	);
-}
+};
 
 export default TrendingTopics;

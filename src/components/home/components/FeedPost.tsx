@@ -82,6 +82,6 @@ const FeedPost = ({ post }: { post: Post }) => {
 			</div>
 		</article>
 	);
-}
+};
 
 export default FeedPost;
