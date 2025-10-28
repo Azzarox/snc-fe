@@ -19,6 +19,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from '@/services/auth/authService';
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	const {
@@ -30,19 +31,22 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 		mode: "onTouched",
 	});
 
+	const navigate = useNavigate();
 	const [errorsState, setErrorsState] = useState([] as string[]);
 
 	const onSubmit = async (data: RegisterFormData) => {
 		const res = await authService.registerUser(data);
 		if (!res.success && res.errors) {
 			setErrorsState(errorsState);
+			return;
 		}
 
 		if (!res.success) {
 			setErrorsState([res.message]);
+			return;
 		}
 
-		console.log(res.data);
+		navigate('/login');
 	}
 
 	return (
@@ -112,16 +116,16 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 						<FieldGroup>
 							<Field>
 
-								<Button type="submit" disabled={isSubmitting}>
+								<Button className="cursor-pointer" type="submit" disabled={isSubmitting}>
 									{isSubmitting ? "Creating..." : "Create Account"}
 								</Button>
 								{/* <Button variant="outline" type="button">
 									Sign up with Google
 								</Button> */}
-								{/* <FieldDescription className="px-6 text-center">
+								<FieldDescription className="px-6 text-center">
 									Already have an account?{' '}
-									<a href="#">Sign in</a>
-								</FieldDescription> */}
+									<Link to="/login">Sign in</Link>
+								</FieldDescription>
 							</Field>
 						</FieldGroup>
 					</FieldGroup>
