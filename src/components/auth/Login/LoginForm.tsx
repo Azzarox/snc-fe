@@ -20,6 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router';
 import { authService } from '@/services/auth/authService';
 import { useState } from 'react';
+import { localStorageService } from '@/services/common/storage/localStorageService';
 
 export function LoginForm({
 	className,
@@ -51,6 +52,7 @@ export function LoginForm({
 			return;
 		}
 
+		localStorageService.setAccessToken(res.data!.accessToken);
 		navigate('/');
 	}
 
