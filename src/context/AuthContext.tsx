@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { authService } from '@/services/auth/authService';
 import { localStorageService } from '@/services/common/storage/localStorageService';
+import { sessionStorageService } from '@/services/common/storage/sessionStorageService';
 
-type User = { username: string } | null;
+export type User = { username: string } | null;
 
 type AuthContextValue = {
     user: User;
@@ -20,6 +21,8 @@ const AuthContext = createContext<AuthContextValue>({
     logout: () => { },
 });
 
+
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [token, setToken] = useState<string | null>(
         localStorageService.getAccessToken() ?? null
@@ -35,12 +38,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const logout = () => {
         localStorageService.removeAccessToken();
         setToken(null);
-        setUser(null);
+        resetUserState()
     };
+
+    const resetUserState = () => {
+        setUser(null);
+        sessionStorageService.removeCachedUser();
+    }
 
     useEffect(() => {
         if (!token) {
-            setUser(null);
+            resetUserState()
+            return;
+        }
+
+        const cachedUser = sessionStorage.getItem('user');
+        if (cachedUser) {
+            setUser(JSON.parse(cachedUser));
             return;
         }
 
@@ -48,10 +62,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         authService
             .getAuthenticatedUserData(token)
-            .then(res => setUser(res.data ? { username: res.data.username } : null))
-            .catch(() => setUser(null))
+            .then(res => {
+                if (res.data) {
+                    const user = { username: res.data.username }
+                    setUser(user);
+                    sessionStorageService.setCachedUser(user);
+                } else {
+                    resetUserState();
+                }
+            })
+            .catch(() => {
+                resetUserState();
+            })
             .finally(() => setLoading(false));
-            
+
     }, [token]);
 
     return (

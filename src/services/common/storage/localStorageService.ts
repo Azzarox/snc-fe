@@ -1,6 +1,8 @@
-import storage from "./storage";
+import StorageAdapter from "./storage";
 
 const ACCESS_TOKEN_KEY = 'accessToken';
+
+const storage = new StorageAdapter('local');
 
 const getAccessToken = () => {
     return storage.get<string>(ACCESS_TOKEN_KEY);

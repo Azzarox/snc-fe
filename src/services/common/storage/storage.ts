@@ -1,26 +1,34 @@
 
-const storage = {
+type StorageBackend = 'local' | 'session';
+
+class StorageAdapter {
+    private storage: Storage;
+
+    constructor(type: StorageBackend = 'local') {
+        this.storage = type === 'local' ? localStorage : sessionStorage;
+    }
+
     get<T>(key: string): T | null {
-        const item = localStorage.getItem(key);
+        const item = this.storage.getItem(key);
         if (!item) return null;
         try {
             return JSON.parse(item) as T;
         } catch {
             return null;
         }
-    },
+    }
 
     set<T>(key: string, value: T): void {
-        localStorage.setItem(key, JSON.stringify(value));
-    },
+        this.storage.setItem(key, JSON.stringify(value));
+    }
 
     remove(key: string): void {
-        localStorage.removeItem(key);
-    },
+        this.storage.removeItem(key);
+    }
 
     clear(): void {
-        localStorage.clear();
-    },
-};
+        this.storage.clear();
+    }
+}
 
-export default storage;
+export default StorageAdapter;
