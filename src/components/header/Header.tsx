@@ -4,14 +4,15 @@ import { Bell, Search, Menu } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '@/context/AuthContext';
-import { localStorageService } from '@/services/common/storage/localStorageService';
+import { useAuthActions } from '@/hooks/auth/useAuthActions';
 
 const Header = () => {
 	const { user } = useAuth();
+	const { logout } = useAuthActions();
 	const navigate = useNavigate();
 
-	const logout = () => {
-		localStorageService.removeAccessToken();
+	const handleOnLogout = () => {
+		logout();
 		navigate('/')
 	}
 
@@ -116,7 +117,7 @@ const Header = () => {
 							{user.username && <>
 								<Link to={'/login'}>
 									<Button
-										onClick={logout}
+										onClick={handleOnLogout}
 										className="cursor-pointer"
 										variant="outline"
 									>
