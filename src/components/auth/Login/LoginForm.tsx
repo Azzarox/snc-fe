@@ -21,6 +21,8 @@ import { Link, useNavigate } from 'react-router';
 import { authService } from '@/services/auth/authService';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { toastService } from '@/services/common/toastService';
+import { toast } from 'sonner';
 
 export function LoginForm({
 	className,
@@ -43,20 +45,29 @@ export function LoginForm({
 	const navigate = useNavigate();
 
 	const onSubmit = async (data: LoginFormData) => {
-		const res = await authService.loginUser(data);
-		if (!res.success && res.errors) {
-			setErrorsState(errorsState);
-			return;
+		// TODO: Example handling error and toast on error 
+		// TODO: Make it in handler with try catch wrapper
+		try {
+			const res = await authService.loginUser(data);
+			if (!res.success && res.errors) {
+				setErrorsState(errorsState);
+				toastService.error(errorsState.join(', '))
+				return;
+			}
+
+			if (!res.success) {
+				setErrorsState([res.message]);
+				toastService.error(res.message)
+				return;
+			}
+
+			login(res.data!.accessToken);
+			toastService.success('Successfully logged in!')
+			navigate('/');
+
+		} catch (err) {
+			toast.error((err as any).message)
 		}
-
-		if (!res.success) {
-			setErrorsState([res.message]);
-			return;
-		}
-
-		login(res.data!.accessToken);
-
-		navigate('/');
 	}
 
 	return (

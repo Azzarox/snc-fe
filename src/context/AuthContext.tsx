@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { authService } from '@/services/auth/authService';
 import { localStorageService } from '@/services/common/storage/localStorageService';
 import { sessionStorageService } from '@/services/common/storage/sessionStorageService';
+import { toastService } from '@/services/common/toastService';
 
 export type User = { username: string } | null;
 
@@ -72,6 +73,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 }
             })
             .catch(() => {
+                toastService.error('Oops! Something went wrong!')
                 resetUserState();
             })
             .finally(() => setLoading(false));

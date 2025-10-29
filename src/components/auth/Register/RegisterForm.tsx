@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from '@/services/auth/authService';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { toastService } from '@/services/common/toastService';
 
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	const {
@@ -46,6 +47,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 			return;
 		}
 
+		toastService.success('Successfully created user! Redirecting to login!')
 		navigate('/login');
 	}
 
