@@ -1,60 +1,64 @@
+import { createContext, useContext, useEffect, useState } from 'react';
 import { authService } from '@/services/auth/authService';
 import { localStorageService } from '@/services/common/storage/localStorageService';
-import { createContext, useContext, useEffect, useState } from 'react';
 
-type AuthContextState = {
-    user: { username: string };
-    setAuthToken: React.Dispatch<React.SetStateAction<string | null>>
+type User = { username: string } | null;
+
+type AuthContextValue = {
+    user: User;
+    token: string | null;
+    loading: boolean;
+    login: (token: string) => void;
+    logout: () => void;
 };
 
-const initialState: AuthContextState = {
-    user: { username: '' },
-    setAuthToken: () => { }
-} satisfies AuthContextState;
-
-const AuthContext = createContext<AuthContextState>(initialState);
+const AuthContext = createContext<AuthContextValue>({
+    user: null,
+    token: null,
+    loading: false,
+    login: () => { },
+    logout: () => { },
+});
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [user, setUser] = useState<{ username: string }>({ username: '' });
-    const [token, setToken] = useState<string | null>(localStorageService.getAccessToken() ?? '');
+    const [token, setToken] = useState<string | null>(
+        localStorageService.getAccessToken() ?? null
+    );
+    const [user, setUser] = useState<User>(null);
+    const [loading, setLoading] = useState(false);
+
+    const login = (accessToken: string) => {
+        localStorageService.setAccessToken(accessToken);
+        setToken(accessToken);
+    };
+
+    const logout = () => {
+        localStorageService.removeAccessToken();
+        setToken(null);
+        setUser(null);
+    };
 
     useEffect(() => {
         if (!token) {
-            setUser({ username: '' });
+            setUser(null);
             return;
         }
 
-        (async () => {
-            try {
-                const res = await authService.getAuthenticatedUserData(token);
-                // if (!res.success && res.errors) {
-                //     // TODO: Show some error 
-                // }
-                // if (!res.success) {
-                //     // TODO: Show some error 
-                // }
-                if (res.data) {
-                    const { username } = res.data;
-                    setUser({ username })
-                } else {
-                    setUser({ username: '' })
-                }
-            } catch {
-                setUser({ username: '' });
-            }
-        })();
+        setLoading(true);
+
+        authService
+            .getAuthenticatedUserData(token)
+            .then(res => setUser(res.data ? { username: res.data.username } : null))
+            .catch(() => setUser(null))
+            .finally(() => setLoading(false));
+            
     }, [token]);
 
     return (
-        <AuthContext.Provider value={{ user, setAuthToken: setToken }}>
+        <AuthContext.Provider value={{ user, token, loading, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 }
 
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (context === undefined)
-        throw new Error('useAuth must be used within an AuthProvider');
-    return context;
-};
+export const useAuth = () => useContext(AuthContext);

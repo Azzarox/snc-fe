@@ -2,20 +2,10 @@ import { Button } from '@shadcn/components/ui/button';
 import { Input } from '@shadcn/components/ui/input';
 import { Bell, Search, Menu } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
-import { Link, useNavigate } from 'react-router';
-import { useAuth } from '@/context/AuthContext';
-import { useAuthActions } from '@/hooks/auth/useAuthActions';
+import { Link } from 'react-router';
+import HeaderAuthButtons from './HeaderAuthButtons';
 
 const Header = () => {
-	const { user } = useAuth();
-	const { logout } = useAuthActions();
-	const navigate = useNavigate();
-
-	const handleOnLogout = () => {
-		logout();
-		navigate('/')
-	}
-
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
 			<div className="container mx-auto px-4 max-w-7xl">
@@ -100,33 +90,7 @@ const Header = () => {
 						</Button>
 
 						<div className="hidden md:flex items-center gap-3">
-							{!user.username && <>
-								<Link to={'/login'}>
-									<Button
-										className="cursor-pointer"
-										variant="outline"
-									>
-										Sign In
-									</Button>
-								</Link>
-								<Link to={'/register'}>
-									<Button className="cursor-pointer">
-										Join Now
-									</Button>
-								</Link></>}
-							{user.username && <>
-								<Link to={'/login'}>
-									<Button
-										onClick={handleOnLogout}
-										className="cursor-pointer"
-										variant="outline"
-									>
-										Logout
-									</Button>
-								</Link>
-							</>}
-
-
+							<HeaderAuthButtons/>
 						</div>
 
 						<Button
