@@ -41,12 +41,12 @@ const Header = () => {
 							>
 								Feed
 							</a>
-							<a
-								href="#"
+							<Link
+								to="/discover"
 								className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
 							>
 								Discover
-							</a>
+							</Link>
 							<a
 								href="#"
 								className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
