@@ -1,27 +1,14 @@
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@shadcn/components/ui/button";
-import { useNavigate, Link } from "react-router";
+import { Link } from "react-router";
+import AvatarProfileDropdown from "../profile/AvatarProfileDropdown";
 
 const HeaderAuthButtons = () => {
-	const { user, logout } = useAuth();
-	const navigate = useNavigate();
-
-	const handleOnLogout = () => {
-		logout();
-		navigate('/')
-	}
+	const { user } = useAuth();
 
 	return <>
 		{user && user.username ? <>
-			<Link to={'/login'}>
-				<Button
-					onClick={handleOnLogout}
-					className="cursor-pointer"
-					variant="outline"
-				>
-					Logout
-				</Button>
-			</Link>
+			<AvatarProfileDropdown />
 		</> : <>
 			<Link to={'/login'}>
 				<Button

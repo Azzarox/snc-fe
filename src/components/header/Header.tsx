@@ -4,11 +4,8 @@ import { Bell, Search, Menu } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { Link } from 'react-router';
 import HeaderAuthButtons from './HeaderAuthButtons';
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
-import { useAuth } from '@/context/AuthContext';
 
 const Header = () => {
-	const { user } = useAuth();
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
 			<div className="container mx-auto px-4 max-w-7xl">
@@ -108,27 +105,6 @@ const Header = () => {
 						>
 							<Menu className="h-5 w-5" />
 						</Button>
-
-
-						{user?.username && <>
-							<Link to="/discover" className="flex items-center">
-								<Button
-									variant="ghost"
-									size="icon"
-									className="cursor-pointer"
-								>
-									<Avatar >
-										<AvatarImage
-											className='rounded-md'
-											src="https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-5.png"
-											alt="Hallie Richards"
-										/>
-										<AvatarFallback className="text-xs">HR</AvatarFallback>
-									</Avatar>
-								</Button>
-							</Link>
-						</>}
-
 					</div>
 				</div>
 			</div>
