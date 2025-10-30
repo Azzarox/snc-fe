@@ -18,10 +18,13 @@ import { loginSchema, registerSchema, type LoginFormData, type RegisterFormData 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router';
-import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { toastService } from '@/services/common/toastService';
 import { useAuthService } from '@/hooks/useAuthService';
+import { AlertDescription, AlertTitle } from '@shadcn/components/ui/alert';
+import { OctagonAlert } from 'lucide-react';
+import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
+
 
 export function LoginForm({
 	className,
@@ -29,12 +32,12 @@ export function LoginForm({
 }: React.ComponentProps<'div'>) {
 	const { login } = useAuth();
 
-	const [errorsState, setErrorsState] = useState([] as string[]);
 	const { loginUser } = useAuthService();
 
 	const {
 		register,
 		handleSubmit,
+		setError,
 		formState: { errors, isSubmitting },
 	} = useForm<LoginFormData>({
 		resolver: zodResolver(loginSchema),
@@ -47,12 +50,12 @@ export function LoginForm({
 		const res = await loginUser(data);
 
 		if (!res.success && res.errors) {
-			setErrorsState(errorsState);
+			setError('root', res.errors)
 			return;
 		}
 
 		if (!res.success) {
-			setErrorsState([res.message ?? '']);
+			setError('root', { message: res.message ?? 'Error Happened!' })
 			return;
 		}
 
@@ -66,7 +69,6 @@ export function LoginForm({
 		<div className={cn('flex flex-col gap-6', className)} {...props}>
 			<Card>
 				<CardHeader>
-					{/* TODO: Remove later */} <CardDescription className='text-red-500 text-xl'>{errorsState}</CardDescription>
 
 					<CardTitle>Login to your account</CardTitle>
 					<CardDescription>
@@ -74,6 +76,11 @@ export function LoginForm({
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
+
+					{errors.root && <>
+						<DissmissableErrorAlert title="Login Failed" message={errors.root && errors.root.message}/>
+					</>}
+
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<FieldGroup>
 							<Field>
@@ -124,6 +131,6 @@ export function LoginForm({
 					</form>
 				</CardContent>
 			</Card>
-		</div>
+		</div >
 	);
 }
