@@ -1,4 +1,4 @@
-import type { ApiResponse, ErrorResponse, SuccessResponse } from "@/services/auth/authService";
+import type { ApiResponse, ErrorResponse, SuccessResponse } from "@/hooks/useAuthService";
 import { toastService } from "@/services/common/toastService";
 import { useCallback } from "react";
 

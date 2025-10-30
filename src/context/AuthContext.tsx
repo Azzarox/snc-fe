@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { localStorageService } from '@/services/common/storage/localStorageService';
 import { sessionStorageService } from '@/services/common/storage/sessionStorageService';
 import { toastService } from '@/services/common/toastService';
-import { useAuthService } from '@/services/auth/authService';
+import { useAuthService } from '@/hooks/useAuthService';
 
 export type User = { username: string } | null;
 

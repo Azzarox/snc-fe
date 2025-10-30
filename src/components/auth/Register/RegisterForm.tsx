@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { toastService } from '@/services/common/toastService';
-import { useAuthService } from '@/services/auth/authService';
+import { useAuthService } from '@/hooks/useAuthService';
 
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	const {

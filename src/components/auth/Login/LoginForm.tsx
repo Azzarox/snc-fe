@@ -21,8 +21,7 @@ import { Link, useNavigate } from 'react-router';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { toastService } from '@/services/common/toastService';
-import { toast } from 'sonner';
-import { useAuthService } from '@/services/auth/authService';
+import { useAuthService } from '@/hooks/useAuthService';
 
 export function LoginForm({
 	className,
