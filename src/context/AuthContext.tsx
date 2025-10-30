@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { authService } from '@/services/auth/authService';
 import { localStorageService } from '@/services/common/storage/localStorageService';
 import { sessionStorageService } from '@/services/common/storage/sessionStorageService';
 import { toastService } from '@/services/common/toastService';
+import { useAuthService } from '@/services/auth/authService';
 
 export type User = { username: string } | null;
 
@@ -30,6 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
     const [user, setUser] = useState<User>(null);
     const [loading, setLoading] = useState(false);
+    const { getAuthenticatedUserData } = useAuthService();
 
     const login = (accessToken: string) => {
         localStorageService.setAccessToken(accessToken);
@@ -61,8 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         setLoading(true);
 
-        authService
-            .getAuthenticatedUserData(token)
+        getAuthenticatedUserData(token)
             .then(res => {
                 if (res.data) {
                     const user = { username: res.data.username }

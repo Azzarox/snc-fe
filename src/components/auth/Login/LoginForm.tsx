@@ -18,11 +18,11 @@ import { loginSchema, registerSchema, type LoginFormData, type RegisterFormData 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router';
-import { authService } from '@/services/auth/authService';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { toastService } from '@/services/common/toastService';
 import { toast } from 'sonner';
+import { useAuthService } from '@/services/auth/authService';
 
 export function LoginForm({
 	className,
@@ -31,7 +31,7 @@ export function LoginForm({
 	const { login } = useAuth();
 
 	const [errorsState, setErrorsState] = useState([] as string[]);
-
+	const { loginUser } = useAuthService();
 
 	const {
 		register,
@@ -45,29 +45,22 @@ export function LoginForm({
 	const navigate = useNavigate();
 
 	const onSubmit = async (data: LoginFormData) => {
-		// TODO: Example handling error and toast on error 
-		// TODO: Make it in handler with try catch wrapper
-		try {
-			const res = await authService.loginUser(data);
-			if (!res.success && res.errors) {
-				setErrorsState(errorsState);
-				toastService.error(errorsState.join(', '))
-				return;
-			}
+		const res = await loginUser(data);
 
-			if (!res.success) {
-				setErrorsState([res.message]);
-				toastService.error(res.message)
-				return;
-			}
-
-			login(res.data!.accessToken);
-			toastService.success('Successfully logged in!')
-			navigate('/');
-
-		} catch (err) {
-			toast.error((err as any).message)
+		if (!res.success && res.errors) {
+			setErrorsState(errorsState);
+			return;
 		}
+
+		if (!res.success) {
+			setErrorsState([res.message ?? '']);
+			return;
+		}
+
+		login(res.data!.accessToken);
+		toastService.success('Successfully logged in!')
+		navigate('/');
+
 	}
 
 	return (

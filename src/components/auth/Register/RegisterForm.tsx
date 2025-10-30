@@ -17,10 +17,10 @@ import { Input } from '@shadcn/components/ui/input';
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authService } from '@/services/auth/authService';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { toastService } from '@/services/common/toastService';
+import { useAuthService } from '@/services/auth/authService';
 
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	const {
@@ -35,15 +35,18 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	const navigate = useNavigate();
 	const [errorsState, setErrorsState] = useState([] as string[]);
 
+	const { registerUser } = useAuthService();
+
 	const onSubmit = async (data: RegisterFormData) => {
-		const res = await authService.registerUser(data);
+		const res = await registerUser(data);
+		
 		if (!res.success && res.errors) {
 			setErrorsState(errorsState);
 			return;
 		}
 
 		if (!res.success) {
-			setErrorsState([res.message]);
+			setErrorsState([res.message ?? '']);
 			return;
 		}
 
@@ -52,11 +55,11 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	}
 
 	return (
-		
+
 		<Card {...props}>
 			<CardHeader>
-				
-			{/* TODO: Remove later */} <CardDescription className='text-red-500 text-xl'>{errorsState}</CardDescription>
+
+				{/* TODO: Remove later */} <CardDescription className='text-red-500 text-xl'>{errorsState}</CardDescription>
 				<CardTitle>Create an account</CardTitle>
 				<CardDescription>
 					Enter your information below to create your account

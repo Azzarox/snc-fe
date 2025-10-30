@@ -1,51 +1,53 @@
+import { useFetch, type FetchOptions } from "@/hooks/useFetch";
 import type { LoginFormData, RegisterFormData } from "@/schemas/auth/registerSchema";
 
-type Response<T> = {
+export type SuccessResponse<T> = {
     status: number,
-    success: boolean,
-    message: string, // TODO: Should type it properly because backends returns string | null
-    data?: T,
-    errors?: { [key: string]: any }
+    success: true,
+    message: string | null,
+    data: T
 }
 
-const registerUser = async (body: RegisterFormData): Promise<Response<{ username: string, password: string }>> => {
-    const res = await fetch('/@api/auth/register', {
-        method: 'POST',
-        headers: {
-            "Content-Type": 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-
-    const data = await res.json();
-    return data;
+export type ErrorResponse= {
+    status: number,
+    success:false,
+    message: string | null,
+    data: never,
+    errors?: { [key: string ]: any}
 }
 
-const loginUser = async (body: LoginFormData): Promise<Response<{ accessToken: string }>> => {
-    const res = await fetch('/@api/auth/login', {
-        method: 'POST',
-        headers: {
-            "Content-Type": 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
+export type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
 
-    const data = await res.json();
-    return data;
+
+type AuthServiceOptions = {
+    registerUser?: FetchOptions,
+    loginUser?: FetchOptions
+    getAuthenticatedUserData?: FetchOptions
 }
 
+export function useAuthService(options?: AuthServiceOptions) {
+    const { fetchJson } = useFetch();
 
-const getAuthenticatedUserData = async (token: string): Promise<Response<{username: string}>> => {
-    const res = await fetch('/@api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` },
-    });
+    const registerUser = (body: RegisterFormData) =>
+        fetchJson<{ username: string; password: string }>("/@api/auth/register", {
+            method: "POST",
+            body: JSON.stringify(body),
+            ...(options?.registerUser)
+        });
 
-    const data = await res.json();
-    return data;
-}
+    const loginUser = (body: LoginFormData) =>
+        fetchJson<{ accessToken: string }>("/@api/auth/login", {
+            method: "POST",
+            body: JSON.stringify(body),
+            ...(options?.loginUser)
+            
+        });
 
-export const authService = {
-    registerUser,
-    loginUser,
-    getAuthenticatedUserData
+    const getAuthenticatedUserData = (token: string) =>
+        fetchJson<{ username: string }>("/@api/auth/me", {
+            headers: { Authorization: `Bearer ${token}` },
+            ...(options?.getAuthenticatedUserData)
+        });
+
+    return { registerUser, loginUser, getAuthenticatedUserData };
 }
