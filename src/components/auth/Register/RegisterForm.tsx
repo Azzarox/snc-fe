@@ -21,12 +21,15 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { toastService } from '@/services/common/toastService';
 import { useAuthService } from '@/hooks/useAuthService';
+import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
+import { ErrorMessages } from '@/consts/errors';
 
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
+		setError,
 	} = useForm<RegisterFormData>({
 		resolver: zodResolver(registerSchema),
 		mode: "onTouched",
@@ -39,14 +42,14 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 
 	const onSubmit = async (data: RegisterFormData) => {
 		const res = await registerUser(data);
-		
+
 		if (!res.success && res.errors) {
-			setErrorsState(errorsState);
+			setError('root', res.errors)
 			return;
 		}
 
 		if (!res.success) {
-			setErrorsState([res.message ?? '']);
+			setError('root', { message: res.message ?? ErrorMessages.UNEXPECTED_ERROR });
 			return;
 		}
 
@@ -66,6 +69,13 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
+				{errors.root && <>
+
+
+					{errors.root && <>
+						<DissmissableErrorAlert title="Registration Failed" message={errors.root && errors.root.message} />
+					</>}
+				</>}
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<FieldGroup>
 						{/* <Field>

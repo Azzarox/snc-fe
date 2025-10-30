@@ -17,7 +17,7 @@ export function DismissableAlert({ children, className }: DismissableAlertProps)
 		<Button
 			size="icon"
 			variant="ghost"
-			className="pl-0! cursor-pointer"
+			className="pl-0! cursor-pointer hover:bg-destructive/0 hover:text-destructive/90"
 			onClick={() => setVisible(false)}
 		>
 			<XIcon className="h-5 w-5" />

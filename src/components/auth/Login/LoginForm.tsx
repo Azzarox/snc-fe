@@ -24,6 +24,7 @@ import { useAuthService } from '@/hooks/useAuthService';
 import { AlertDescription, AlertTitle } from '@shadcn/components/ui/alert';
 import { OctagonAlert } from 'lucide-react';
 import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
+import { ErrorMessages } from '@/consts/errors';
 
 
 export function LoginForm({
@@ -55,7 +56,7 @@ export function LoginForm({
 		}
 
 		if (!res.success) {
-			setError('root', { message: res.message ?? 'Error Happened!' })
+			setError('root', { message: res.message ?? ErrorMessages.UNEXPECTED_ERROR })
 			return;
 		}
 
