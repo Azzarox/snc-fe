@@ -1,9 +1,12 @@
-import type { RegisterFormData } from '@/schemas/auth/registerSchema';
+import type {
+	LoginFormData,
+	RegisterFormData,
+} from '@/schemas/auth/registerSchema';
 
 type Response<T> = {
 	status: number;
 	success: boolean;
-	message: string;
+	message: string; // TODO: Should type it properly because backends returns string | null
 	data?: T;
 	errors?: { [key: string]: any };
 };
@@ -23,6 +26,22 @@ const registerUser = async (
 	return data;
 };
 
+const loginUser = async (
+	body: LoginFormData
+): Promise<Response<{ accessToken: string }>> => {
+	const res = await fetch('/@api/auth/login', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(body),
+	});
+
+	const data = await res.json();
+	return data;
+};
+
 export const authService = {
 	registerUser,
+	loginUser,
 };
