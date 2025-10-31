@@ -30,7 +30,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 		mode: "onTouched",
 	});
 
-	const [errorsState, setErrorsState] = useState([] as string[]);
+	const [errorsState, setErrorsState] = useState<string[]>([]);
 
 	const onSubmit = async (data: RegisterFormData) => {
 		const res = await authService.registerUser(data);
