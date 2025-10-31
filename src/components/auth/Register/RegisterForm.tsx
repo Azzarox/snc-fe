@@ -1,3 +1,7 @@
+import {
+	registerSchema,
+	type RegisterFormData,
+} from '@/schemas/auth/registerSchema';
 import { Button } from '@shadcn/components/ui/button';
 import {
 	Card,
@@ -14,19 +18,52 @@ import {
 } from '@shadcn/components/ui/field';
 import { Input } from '@shadcn/components/ui/input';
 
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { authService } from '@/services/auth/authService';
+import { useState } from 'react';
+
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors, isSubmitting },
+	} = useForm<RegisterFormData>({
+		resolver: zodResolver(registerSchema),
+		mode: 'onTouched',
+	});
+
+	const [errorsState, setErrorsState] = useState<string[]>([]);
+
+	const onSubmit = async (data: RegisterFormData) => {
+		const res = await authService.registerUser(data);
+		if (!res.success && res.errors) {
+			setErrorsState(errorsState);
+		}
+
+		if (!res.success) {
+			setErrorsState([res.message]);
+		}
+
+		console.log(res.data);
+	};
+
 	return (
 		<Card {...props}>
 			<CardHeader>
+				{/* TODO: Remove later */}{' '}
+				<CardDescription className="text-red-500 text-xl">
+					{errorsState}
+				</CardDescription>
 				<CardTitle>Create an account</CardTitle>
 				<CardDescription>
 					Enter your information below to create your account
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<form>
+				<form onSubmit={handleSubmit(onSubmit)}>
 					<FieldGroup>
-						<Field>
+						{/* <Field>
 							<FieldLabel htmlFor="name">Full Name</FieldLabel>
 							<Input
 								id="name"
@@ -34,28 +71,46 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 								placeholder="John Doe"
 								required
 							/>
-						</Field>
+						</Field> */}
 						<Field>
-							<FieldLabel htmlFor="email">Email</FieldLabel>
+							<FieldLabel htmlFor="username">Username</FieldLabel>
 							<Input
-								id="email"
-								type="email"
-								placeholder="m@example.com"
+								id="username"
+								type="username"
+								placeholder="ex: guitarhero688"
+								{...register('username')}
 								required
 							/>
-							<FieldDescription>
+							{errors.username && (
+								<>
+									<FieldDescription className="text-red-500">
+										{errors.username.message}
+									</FieldDescription>
+								</>
+							)}
+							{/* <FieldDescription>
 								We&apos;ll use this to contact you. We will not
 								share your email with anyone else.
-							</FieldDescription>
+							</FieldDescription> */}
 						</Field>
 						<Field>
 							<FieldLabel htmlFor="password">Password</FieldLabel>
-							<Input id="password" type="password" required />
-							<FieldDescription>
+							<Input
+								id="password"
+								type="password"
+								required
+								{...register('password')}
+							/>
+							{/* <FieldDescription>
 								Must be at least 8 characters long.
-							</FieldDescription>
+							</FieldDescription> */}
+							{errors.password && (
+								<FieldDescription className="text-red-500">
+									{errors.password.message}
+								</FieldDescription>
+							)}
 						</Field>
-						<Field>
+						{/* <Field>
 							<FieldLabel htmlFor="confirm-password">
 								Confirm Password
 							</FieldLabel>
@@ -67,17 +122,21 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 							<FieldDescription>
 								Please confirm your password.
 							</FieldDescription>
-						</Field>
+						</Field> */}
 						<FieldGroup>
 							<Field>
-								<Button type="submit">Create Account</Button>
-								<Button variant="outline" type="button">
-									Sign up with Google
+								<Button type="submit" disabled={isSubmitting}>
+									{isSubmitting
+										? 'Creating...'
+										: 'Create Account'}
 								</Button>
-								<FieldDescription className="px-6 text-center">
+								{/* <Button variant="outline" type="button">
+									Sign up with Google
+								</Button> */}
+								{/* <FieldDescription className="px-6 text-center">
 									Already have an account?{' '}
 									<a href="#">Sign in</a>
-								</FieldDescription>
+								</FieldDescription> */}
 							</Field>
 						</FieldGroup>
 					</FieldGroup>
