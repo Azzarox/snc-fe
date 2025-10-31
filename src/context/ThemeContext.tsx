@@ -1,13 +1,12 @@
 import { localStorageService } from '@/services/common/storage/localStorageService';
-import { StorageKeys } from '@/services/common/storage/storage';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 // type Theme = 'dark' | 'light' | 'system';
 
 export enum Theme {
-	DARK ='dark',
-	LIGHT ='light',
-	SYSTEM = 'system'
+	DARK = 'dark',
+	LIGHT = 'light',
+	SYSTEM = 'system',
 }
 
 type ThemeProviderProps = {
@@ -34,8 +33,8 @@ export function ThemeProvider({
 	...props
 }: ThemeProviderProps) {
 	const [theme, setTheme] = useState<Theme>(
-		() => (localStorageService.getTheme() || defaultTheme
-	));
+		() => localStorageService.getTheme() || defaultTheme
+	);
 
 	useEffect(() => {
 		const root = window.document.documentElement;
