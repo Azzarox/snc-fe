@@ -1,13 +1,16 @@
 import { Outlet } from 'react-router';
 import Header from '../header/Header';
+import { ErrorBoundaryWrapper } from '../common/ErrorBoundaryWrapper';
 
 const Layout = () => {
 	return (
 		<>
 			<Header />
-			<main>
-				<Outlet />
-			</main>
+			<ErrorBoundaryWrapper>
+				<main>
+					<Outlet />
+				</main>
+			</ErrorBoundaryWrapper>
 		</>
 	);
 };
