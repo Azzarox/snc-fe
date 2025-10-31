@@ -50,7 +50,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 		}
 
 		navigate('/login');
-	}
+	};
 
 	return (
 		<Card {...props}>
@@ -129,9 +129,14 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 						</Field> */}
 						<FieldGroup>
 							<Field>
-
-								<Button className="cursor-pointer" type="submit" disabled={isSubmitting}>
-									{isSubmitting ? "Creating..." : "Create Account"}
+								<Button
+									className="cursor-pointer"
+									type="submit"
+									disabled={isSubmitting}
+								>
+									{isSubmitting
+										? 'Creating...'
+										: 'Create Account'}
 								</Button>
 								{/* <Button variant="outline" type="button">
 									Sign up with Google
