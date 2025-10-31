@@ -26,7 +26,7 @@ export function LoginForm({
 	...props
 }: React.ComponentProps<'div'>) {
 
-	const [errorsState, setErrorsState] = useState([] as string[]);
+	const [errorsState, setErrorsState] = useState<string[]>([]);
 
 	const {
 		register,
