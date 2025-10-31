@@ -15,7 +15,6 @@ import {
 } from '@shadcn/components/ui/field';
 import { Input } from '@shadcn/components/ui/input';
 import { loginSchema, type LoginFormData } from '@/schemas/auth/registerSchema';
-import { loginSchema, type LoginFormData } from '@/schemas/auth/registerSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router';
