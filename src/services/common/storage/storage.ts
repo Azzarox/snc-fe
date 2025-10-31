@@ -1,10 +1,13 @@
+import type z from "zod";
 
 const storage = {
-    get<T>(key: string): T | null {
+    get<S extends z.ZodSchema>(key: string, schema: S): z.infer<S> | null {
         const item = localStorage.getItem(key);
         if (!item) return null;
         try {
-            return JSON.parse(item) as T;
+            const parsed = JSON.parse(item);
+            const result = schema.safeParse(parsed);
+            return result.success ? result.data : null;
         } catch {
             return null;
         }

@@ -1,9 +1,10 @@
+import { $common } from "@/schemas/common/helpers";
 import storage from "./storage";
 
 const ACCESS_TOKEN_KEY = 'accessToken';
 
 const getAccessToken = () => {
-    return storage.get<string>(ACCESS_TOKEN_KEY);
+    return storage.get(ACCESS_TOKEN_KEY, $common.string);
 }
 
 const setAccessToken = (value: string) => {
