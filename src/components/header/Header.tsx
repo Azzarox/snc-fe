@@ -90,7 +90,7 @@ const Header = () => {
 						</Button>
 
 						<div className="hidden md:flex items-center gap-3">
-							<HeaderAuthButtons/>
+							<HeaderAuthButtons />
 						</div>
 
 						<Button

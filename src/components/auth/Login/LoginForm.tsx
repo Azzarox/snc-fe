@@ -29,7 +29,6 @@ export function LoginForm({
 	const { login } = useAuth();
 	const [errorsState, setErrorsState] = useState<string[]>([]);
 
-
 	const {
 		register,
 		handleSubmit,

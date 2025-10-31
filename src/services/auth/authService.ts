@@ -13,7 +13,7 @@ type Response<T> = {
 
 const registerUser = async (
 	body: RegisterFormData
-): Promise<Response<{  username: string; password: string  }>> => {
+): Promise<Response<{ username: string; password: string }>> => {
 	const res = await fetch('/@api/auth/register', {
 		method: 'POST',
 		headers: {
@@ -28,7 +28,7 @@ const registerUser = async (
 
 const loginUser = async (
 	body: LoginFormData
-): Promise<Response<{  accessToken: string  }>> => {
+): Promise<Response<{ accessToken: string }>> => {
 	const res = await fetch('/@api/auth/login', {
 		method: 'POST',
 		headers: {
@@ -41,17 +41,19 @@ const loginUser = async (
 	return data;
 };
 
-const getAuthenticatedUserData = async (token: string): Promise<Response<{username: string}>> => {
-    const res = await fetch('/@api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` },
-    });
+const getAuthenticatedUserData = async (
+	token: string
+): Promise<Response<{ username: string }>> => {
+	const res = await fetch('/@api/auth/me', {
+		headers: { Authorization: `Bearer ${token}` },
+	});
 
-    const data = await res.json();
-    return data;
-}
+	const data = await res.json();
+	return data;
+};
 
 export const authService = {
 	registerUser,
 	loginUser,
-    getAuthenticatedUserData,
+	getAuthenticatedUserData,
 };

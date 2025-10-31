@@ -1,23 +1,23 @@
-import StorageAdapter from "./storage";
+import StorageAdapter from './storage';
 
 const ACCESS_TOKEN_KEY = 'accessToken';
 
 const storage = new StorageAdapter('local');
 
 const getAccessToken = () => {
-    return storage.get<string>(ACCESS_TOKEN_KEY);
-}
+	return storage.get<string>(ACCESS_TOKEN_KEY);
+};
 
 const setAccessToken = (value: string) => {
-    storage.set(ACCESS_TOKEN_KEY, value)
-}
+	storage.set(ACCESS_TOKEN_KEY, value);
+};
 
 const removeAccessToken = () => {
-    return storage.remove(ACCESS_TOKEN_KEY);
-}
+	return storage.remove(ACCESS_TOKEN_KEY);
+};
 
 export const localStorageService = {
-    getAccessToken,
-    setAccessToken,
-    removeAccessToken,
-}
+	getAccessToken,
+	setAccessToken,
+	removeAccessToken,
+};
