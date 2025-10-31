@@ -7,6 +7,8 @@ import { Navigate, Route, Routes } from 'react-router';
 import Layout from './components/layout/Layout';
 import HomePage from './components/home/HomePage';
 import { useAuth } from './context/AuthContext';
+import { ProfilePage } from './components/profile/ProfilePage';
+import { SettingsPage } from './components/settings/SettingsPage';
 
 export const DiscoverPage = () => {
 	const { user } = useAuth()
@@ -29,6 +31,8 @@ function App() {
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/register" element={<RegisterPage />} />
 					<Route path="/discover" element={<DiscoverPage />} />
+					<Route path="/profile" element={<ProfilePage />} />
+					<Route path="/settings" element={<SettingsPage />} />
 				</Route>
 			</Routes>
 		</>
