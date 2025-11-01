@@ -11,16 +11,18 @@ import { ProfilePage } from './components/profile/ProfilePage';
 import { SettingsPage } from './components/settings/SettingsPage';
 
 export const DiscoverPage = () => {
-	const { user } = useAuth()
+	const { user } = useAuth();
 
 	if (!user) {
-		return <Navigate to="/login" />
+		return <Navigate to="/login" />;
 	}
 
-	return <main className="container mx-auto px-4 py-6 max-w-7xl">
-		<p>Discover Properly</p>
-	</main>
-}
+	return (
+		<main className="container mx-auto px-4 py-6 max-w-7xl">
+			<p>Discover Properly</p>
+		</main>
+	);
+};
 
 function App() {
 	return (
@@ -34,7 +36,7 @@ function App() {
 					<Route path="/profile" element={<ProfilePage />} />
 					<Route path="/settings" element={<SettingsPage />} />
 				</Route>
-			<Route path="*" element={<NotFoundPage />}></Route>
+				<Route path="*" element={<NotFoundPage />}></Route>
 			</Routes>
 		</>
 	);

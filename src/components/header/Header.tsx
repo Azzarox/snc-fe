@@ -1,12 +1,10 @@
 import { Button } from '@shadcn/components/ui/button';
 import { Input } from '@shadcn/components/ui/input';
 import { Bell, Search, Menu } from 'lucide-react';
-import { ThemeToggle } from '../common/ThemeToggle';
 import { Link } from 'react-router';
 import HeaderAuthButtons from './HeaderAuthButtons';
 
 const Header = () => {
-
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
 			<div className="container mx-auto px-4 max-w-7xl">
@@ -50,7 +48,7 @@ const Header = () => {
 							>
 								Lessons
 							</a>
-							
+
 							<a
 								href="#"
 								className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -74,8 +72,6 @@ const Header = () => {
 
 					{/* Right Actions */}
 					<div className="flex items-center gap-3">
-
-
 						<Button
 							variant="ghost"
 							size="icon"
@@ -99,7 +95,6 @@ const Header = () => {
 							<HeaderAuthButtons />
 						</div>
 
-
 						<Button
 							variant="ghost"
 							size="icon"
@@ -110,7 +105,6 @@ const Header = () => {
 					</div>
 				</div>
 			</div>
-
 		</header>
 	);
 };

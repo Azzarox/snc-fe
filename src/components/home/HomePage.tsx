@@ -2,7 +2,6 @@ import { useAuth } from '@/context/AuthContext';
 import FeedPost from './components/FeedPost';
 import SuggestedUsers from './components/SuggestedUser';
 import TrendingTopics from './components/TrendingTopics';
-import { toastService } from '@/services/common/toastService';
 
 const posts = [
 	{
@@ -53,7 +52,7 @@ const posts = [
 
 const HomePage = () => {
 	const { user } = useAuth();
-	
+
 	return (
 		<main className="container mx-auto px-4 py-6 max-w-7xl">
 			<div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -64,8 +63,8 @@ const HomePage = () => {
 
 				{/* Main Feed */}
 				<div className="lg:col-span-6 space-y-6">
-					{
-						user && user.username && <>
+					{user && user.username && (
+						<>
 							<div className="bg-card rounded-lg border border-border p-4">
 								<h2 className="text-lg font-semibold mb-4 text-card-foreground">
 									Share with the community
@@ -112,9 +111,8 @@ const HomePage = () => {
 									</button>
 								</div>
 							</div>
-
 						</>
-					}
+					)}
 					<div className="space-y-6">
 						{posts.map((post) => (
 							<FeedPost key={post.id} post={post} />

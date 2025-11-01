@@ -1,3 +1,3 @@
 export enum ErrorMessages {
-    UNEXPECTED_ERROR = 'Oops! Unexpected Error!'   
+	UNEXPECTED_ERROR = 'Oops! Unexpected Error!',
 }
