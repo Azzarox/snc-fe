@@ -14,7 +14,7 @@ import {
 	FieldLabel,
 } from '@shadcn/components/ui/field';
 import { Input } from '@shadcn/components/ui/input';
-import { loginSchema, registerSchema, type LoginFormData, type RegisterFormData } from '@/schemas/auth/registerSchema';
+import { loginSchema, type LoginFormData } from '@/schemas/auth/registerSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router';
@@ -25,6 +25,7 @@ import { AlertDescription, AlertTitle } from '@shadcn/components/ui/alert';
 import { OctagonAlert } from 'lucide-react';
 import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
 import { ErrorMessages } from '@/consts/errors';
+import { useState } from 'react';
 
 
 export function LoginForm({
@@ -34,6 +35,7 @@ export function LoginForm({
 	const { login } = useAuth();
 
 	const { loginUser } = useAuthService();
+	const [errorsState, setErrorsState] = useState<string[]>([]);
 
 	const {
 		register,
@@ -42,7 +44,7 @@ export function LoginForm({
 		formState: { errors, isSubmitting },
 	} = useForm<LoginFormData>({
 		resolver: zodResolver(loginSchema),
-		mode: "onTouched",
+		mode: 'onTouched',
 	});
 
 	const navigate = useNavigate();
@@ -64,13 +66,16 @@ export function LoginForm({
 		toastService.success('Successfully logged in!')
 		navigate('/');
 
-	}
+	};
 
 	return (
 		<div className={cn('flex flex-col gap-6', className)} {...props}>
 			<Card>
 				<CardHeader>
-
+					{/* TODO: Remove later */}{' '}
+					<CardDescription className="text-red-500 text-xl">
+						{errorsState}
+					</CardDescription>
 					<CardTitle>Login to your account</CardTitle>
 					<CardDescription>
 						Enter your username below to login to your account
@@ -85,7 +90,9 @@ export function LoginForm({
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<FieldGroup>
 							<Field>
-								<FieldLabel htmlFor="username">Username</FieldLabel>
+								<FieldLabel htmlFor="username">
+									Username
+								</FieldLabel>
 								<Input
 									id="username"
 									type="username"
@@ -93,10 +100,13 @@ export function LoginForm({
 									{...register('username')}
 									required
 								/>
-								{errors.username &&
+								{errors.username && (
 									<>
-										<FieldDescription className='text-red-500'>{errors.username.message}</FieldDescription>
-									</>}
+										<FieldDescription className="text-red-500">
+											{errors.username.message}
+										</FieldDescription>
+									</>
+								)}
 							</Field>
 							<Field>
 								<div className="flex items-center">
@@ -110,14 +120,26 @@ export function LoginForm({
 										Forgot your password?
 									</a> */}
 								</div>
-								<Input id="password" type="password" {...register('password')} required />
-								{errors.password &&
+								<Input
+									id="password"
+									type="password"
+									{...register('password')}
+									required
+								/>
+								{errors.password && (
 									<>
-										<FieldDescription className='text-red-500'>{errors.password.message}</FieldDescription>
-									</>}
+										<FieldDescription className="text-red-500">
+											{errors.password.message}
+										</FieldDescription>
+									</>
+								)}
 							</Field>
 							<Field>
-								<Button className='cursor-pointer' type="submit" disabled={isSubmitting}>
+								<Button
+									className="cursor-pointer"
+									type="submit"
+									disabled={isSubmitting}
+								>
 									{isSubmitting ? 'Loading...' : 'Login'}
 								</Button>
 								{/* <Button variant="outline" type="button">
