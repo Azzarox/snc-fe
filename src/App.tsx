@@ -9,16 +9,18 @@ import NotFoundPage from './components/common/NotFoundPage';
 import { useAuth } from './context/AuthContext';
 
 export const DiscoverPage = () => {
-	const { user } = useAuth()
+	const { user } = useAuth();
 
 	if (!user) {
-		return <Navigate to="/login" />
+		return <Navigate to="/login" />;
 	}
 
-	return <main className="container mx-auto px-4 py-6 max-w-7xl">
-		<p>Discover Properly</p>
-	</main>
-}
+	return (
+		<main className="container mx-auto px-4 py-6 max-w-7xl">
+			<p>Discover Properly</p>
+		</main>
+	);
+};
 
 function App() {
 	return (
@@ -30,7 +32,7 @@ function App() {
 					<Route path="/register" element={<RegisterPage />} />
 					<Route path="/discover" element={<DiscoverPage />} />
 				</Route>
-			<Route path="*" element={<NotFoundPage />}></Route>
+				<Route path="*" element={<NotFoundPage />}></Route>
 			</Routes>
 		</>
 	);

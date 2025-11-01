@@ -75,8 +75,6 @@ const Header = () => {
 
 					{/* Right Actions */}
 					<div className="flex items-center gap-3">
-
-
 						<Button
 							variant="ghost"
 							size="icon"
@@ -100,7 +98,6 @@ const Header = () => {
 							<HeaderAuthButtons />
 						</div>
 
-
 						<Button
 							variant="ghost"
 							size="icon"
@@ -109,26 +106,31 @@ const Header = () => {
 							<Menu className="h-5 w-5" />
 						</Button>
 
-
-						{user?.username && <>
-							<Link to="/discover" className="flex items-center">
-								<Button
-									variant="ghost"
-									size="icon"
-									className="cursor-pointer"
+						{user?.username && (
+							<>
+								<Link
+									to="/discover"
+									className="flex items-center"
 								>
-									<Avatar >
-										<AvatarImage
-											className='rounded-md'
-											src="https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-5.png"
-											alt="Hallie Richards"
-										/>
-										<AvatarFallback className="text-xs">HR</AvatarFallback>
-									</Avatar>
-								</Button>
-							</Link>
-						</>}
-
+									<Button
+										variant="ghost"
+										size="icon"
+										className="cursor-pointer"
+									>
+										<Avatar>
+											<AvatarImage
+												className="rounded-md"
+												src="https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-5.png"
+												alt="Hallie Richards"
+											/>
+											<AvatarFallback className="text-xs">
+												HR
+											</AvatarFallback>
+										</Avatar>
+									</Button>
+								</Link>
+							</>
+						)}
 					</div>
 				</div>
 			</div>

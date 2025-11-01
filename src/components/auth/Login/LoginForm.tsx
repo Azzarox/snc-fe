@@ -21,12 +21,9 @@ import { Link, useNavigate } from 'react-router';
 import { useAuth } from '@/context/AuthContext';
 import { toastService } from '@/services/common/toastService';
 import { useAuthService } from '@/hooks/useAuthService';
-import { AlertDescription, AlertTitle } from '@shadcn/components/ui/alert';
-import { OctagonAlert } from 'lucide-react';
 import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
 import { ErrorMessages } from '@/consts/errors';
 import { useState } from 'react';
-
 
 export function LoginForm({
 	className,
@@ -53,19 +50,20 @@ export function LoginForm({
 		const res = await loginUser(data);
 
 		if (!res.success && res.errors) {
-			setError('root', res.errors)
+			setError('root', res.errors);
 			return;
 		}
 
 		if (!res.success) {
-			setError('root', { message: res.message ?? ErrorMessages.UNEXPECTED_ERROR })
+			setError('root', {
+				message: res.message ?? ErrorMessages.UNEXPECTED_ERROR,
+			});
 			return;
 		}
 
 		login(res.data!.accessToken);
-		toastService.success('Successfully logged in!')
+		toastService.success('Successfully logged in!');
 		navigate('/');
-
 	};
 
 	return (
@@ -82,10 +80,14 @@ export function LoginForm({
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-
-					{errors.root && <>
-						<DissmissableErrorAlert title="Login Failed" message={errors.root && errors.root.message}/>
-					</>}
+					{errors.root && (
+						<>
+							<DissmissableErrorAlert
+								title="Login Failed"
+								message={errors.root && errors.root.message}
+							/>
+						</>
+					)}
 
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<FieldGroup>
@@ -154,6 +156,6 @@ export function LoginForm({
 					</form>
 				</CardContent>
 			</Card>
-		</div >
+		</div>
 	);
 }

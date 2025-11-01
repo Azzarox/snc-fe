@@ -47,21 +47,24 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 		const res = await registerUser(data);
 
 		if (!res.success && res.errors) {
-			setError('root', res.errors)
+			setError('root', res.errors);
 			return;
 		}
 
 		if (!res.success) {
-			setError('root', { message: res.message ?? ErrorMessages.UNEXPECTED_ERROR });
+			setError('root', {
+				message: res.message ?? ErrorMessages.UNEXPECTED_ERROR,
+			});
 			return;
 		}
 
-		toastService.success('Successfully created user! Redirecting to login!')
+		toastService.success(
+			'Successfully created user! Redirecting to login!'
+		);
 		navigate('/login');
 	};
 
 	return (
-
 		<Card {...props}>
 			<CardHeader>
 				{/* TODO: Remove later */}{' '}
@@ -74,13 +77,18 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				{errors.root && <>
-
-
-					{errors.root && <>
-						<DissmissableErrorAlert title="Registration Failed" message={errors.root && errors.root.message} />
-					</>}
-				</>}
+				{errors.root && (
+					<>
+						{errors.root && (
+							<>
+								<DissmissableErrorAlert
+									title="Registration Failed"
+									message={errors.root && errors.root.message}
+								/>
+							</>
+						)}
+					</>
+				)}
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<FieldGroup>
 						{/* <Field>
