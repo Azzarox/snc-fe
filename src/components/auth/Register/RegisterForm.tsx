@@ -1,4 +1,7 @@
-import { registerSchema, type RegisterFormData } from '@/schemas/auth/registerSchema';
+import {
+	registerSchema,
+	type RegisterFormData,
+} from '@/schemas/auth/registerSchema';
 import { Button } from '@shadcn/components/ui/button';
 import {
 	Card,
@@ -15,8 +18,8 @@ import {
 } from '@shadcn/components/ui/field';
 import { Input } from '@shadcn/components/ui/input';
 
-import { useForm } from 'react-hook-form'
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { toastService } from '@/services/common/toastService';
@@ -32,7 +35,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 		setError,
 	} = useForm<RegisterFormData>({
 		resolver: zodResolver(registerSchema),
-		mode: "onTouched",
+		mode: 'onTouched',
 	});
 
 	const navigate = useNavigate();
@@ -55,14 +58,14 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 
 		toastService.success('Successfully created user! Redirecting to login!')
 		navigate('/login');
-	}
+	};
 
 	return (
 
 		<Card {...props}>
 			<CardHeader>
-
-				{/* TODO: Remove later */} <CardDescription className='text-red-500 text-xl'>{errorsState}</CardDescription>
+				
+			{/* TODO: Remove later */} <CardDescription className='text-red-500 text-xl'>{errorsState}</CardDescription>
 				<CardTitle>Create an account</CardTitle>
 				<CardDescription>
 					Enter your information below to create your account
@@ -93,13 +96,16 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 								id="username"
 								type="username"
 								placeholder="ex: guitarhero688"
-								{...register("username")}
+								{...register('username')}
 								required
 							/>
-							{errors.username &&
+							{errors.username && (
 								<>
-									<FieldDescription className='text-red-500'>{errors.username.message}</FieldDescription>
-								</>}
+									<FieldDescription className="text-red-500">
+										{errors.username.message}
+									</FieldDescription>
+								</>
+							)}
 							{/* <FieldDescription>
 								We&apos;ll use this to contact you. We will not
 								share your email with anyone else.
@@ -107,13 +113,20 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 						</Field>
 						<Field>
 							<FieldLabel htmlFor="password">Password</FieldLabel>
-							<Input id="password" type="password" required {...register("password")} />
+							<Input
+								id="password"
+								type="password"
+								required
+								{...register('password')}
+							/>
 							{/* <FieldDescription>
 								Must be at least 8 characters long.
 							</FieldDescription> */}
-							{errors.password && <FieldDescription className='text-red-500'>
-								{errors.password.message}
-							</FieldDescription>}
+							{errors.password && (
+								<FieldDescription className="text-red-500">
+									{errors.password.message}
+								</FieldDescription>
+							)}
 						</Field>
 						{/* <Field>
 							<FieldLabel htmlFor="confirm-password">
@@ -130,9 +143,14 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 						</Field> */}
 						<FieldGroup>
 							<Field>
-
-								<Button className="cursor-pointer" type="submit" disabled={isSubmitting}>
-									{isSubmitting ? "Creating..." : "Create Account"}
+								<Button
+									className="cursor-pointer"
+									type="submit"
+									disabled={isSubmitting}
+								>
+									{isSubmitting
+										? 'Creating...'
+										: 'Create Account'}
 								</Button>
 								{/* <Button variant="outline" type="button">
 									Sign up with Google

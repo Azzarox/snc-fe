@@ -1,11 +1,11 @@
-import { useState } from 'react';
-
 import './App.css';
 import RegisterPage from './components/auth/Register/RegisterPage';
 import LoginPage from './components/auth/Login/LoginPage';
 import { Navigate, Route, Routes } from 'react-router';
 import Layout from './components/layout/Layout';
 import HomePage from './components/home/HomePage';
+import NotFoundPage from './components/common/NotFoundPage';
+
 import { useAuth } from './context/AuthContext';
 import { ProfilePage } from './components/profile/ProfilePage';
 import { SettingsPage } from './components/settings/SettingsPage';
@@ -34,6 +34,7 @@ function App() {
 					<Route path="/profile" element={<ProfilePage />} />
 					<Route path="/settings" element={<SettingsPage />} />
 				</Route>
+			<Route path="*" element={<NotFoundPage />}></Route>
 			</Routes>
 		</>
 	);
