@@ -80,8 +80,8 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 			lastName: '',
 			bio: '',
 			description: '',
-			primarySkill: '',
-			yearsExperience: '',
+			// primarySkill: '',
+			// yearsExperience: '',
 		},
 	});
 
@@ -267,11 +267,10 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 										{...register('bio')}
 										required
 									/>
-									{errors.bio && (
-										<FieldDescription className="text-red-500">
-											{errors.bio.message}
-										</FieldDescription>
-									)}
+									
+									<FieldDescription className={errors.bio && 'text-red-500'}>
+									{ errors.bio ? <>{errors.bio.message}</> : <>Optional: Tell us about yourself in few words</>} 
+									</FieldDescription>
 								</Field>
 
 								<Field>
@@ -281,12 +280,12 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 										placeholder="Tell us about yourself..."
 										{...register('description')}
 									/>
-									<FieldDescription>
-										Optional: Share more about your musical journey
+									<FieldDescription className={errors.description && 'text-red-500'}>
+									{ errors.description ? <>{errors.description.message}</> : <>Optional: Share more about your musical journey</>} 
 									</FieldDescription>
 								</Field>
 
-								<Field>
+								{/* <Field>
 									<FieldLabel htmlFor="primarySkill">Primary Skill</FieldLabel>
 									<Controller
 										name="primarySkill"
@@ -340,7 +339,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 											{errors.yearsExperience.message}
 										</FieldDescription>
 									)}
-								</Field>
+								</Field> */}
 							</>
 						)}
 
