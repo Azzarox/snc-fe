@@ -17,8 +17,16 @@ import {
 	FieldLabel,
 } from '@shadcn/components/ui/field';
 import { Input } from '@shadcn/components/ui/input';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@shadcn/components/ui/select';
+import { Textarea } from '@shadcn/components/ui/textarea';
 
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
@@ -27,21 +35,77 @@ import { useAuthService } from '@/hooks/useAuthService';
 import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
 import { ErrorMessages } from '@/consts/errors';
 
+const GUITAR_SKILLS = [
+	'Acoustic Guitar',
+	'Electric Guitar',
+	'Bass Guitar',
+	'Classical Guitar',
+	'Fingerstyle',
+	'Flamenco',
+	'Jazz',
+	'Blues',
+	'Rock',
+	'Metal',
+	'Folk',
+	'Country',
+];
+
+const EXPERIENCE_LEVELS = [
+	{ value: 'beginner', label: 'Beginner (0-1 years)' },
+	{ value: 'intermediate', label: 'Intermediate (1-3 years)' },
+	{ value: 'advanced', label: 'Advanced (3-5 years)' },
+	{ value: 'expert', label: 'Expert (5+ years)' },
+];
+
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
+	const [currentStep, setCurrentStep] = useState(1);
+
 	const {
 		register,
 		handleSubmit,
+		control,
 		formState: { errors, isSubmitting },
 		setError,
+		trigger,
+		clearErrors,
 	} = useForm<RegisterFormData>({
 		resolver: zodResolver(registerSchema),
 		mode: 'onTouched',
+		defaultValues: {
+			username: '',
+			email: '',
+			password: '',
+			confirmPassword: '',
+			firstName: '',
+			lastName: '',
+			bio: '',
+			description: '',
+			primarySkill: '',
+			yearsExperience: '',
+		},
 	});
 
 	const navigate = useNavigate();
-	const [errorsState, setErrorsState] = useState([] as string[]);
-
 	const { registerUser } = useAuthService();
+
+	const handleNext = async () => {
+		// Validate only Step 1 fields
+		const isValid = await trigger([
+			'username',
+			'email',
+			'password',
+			'confirmPassword',
+		]);
+		if (isValid) {
+			setCurrentStep(2);
+			clearErrors();
+		}
+	};
+
+	const handleBack = () => {
+		setCurrentStep(1);
+		clearErrors();
+	};
 
 	const onSubmit = async (data: RegisterFormData) => {
 		const res = await registerUser(data);
@@ -58,116 +122,259 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 			return;
 		}
 
-		toastService.success(
-			'Successfully created user! Redirecting to login!'
-		);
+		toastService.success('Successfully created user! Redirecting to login!');
 		navigate('/login');
 	};
 
 	return (
-		<Card {...props}>
+		<Card
+			{...props}
+			className={currentStep === 1 ? 'max-w-md mx-auto' : 'max-w-lg mx-auto'}
+		>
 			<CardHeader>
-				{/* TODO: Remove later */}{' '}
-				<CardDescription className="text-red-500 text-xl">
-					{errorsState}
-				</CardDescription>
 				<CardTitle>Create an account</CardTitle>
 				<CardDescription>
-					Enter your information below to create your account
+					{currentStep === 1
+						? 'Enter your account information below'
+						: 'Complete your profile information'}
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
 				{errors.root && (
 					<>
-						{errors.root && (
-							<>
-								<DissmissableErrorAlert
-									title="Registration Failed"
-									message={errors.root && errors.root.message}
-								/>
-							</>
-						)}
+						<DissmissableErrorAlert
+							title="Registration Failed"
+							message={errors.root && errors.root.message}
+						/>
 					</>
 				)}
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<FieldGroup>
-						{/* <Field>
-							<FieldLabel htmlFor="name">Full Name</FieldLabel>
-							<Input
-								id="name"
-								type="text"
-								placeholder="John Doe"
-								required
-							/>
-						</Field> */}
-						<Field>
-							<FieldLabel htmlFor="username">Username</FieldLabel>
-							<Input
-								id="username"
-								type="username"
-								placeholder="ex: guitarhero688"
-								{...register('username')}
-								required
-							/>
-							{errors.username && (
-								<>
-									<FieldDescription className="text-red-500">
-										{errors.username.message}
+						{/* Step 1: Account Credentials */}
+						{currentStep === 1 && (
+							<>
+								<Field>
+									<FieldLabel htmlFor="username">Username</FieldLabel>
+									<Input
+										id="username"
+										type="text"
+										placeholder="ex: guitarhero688"
+										{...register('username')}
+										required
+									/>
+									{errors.username && (
+										<FieldDescription className="text-red-500">
+											{errors.username.message}
+										</FieldDescription>
+									)}
+								</Field>
+
+								<Field>
+									<FieldLabel htmlFor="email">Email</FieldLabel>
+									<Input
+										id="email"
+										type="email"
+										placeholder="your@email.com"
+										{...register('email')}
+										required
+									/>
+									{errors.email && (
+										<FieldDescription className="text-red-500">
+											{errors.email.message}
+										</FieldDescription>
+									)}
+								</Field>
+
+								<Field>
+									<FieldLabel htmlFor="password">Password</FieldLabel>
+									<Input
+										id="password"
+										type="password"
+										placeholder="At least 8 characters"
+										{...register('password')}
+										required
+									/>
+									{errors.password && (
+										<FieldDescription className="text-red-500">
+											{errors.password.message}
+										</FieldDescription>
+									)}
+								</Field>
+
+								<Field>
+									<FieldLabel htmlFor="confirmPassword">
+										Confirm Password
+									</FieldLabel>
+									<Input
+										id="confirmPassword"
+										type="password"
+										placeholder="Confirm your password"
+										{...register('confirmPassword')}
+										required
+									/>
+									{errors.confirmPassword && (
+										<FieldDescription className="text-red-500">
+											{errors.confirmPassword.message}
+										</FieldDescription>
+									)}
+								</Field>
+							</>
+						)}
+
+						{/* Step 2: Profile Information */}
+						{currentStep === 2 && (
+							<>
+								<div className="grid grid-cols-2 gap-4">
+									<Field>
+										<FieldLabel htmlFor="firstName">First Name</FieldLabel>
+										<Input
+											id="firstName"
+											type="text"
+											placeholder="John"
+											{...register('firstName')}
+											required
+										/>
+										{errors.firstName && (
+											<FieldDescription className="text-red-500">
+												{errors.firstName.message}
+											</FieldDescription>
+										)}
+									</Field>
+
+									<Field>
+										<FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+										<Input
+											id="lastName"
+											type="text"
+											placeholder="Doe"
+											{...register('lastName')}
+											required
+										/>
+										{errors.lastName && (
+											<FieldDescription className="text-red-500">
+												{errors.lastName.message}
+											</FieldDescription>
+										)}
+									</Field>
+								</div>
+
+								<Field>
+									<FieldLabel htmlFor="bio">Bio</FieldLabel>
+									<Input
+										id="bio"
+										type="text"
+										placeholder="e.g., Jazz guitarist from NYC"
+										{...register('bio')}
+										required
+									/>
+									{errors.bio && (
+										<FieldDescription className="text-red-500">
+											{errors.bio.message}
+										</FieldDescription>
+									)}
+								</Field>
+
+								<Field>
+									<FieldLabel htmlFor="description">Description</FieldLabel>
+									<Textarea
+										id="description"
+										placeholder="Tell us about yourself..."
+										{...register('description')}
+									/>
+									<FieldDescription>
+										Optional: Share more about your musical journey
 									</FieldDescription>
-								</>
-							)}
-							{/* <FieldDescription>
-								We&apos;ll use this to contact you. We will not
-								share your email with anyone else.
-							</FieldDescription> */}
-						</Field>
-						<Field>
-							<FieldLabel htmlFor="password">Password</FieldLabel>
-							<Input
-								id="password"
-								type="password"
-								required
-								{...register('password')}
-							/>
-							{/* <FieldDescription>
-								Must be at least 8 characters long.
-							</FieldDescription> */}
-							{errors.password && (
-								<FieldDescription className="text-red-500">
-									{errors.password.message}
-								</FieldDescription>
-							)}
-						</Field>
-						{/* <Field>
-							<FieldLabel htmlFor="confirm-password">
-								Confirm Password
-							</FieldLabel>
-							<Input
-								id="confirm-password"
-								type="password"
-								required
-							/>
-							<FieldDescription>
-								Please confirm your password.
-							</FieldDescription>
-						</Field> */}
+								</Field>
+
+								<Field>
+									<FieldLabel htmlFor="primarySkill">Primary Skill</FieldLabel>
+									<Controller
+										name="primarySkill"
+										control={control}
+										render={({ field }) => (
+											<Select value={field.value} onValueChange={field.onChange}>
+												<SelectTrigger id="primarySkill">
+													<SelectValue placeholder="Select your primary skill" />
+												</SelectTrigger>
+												<SelectContent>
+													{GUITAR_SKILLS.map((skill) => (
+														<SelectItem key={skill} value={skill}>
+															{skill}
+														</SelectItem>
+													))}
+												</SelectContent>
+											</Select>
+										)}
+									/>
+									{errors.primarySkill && (
+										<FieldDescription className="text-red-500">
+											{errors.primarySkill.message}
+										</FieldDescription>
+									)}
+								</Field>
+
+								<Field>
+									<FieldLabel htmlFor="yearsExperience">
+										Years of Experience
+									</FieldLabel>
+									<Controller
+										name="yearsExperience"
+										control={control}
+										render={({ field }) => (
+											<Select value={field.value} onValueChange={field.onChange}>
+												<SelectTrigger id="yearsExperience">
+													<SelectValue placeholder="Select your experience level" />
+												</SelectTrigger>
+												<SelectContent>
+													{EXPERIENCE_LEVELS.map((level) => (
+														<SelectItem key={level.value} value={level.value}>
+															{level.label}
+														</SelectItem>
+													))}
+												</SelectContent>
+											</Select>
+										)}
+									/>
+									{errors.yearsExperience && (
+										<FieldDescription className="text-red-500">
+											{errors.yearsExperience.message}
+										</FieldDescription>
+									)}
+								</Field>
+							</>
+						)}
+
 						<FieldGroup>
 							<Field>
-								<Button
-									className="cursor-pointer"
-									type="submit"
-									disabled={isSubmitting}
-								>
-									{isSubmitting
-										? 'Creating...'
-										: 'Create Account'}
-								</Button>
-								{/* <Button variant="outline" type="button">
-									Sign up with Google
-								</Button> */}
+								{currentStep === 1 ? (
+									<Button
+										className="cursor-pointer"
+										type="button"
+										onClick={handleNext}
+									>
+										Next
+									</Button>
+								) : (
+									<div className="flex gap-2">
+										<Button
+											className="cursor-pointer"
+											variant="outline"
+											type="button"
+											onClick={handleBack}
+										>
+											Back
+										</Button>
+										<Button
+											className="cursor-pointer flex-1"
+											type="submit"
+											disabled={isSubmitting}
+										>
+											{isSubmitting ? 'Creating...' : 'Create Account'}
+										</Button>
+									</div>
+								)}
 								<FieldDescription className="px-6 text-center">
-									Already have an account?{' '}
-									<Link to="/login">Sign in</Link>
+									Already have an account? <Link to="/login">Sign in</Link>
 								</FieldDescription>
 							</Field>
 						</FieldGroup>
