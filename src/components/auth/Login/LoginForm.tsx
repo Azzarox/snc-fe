@@ -18,12 +18,12 @@ import { loginSchema, type LoginFormData } from '@/schemas/auth/registerSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router';
-import { useAuth } from '@/context/AuthContext';
 import { toastService } from '@/services/common/toastService';
 import { useAuthService } from '@/hooks/useAuthService';
 import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
 import { ErrorMessages } from '@/consts/errors';
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 export function LoginForm({
 	className,
@@ -159,3 +159,4 @@ export function LoginForm({
 		</div>
 	);
 }
+

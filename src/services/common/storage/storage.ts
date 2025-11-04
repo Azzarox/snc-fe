@@ -29,15 +29,6 @@ class StorageAdapter {
 		this.storage = type === 'local' ? localStorage : sessionStorage;
 	}
 
-type StorageBackend = 'local' | 'session';
-
-class StorageAdapter {
-	private storage: Storage;
-
-	constructor(type: StorageBackend = 'local') {
-		this.storage = type === 'local' ? localStorage : sessionStorage;
-	}
-
 	get<K extends keyof StorageTypes>(key: K): StorageTypes[K] | null {
 		const item = this.storage.getItem(key);
 		if (!item) return null;
@@ -49,7 +40,6 @@ class StorageAdapter {
 		} catch {
 			return null;
 		}
-	}
 	}
 
 	set<K extends keyof StorageTypes>(key: K, value: StorageTypes[K]): void {

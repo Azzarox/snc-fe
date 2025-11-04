@@ -12,24 +12,15 @@ type AuthContextValue = {
 	loading: boolean;
 	login: (token: string) => void;
 	logout: () => void;
-	user: User;
-	token: string | null;
-	loading: boolean;
-	login: (token: string) => void;
-	logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextValue>({
 	user: null,
 	token: null,
 	loading: false,
-	login: () => {},
-	logout: () => {},
-	user: null,
-	token: null,
-	loading: false,
-	login: () => {},
-	logout: () => {},
+	login: () => { },
+	logout: () => { },
+
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -40,10 +31,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [loading, setLoading] = useState(false);
 	const { getAuthenticatedUserData } = useAuthService();
 
-	const login = (accessToken: string) => {
-		localStorageService.setAccessToken(accessToken);
-		setToken(accessToken);
-	};
+
 	const login = (accessToken: string) => {
 		localStorageService.setAccessToken(accessToken);
 		setToken(accessToken);
@@ -54,26 +42,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		setToken(null);
 		resetUserState();
 	};
-	const logout = () => {
-		localStorageService.removeAccessToken();
-		setToken(null);
-		resetUserState();
-	};
 
 	const resetUserState = () => {
 		setUser(null);
 		sessionStorageService.removeCachedUser();
-	};
-	const resetUserState = () => {
-		setUser(null);
-		sessionStorageService.removeCachedUser();
-	};
+	}
 
-	useEffect(() => {
-		if (!token) {
-			resetUserState();
-			return;
-		}
 	useEffect(() => {
 		if (!token) {
 			resetUserState();
@@ -85,13 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			setUser(JSON.parse(cachedUser));
 			return;
 		}
-		const cachedUser = sessionStorage.getItem('user');
-		if (cachedUser) {
-			setUser(JSON.parse(cachedUser));
-			return;
-		}
 
-		setLoading(true);
 		setLoading(true);
 
 		getAuthenticatedUserData(token)
@@ -116,11 +84,4 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			{children}
 		</AuthContext.Provider>
 	);
-	return (
-		<AuthContext.Provider value={{ user, token, loading, login, logout }}>
-			{children}
-		</AuthContext.Provider>
-	);
-}
-
-export const useAuth = () => useContext(AuthContext);
+}export const useAuth = () => useContext(AuthContext);

@@ -21,7 +21,3 @@ export const sessionStorageService = {
 	setCachedUser,
 	removeCachedUser,
 };
-	getCachedUser,
-	setCachedUser,
-	removeCachedUser,
-};
