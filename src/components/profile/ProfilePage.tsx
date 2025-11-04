@@ -10,7 +10,10 @@ import {
 	MoreHorizontal,
 } from 'lucide-react';
 import { Button } from '@shadcn/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useFetch } from '@/hooks/useFetch';
+import type { UserProfile } from '@/types/domain/user';
+import { useAuth } from '@/context/AuthContext';
 
 interface ProfilePost {
 	id: number;
@@ -44,13 +47,34 @@ const userPosts: ProfilePost[] = [
 	},
 ];
 
-export function ProfilePage() {
+export default function ProfilePage() {
 	const [activeTab, setActiveTab] = useState<'posts' | 'media' | 'about'>(
 		'posts'
 	);
+	const [profile, setProfile] = useState<UserProfile>();
+
+	const { fetchJson } = useFetch()
+
+	const { token, user } = useAuth();
+
+
+	useEffect(() => {
+		if (!token) return
+		fetchJson<UserProfile>('/@api/users/profile', {
+			method: 'GET',
+			headers: {
+				"Authorization": `Bearer ${token}`
+			}
+		}).then(res => {
+			if(res.data) {
+				setProfile(res.data);
+			}	
+		})
+	}, [token])
 
 	return (
 		<div className="min-h-screen bg-background">
+
 			{/* Cover Photo */}
 			<div className="relative w-full h-64 bg-gradient-to-br from-primary/20 to-accent/20">
 				<img
@@ -94,9 +118,9 @@ export function ProfilePage() {
 				{/* User Info */}
 				<div className="mt-4 pb-6 border-b border-border">
 					<h1 className="text-3xl font-bold text-foreground">
-						Sarah Mitchell
+						{profile?.firstName} {profile?.lastName}
 					</h1>
-					<p className="text-muted-foreground mt-1">@sarahmitchell</p>
+					<p className="text-muted-foreground mt-1">@{user?.username}</p>
 
 					<p className="mt-4 text-foreground leading-relaxed max-w-2xl">
 						Acoustic guitarist & songwriter 🎸 | Recording artist |
@@ -157,11 +181,10 @@ export function ProfilePage() {
 				<div className="mt-6 flex gap-8 border-b border-border">
 					<button
 						onClick={() => setActiveTab('posts')}
-						className={`pb-4 px-2 font-medium transition-colors relative ${
-							activeTab === 'posts'
+						className={`pb-4 px-2 font-medium transition-colors relative ${activeTab === 'posts'
 								? 'text-primary'
 								: 'text-muted-foreground hover:text-foreground'
-						}`}
+							}`}
 					>
 						Posts
 						{activeTab === 'posts' && (
@@ -170,11 +193,10 @@ export function ProfilePage() {
 					</button>
 					<button
 						onClick={() => setActiveTab('media')}
-						className={`pb-4 px-2 font-medium transition-colors relative ${
-							activeTab === 'media'
+						className={`pb-4 px-2 font-medium transition-colors relative ${activeTab === 'media'
 								? 'text-primary'
 								: 'text-muted-foreground hover:text-foreground'
-						}`}
+							}`}
 					>
 						Media
 						{activeTab === 'media' && (
@@ -183,11 +205,10 @@ export function ProfilePage() {
 					</button>
 					<button
 						onClick={() => setActiveTab('about')}
-						className={`pb-4 px-2 font-medium transition-colors relative ${
-							activeTab === 'about'
+						className={`pb-4 px-2 font-medium transition-colors relative ${activeTab === 'about'
 								? 'text-primary'
 								: 'text-muted-foreground hover:text-foreground'
-						}`}
+							}`}
 					>
 						About
 						{activeTab === 'about' && (

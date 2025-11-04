@@ -15,14 +15,18 @@ export function useFetch() {
 	const fetchJson = useCallback(
 		async <T>(
 			url: string,
-			options?: FetchOptions
+			options?: FetchOptions,
 		): Promise<ApiResponse<T> | never> => {
 			try {
 				const { toast = false, ...fetchOptions } = options || {};
+				const headers = {
+					'Content-Type': 'application/json',
+					...fetchOptions.headers,
+				}
 
 				const res = await fetch(url, {
-					headers: { 'Content-Type': 'application/json' },
 					...fetchOptions,
+					headers,
 				});
 
 				if (!res.ok && res.status >= 500) {

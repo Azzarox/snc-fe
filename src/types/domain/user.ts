@@ -4,3 +4,9 @@ export type User = {
     email: string;
     username: string
 };
+
+export type UserProfile = {
+    id: string;
+    firstName: string;
+    lastName: string;
+}

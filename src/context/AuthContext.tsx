@@ -23,9 +23,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [token, setToken] = useState<string | null>(
 		localStorageService.getAccessToken() ?? null
 	);
+	
 	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(false);
-	const { getAuthenticatedUserData } = useAuthService();
+	const { getAuthenticatedUserData } = useAuthService({ getAuthenticatedUserData: { toast: true }});
 
 	const login = (accessToken: string) => {
 		localStorageService.setAccessToken(accessToken);
@@ -55,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 						email: res.data.email,
 					});
 				} else {
-					setUser(null);
+					setUser(null)
 				}
 			})
 			.catch(() => {
