@@ -112,6 +112,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 
 		if (!res.success && res.errors) {
 			setError('root', res.errors);
+			setCurrentStep(1)
 			return;
 		}
 
@@ -119,6 +120,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 			setError('root', {
 				message: res.message ?? ErrorMessages.UNEXPECTED_ERROR,
 			});
+			setCurrentStep(1)
 			return;
 		}
 
@@ -190,7 +192,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 									<Input
 										id="password"
 										type="password"
-										placeholder="At least 8 characters"
+										placeholder="At least 6 characters"
 										{...register('password')}
 										required
 									/>
@@ -265,7 +267,6 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 										type="text"
 										placeholder="e.g., Jazz guitarist from NYC"
 										{...register('bio')}
-										required
 									/>
 									
 									<FieldDescription className={errors.bio && 'text-red-500'}>
