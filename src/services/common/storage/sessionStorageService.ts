@@ -1,20 +1,18 @@
 import type { User } from '@/context/AuthContext';
-import StorageAdapter from './storage';
-
-const USER_KEY = 'user';
+import StorageAdapter, { StorageKeys } from './storage';
 
 const storage = new StorageAdapter('session');
 
 const getCachedUser = () => {
-	return storage.get<User>(USER_KEY);
+	return storage.get(StorageKeys.USER);
 };
 
 const setCachedUser = (value: User) => {
-	storage.set<User>(USER_KEY, value);
+	storage.set(StorageKeys.USER, value);
 };
 
 const removeCachedUser = () => {
-	return storage.remove(USER_KEY);
+	return storage.remove(StorageKeys.USER);
 };
 
 export const sessionStorageService = {
