@@ -18,9 +18,8 @@ const AuthContext = createContext<AuthContextValue>({
 	user: null,
 	token: null,
 	loading: false,
-	login: () => { },
-	logout: () => { },
-
+	login: () => {},
+	logout: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -30,7 +29,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [user, setUser] = useState<User>(null);
 	const [loading, setLoading] = useState(false);
 	const { getAuthenticatedUserData } = useAuthService();
-
 
 	const login = (accessToken: string) => {
 		localStorageService.setAccessToken(accessToken);
@@ -46,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const resetUserState = () => {
 		setUser(null);
 		sessionStorageService.removeCachedUser();
-	}
+	};
 
 	useEffect(() => {
 		if (!token) {
@@ -84,4 +82,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			{children}
 		</AuthContext.Provider>
 	);
-}export const useAuth = () => useContext(AuthContext);
+}
+export const useAuth = () => useContext(AuthContext);

@@ -1,7 +1,6 @@
 import type { User } from '@/context/AuthContext';
 import StorageAdapter, { StorageKeys } from './storage';
 
-
 const storage = new StorageAdapter('session');
 
 const getCachedUser = () => {
@@ -9,7 +8,7 @@ const getCachedUser = () => {
 };
 
 const setCachedUser = (value: User) => {
-	storage.set(StorageKeys.USER, value)
+	storage.set(StorageKeys.USER, value);
 };
 
 const removeCachedUser = () => {

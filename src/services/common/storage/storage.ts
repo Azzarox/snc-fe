@@ -1,17 +1,18 @@
 import { Theme } from '@/context/ThemeContext';
-import { UserLock } from 'lucide-react';
 import { z } from 'zod';
 
 export enum StorageKeys {
 	ACCESS_TOKEN_KEY = 'accessToken',
 	THEME = 'vite-ui-theme',
-	USER = 'user'
+	USER = 'user',
 }
 
 const storageSchema = {
 	[StorageKeys.ACCESS_TOKEN_KEY]: z.string(),
 	[StorageKeys.THEME]: z.enum([Theme.DARK, Theme.LIGHT, Theme.SYSTEM]),
-	[StorageKeys.USER]: z.null().or(z.object({username: z.string().nonoptional()}))
+	[StorageKeys.USER]: z
+		.null()
+		.or(z.object({ username: z.string().nonoptional() })),
 } as const;
 
 type StorageSchemas = typeof storageSchema;

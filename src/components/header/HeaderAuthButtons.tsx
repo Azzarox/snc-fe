@@ -42,4 +42,3 @@ const HeaderAuthButtons = () => {
 };
 
 export default HeaderAuthButtons;
-
