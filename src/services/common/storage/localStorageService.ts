@@ -13,8 +13,6 @@ const removeAccessToken = () => {
 	return storage.remove(StorageKeys.ACCESS_TOKEN_KEY);
 };
 
-//
-
 const getTheme = () => {
 	return storage.get(StorageKeys.THEME);
 };

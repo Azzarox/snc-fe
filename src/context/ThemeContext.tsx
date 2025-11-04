@@ -1,8 +1,6 @@
 import { localStorageService } from '@/services/common/storage/localStorageService';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-// type Theme = 'dark' | 'light' | 'system';
-
 export enum Theme {
 	DARK = 'dark',
 	LIGHT = 'light',

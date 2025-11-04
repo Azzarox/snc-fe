@@ -3,13 +3,20 @@ import type {
 	RegisterFormData,
 } from '@/schemas/auth/registerSchema';
 
-type Response<T> = {
-	status: number;
-	success: boolean;
-	message: string; // TODO: Should type it properly because backends returns string | null
-	data?: T;
-	errors?: { [key: string]: any };
-};
+type Response<T> =
+	| {
+		status: number;
+		success: true;
+		message: string;
+		data: T;
+	}
+	| {
+		status: number;
+		success: false;
+		message: string;
+		data?: never;
+		errors?: { [key: string]: any };
+	};
 
 const registerUser = async (
 	body: RegisterFormData
