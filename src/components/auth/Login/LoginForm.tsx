@@ -21,6 +21,7 @@ import { Link, useNavigate } from 'react-router';
 import { authService } from '@/services/auth/authService';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { localStorageService } from '@/services/common/storage/localStorageService';
 
 export function LoginForm({
 	className,
@@ -43,7 +44,8 @@ export function LoginForm({
 	const onSubmit = async (data: LoginFormData) => {
 		const res = await authService.loginUser(data);
 		if (!res.success && res.errors) {
-			setErrorsState(errorsState);
+			const errorsArray = Array.from(Object.values(res.errors));
+			setErrorsState(errorsArray);
 			return;
 		}
 
@@ -52,8 +54,7 @@ export function LoginForm({
 			return;
 		}
 
-		login(res.data!.accessToken);
-
+		login(res.data.accessToken);
 		navigate('/');
 	};
 
