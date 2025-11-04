@@ -1,23 +1,38 @@
-import StorageAdapter from './storage';
+import StorageAdapter, { StorageKeys } from './storage';
 
-const ACCESS_TOKEN_KEY = 'accessToken';
+import type { Theme } from '@/context/ThemeContext';
 
 const storage = new StorageAdapter('local');
 
 const getAccessToken = () => {
-	return storage.get<string>(ACCESS_TOKEN_KEY);
+	return storage.get(StorageKeys.ACCESS_TOKEN_KEY);
 };
 
 const setAccessToken = (value: string) => {
-	storage.set(ACCESS_TOKEN_KEY, value);
+	storage.set(StorageKeys.ACCESS_TOKEN_KEY, value);
 };
 
 const removeAccessToken = () => {
-	return storage.remove(ACCESS_TOKEN_KEY);
+	return storage.remove(StorageKeys.ACCESS_TOKEN_KEY);
+};
+
+const getTheme = () => {
+	return storage.get(StorageKeys.THEME);
+};
+
+const setTheme = (value: Theme) => {
+	storage.set(StorageKeys.THEME, value);
+};
+
+const removeTheme = () => {
+	storage.remove(StorageKeys.THEME);
 };
 
 export const localStorageService = {
 	getAccessToken,
 	setAccessToken,
 	removeAccessToken,
+	getTheme,
+	setTheme,
+	removeTheme,
 };
