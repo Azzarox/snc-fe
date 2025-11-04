@@ -48,7 +48,19 @@ const loginUser = async (
 	return data;
 };
 
+const getAuthenticatedUserData = async (
+	token: string
+): Promise<Response<{ username: string }>> => {
+	const res = await fetch('/@api/auth/me', {
+		headers: { Authorization: `Bearer ${token}` },
+	});
+
+	const data = await res.json();
+	return data;
+};
+
 export const authService = {
 	registerUser,
 	loginUser,
+	getAuthenticatedUserData,
 };

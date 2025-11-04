@@ -20,12 +20,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router';
 import { authService } from '@/services/auth/authService';
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import { localStorageService } from '@/services/common/storage/localStorageService';
 
 export function LoginForm({
 	className,
 	...props
 }: React.ComponentProps<'div'>) {
+	const { login } = useAuth();
 	const [errorsState, setErrorsState] = useState<string[]>([]);
 
 	const {
@@ -52,7 +54,7 @@ export function LoginForm({
 			return;
 		}
 
-		localStorageService.setAccessToken(res.data.accessToken);
+		login(res.data.accessToken);
 		navigate('/');
 	};
 

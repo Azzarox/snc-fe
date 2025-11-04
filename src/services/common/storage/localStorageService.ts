@@ -1,5 +1,8 @@
-import storage, { StorageKeys } from './storage';
+import StorageAdapter, { StorageKeys } from './storage';
+
 import type { Theme } from '@/context/ThemeContext';
+
+const storage = new StorageAdapter('local');
 
 const getAccessToken = () => {
 	return storage.get(StorageKeys.ACCESS_TOKEN_KEY);

@@ -3,6 +3,7 @@ import { Input } from '@shadcn/components/ui/input';
 import { Bell, Search, Menu } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { Link } from 'react-router';
+import HeaderAuthButtons from './HeaderAuthButtons';
 
 const Header = () => {
 	return (
@@ -89,19 +90,7 @@ const Header = () => {
 						</Button>
 
 						<div className="hidden md:flex items-center gap-3">
-							<Link to={'/login'}>
-								<Button
-									className="cursor-pointer"
-									variant="outline"
-								>
-									Sign In
-								</Button>
-							</Link>
-							<Link to={'/register'}>
-								<Button className="cursor-pointer">
-									Join Now
-								</Button>
-							</Link>
+							<HeaderAuthButtons />
 						</div>
 
 						<Button

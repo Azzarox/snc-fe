@@ -17,7 +17,15 @@ type StorageTypes = {
 	[K in keyof StorageSchemas]: z.infer<StorageSchemas[K]>;
 };
 
-const storage = {
+type StorageBackend = 'local' | 'session';
+
+class StorageAdapter {
+	private storage: Storage;
+
+	constructor(type: StorageBackend = 'local') {
+		this.storage = type === 'local' ? localStorage : sessionStorage;
+	}
+
 	get<K extends keyof StorageTypes>(key: K): StorageTypes[K] | null {
 		const item = localStorage.getItem(key);
 		if (!item) return null;
@@ -29,19 +37,19 @@ const storage = {
 		} catch {
 			return null;
 		}
-	},
+	}
 
 	set<K extends keyof StorageTypes>(key: K, value: StorageTypes[K]): void {
 		localStorage.setItem(key, JSON.stringify(value));
-	},
+	}
 
 	remove(key: keyof StorageTypes): void {
 		localStorage.removeItem(key);
-	},
+	}
 
 	clear(): void {
 		localStorage.clear();
-	},
-};
+	}
+}
 
-export default storage;
+export default StorageAdapter;
