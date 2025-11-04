@@ -30,9 +30,3 @@ export const registerSchema = z
 	});
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
-
-export const loginSchema = z.object({
-	username: z.string().nonempty('Please enter a username!'),
-	password: z.string().min(6, 'Password must be at least 6 characters long'),
-});
-export type LoginFormData = z.infer<typeof loginSchema>;
