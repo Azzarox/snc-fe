@@ -42,7 +42,7 @@ export function LoginForm({
 	const onSubmit = async (data: LoginFormData) => {
 		const res = await authService.loginUser(data);
 		if (!res.success && res.errors) {
-			const errorsArray = Array.from(Object.values(res.errors))
+			const errorsArray = Array.from(Object.values(res.errors));
 			setErrorsState(errorsArray);
 			return;
 		}
@@ -51,7 +51,6 @@ export function LoginForm({
 			setErrorsState([res.message]);
 			return;
 		}
-
 
 		localStorageService.setAccessToken(res.data.accessToken);
 		navigate('/');

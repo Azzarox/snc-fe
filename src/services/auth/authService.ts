@@ -5,18 +5,18 @@ import type {
 
 type Response<T> =
 	| {
-		status: number;
-		success: true;
-		message: string;
-		data: T;
-	}
+			status: number;
+			success: true;
+			message: string;
+			data: T;
+	  }
 	| {
-		status: number;
-		success: false;
-		message: string;
-		data?: never;
-		errors?: { [key: string]: any };
-	};
+			status: number;
+			success: false;
+			message: string;
+			data?: never;
+			errors?: { [key: string]: any };
+	  };
 
 const registerUser = async (
 	body: RegisterFormData
