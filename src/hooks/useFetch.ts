@@ -1,14 +1,14 @@
-import type {
-	ApiResponse,
-	ErrorResponse,
-	SuccessResponse,
-} from '@/hooks/useAuthService';
+import type { ApiResponse, ErrorResponse } from '@/types/apiResponse';
 import { toastService } from '@/services/common/toastService';
 import { isDev } from '@/services/utils/getEnvironmentMode';
 import { useCallback } from 'react';
 
 export interface FetchOptions extends RequestInit {
 	toast?: boolean;
+}
+
+function isErrorResponse<T>(json: ApiResponse<T>): json is ErrorResponse {
+	return json.success === false;
 }
 
 export function useFetch() {
@@ -31,34 +31,33 @@ export function useFetch() {
 
 				const json = (await res.json()) as ApiResponse<T>;
 
-
 				// Context Free Errors
-				if (!json.success && json.status >= 500) {
+				if (isErrorResponse(json) && json.status >= 500) {
 					throw new Error(json.message!);
 				}
 
 				// Context Errors (conditional toast)
-				if (!json.success && json.errors) {
-					if (toast) {
+				if (isErrorResponse(json)) {
+					if (json.errors && toast) {
 						toastService.error(
-							`Error occurred: ${json.message}; Errors: ${json.errors.join(', ')}`
+							`Error occurred: ${json.message}; Errors: ${Object.values(json.errors).join(', ')}`
 						);
+						return json;
 					}
-					return json as ErrorResponse;
-				}
 
-				if (!json.success) {
 					if (toast) {
 						toastService.error(`Error occurred: ${json.message};`);
 					}
 
-					return json as ErrorResponse;
+					return json;
 				}
 
-				return json as SuccessResponse<T>;
+				return json;
 			} catch (err: any) {
 				toastService.error(
-					isDev ? `Fetch Error: ${err.message}` : 'Oops! Something went wrong! Unexpected Error Occurred!'
+					isDev
+						? `Fetch Error: ${err.message}`
+						: 'Oops! Something went wrong! Unexpected Error Occurred!'
 				);
 				throw err;
 			}
