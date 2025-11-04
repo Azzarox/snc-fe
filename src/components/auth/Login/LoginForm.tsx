@@ -61,7 +61,7 @@ export function LoginForm({
 			return;
 		}
 
-		login(res.data!.accessToken);
+		login(res.data.accessToken);
 		toastService.success('Successfully logged in!');
 		navigate('/');
 	};
