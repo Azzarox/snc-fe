@@ -1,4 +1,4 @@
-import type { ApiResponse, ErrorResponse } from '@/types/apiResponse';
+import type { ApiResponse, ErrorResponse } from '@/types/api/response';
 import { toastService } from '@/services/common/toastService';
 import { isDev } from '@/services/utils/getEnvironmentMode';
 import { useCallback } from 'react';

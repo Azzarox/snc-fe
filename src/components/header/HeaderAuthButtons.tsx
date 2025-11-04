@@ -8,7 +8,7 @@ const HeaderAuthButtons = () => {
 
 	return (
 		<>
-			{user && user.username ? (
+			{user && user.id ? (
 				<>
 					<AvatarProfileDropdown />
 				</>

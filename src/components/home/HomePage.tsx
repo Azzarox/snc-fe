@@ -63,7 +63,7 @@ const HomePage = () => {
 
 				{/* Main Feed */}
 				<div className="lg:col-span-6 space-y-6">
-					{user && user.username && (
+					{user && user.id && (
 						<>
 							<div className="bg-card rounded-lg border border-border p-4">
 								<h2 className="text-lg font-semibold mb-4 text-card-foreground">

@@ -6,6 +6,8 @@ import type {
 	LoginFormData,
 } from '@/schemas/auth/loginSchema';
 import z from 'zod';
+import type { User } from '@/types/domain/user';
+import type { ApiResponse } from '@/types/api/response';
 
 type AuthServiceOptions = {
 	registerUser?: FetchOptions;
@@ -13,11 +15,23 @@ type AuthServiceOptions = {
 	getAuthenticatedUserData?: FetchOptions;
 };
 
+
+type RegisterData = {
+	id: number,
+	profile: {
+		id: number,
+		firstName: string,
+		lastName: string,
+	}
+};
+
+type LoginData = { accessToken: string };
+
 export function useAuthService(options?: AuthServiceOptions) {
 	const { fetchJson } = useFetch();
 
 	const registerUser = (body: RegisterFormData) =>
-		fetchJson<{ username: string; password: string }>(
+		fetchJson<RegisterData>(
 			'/@api/auth/register',
 			{
 				method: 'POST',
@@ -34,14 +48,14 @@ export function useAuthService(options?: AuthServiceOptions) {
 			password: body.password,
 		};
 
-		return fetchJson<{ accessToken: string }>('/@api/auth/login', {
+		return fetchJson<LoginData>('/@api/auth/login', {
 			method: 'POST',
 			body: JSON.stringify(payload),
 			...options?.loginUser,
 		});
 	}
 	const getAuthenticatedUserData = (token: string) =>
-		fetchJson<{ username: string }>('/@api/auth/me', {
+		fetchJson<User>('/@api/auth/me', {
 			headers: { Authorization: `Bearer ${token}` },
 			...options?.getAuthenticatedUserData,
 		});

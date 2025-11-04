@@ -1,12 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { localStorageService } from '@/services/common/storage/localStorageService';
-import { sessionStorageService } from '@/services/common/storage/sessionStorageService';
 import { useAuthService } from '@/hooks/useAuthService';
-
-export type User = { username: string } | null;
+import type { User } from '@/types/domain/user';
 
 type AuthContextValue = {
-	user: User;
+	user: User | null;
 	token: string | null;
 	loading: boolean;
 	login: (token: string) => void;
@@ -25,7 +23,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [token, setToken] = useState<string | null>(
 		localStorageService.getAccessToken() ?? null
 	);
-	const [user, setUser] = useState<User>(null);
+	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(false);
 	const { getAuthenticatedUserData } = useAuthService();
 
@@ -37,23 +35,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const logout = () => {
 		localStorageService.removeAccessToken();
 		setToken(null);
-		resetUserState();
-	};
-
-	const resetUserState = () => {
 		setUser(null);
-		sessionStorageService.removeCachedUser();
 	};
 
 	useEffect(() => {
 		if (!token) {
-			resetUserState();
-			return;
-		}
-
-		const cachedUser = sessionStorage.getItem('user');
-		if (cachedUser) {
-			setUser(JSON.parse(cachedUser));
+			setUser(null);
 			return;
 		}
 
@@ -62,15 +49,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		getAuthenticatedUserData(token)
 			.then((res) => {
 				if (res.data) {
-					const user = { username: res.data.username };
-					setUser(user);
-					sessionStorageService.setCachedUser(user);
+					setUser({
+						id: res.data.id,
+						username: res.data.username,
+						email: res.data.email,
+					});
 				} else {
-					resetUserState();
+					setUser(null);
 				}
 			})
 			.catch(() => {
-				resetUserState();
+				setUser(null);
 			})
 			.finally(() => setLoading(false));
 	}, [token]);
