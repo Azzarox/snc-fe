@@ -51,7 +51,7 @@ const posts = [
 ];
 
 const HomePage = () => {
-	const { user } = useAuth();
+	const { token, user } = useAuth();
 
 	return (
 		<main className="container mx-auto px-4 py-6 max-w-7xl">
@@ -63,7 +63,7 @@ const HomePage = () => {
 
 				{/* Main Feed */}
 				<div className="lg:col-span-6 space-y-6">
-					{user && user.id && (
+					{token && user?.id && (
 						<>
 							<div className="bg-card rounded-lg border border-border p-4">
 								<h2 className="text-lg font-semibold mb-4 text-card-foreground">

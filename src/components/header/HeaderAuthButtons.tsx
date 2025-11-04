@@ -4,11 +4,11 @@ import { Link } from 'react-router';
 import AvatarProfileDropdown from '../profile/AvatarProfileDropdown';
 
 const HeaderAuthButtons = () => {
-	const { user } = useAuth();
+	const { token, user } = useAuth();
 
 	return (
 		<>
-			{user && user.id ? (
+			{token && user?.id ? (
 				<>
 					<AvatarProfileDropdown />
 				</>
