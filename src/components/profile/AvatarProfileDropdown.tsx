@@ -15,15 +15,35 @@ import {
 import { useAuth } from '@/context/AuthContext';
 import { Link, useNavigate } from 'react-router';
 import { LogOutIcon, Settings, UserIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useFetch } from '@/hooks/useFetch';
+import type { UserProfile } from '@/types/domain/user';
 
 const AvatarProfileDropdown = () => {
-	const { logout } = useAuth();
+	const { logout, user, token } = useAuth();
+	const { fetchJson } = useFetch();
+	const [profile, setProfile] = useState<UserProfile>();
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
 		logout();
 		navigate('/login');
 	};
+
+	// TODO: Handle this in a hook ... 
+	useEffect(() => {
+		if (!token) return
+		fetchJson<UserProfile>('/@api/users/profile', {
+			method: 'GET',
+			headers: {
+				"Authorization": `Bearer ${token}`
+			}
+		}).then(res => {
+			if (res.data) {
+				setProfile(res.data);
+			}
+		})
+	}, [token])
 
 	return (
 		<DropdownMenu>
@@ -55,10 +75,12 @@ const AvatarProfileDropdown = () => {
 					</Avatar>
 					<div className="flex flex-1 flex-col">
 						<span className="text-popover-foreground">
-							Sarah Mitchell
+							{/* Sarah Mitchell */}
+							{profile?.firstName} {profile?.lastName}
 						</span>
 						<span className="text-muted-foreground text-xs">
-							sarahmitchell@example.com
+							{/* sarahmitchell@example.com */}
+							{user?.email}
 						</span>
 					</div>
 				</DropdownMenuLabel>

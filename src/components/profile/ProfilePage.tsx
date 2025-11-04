@@ -57,7 +57,7 @@ export default function ProfilePage() {
 
 	const { token, user } = useAuth();
 
-
+	// TODO: Handle this in a hook
 	useEffect(() => {
 		if (!token) return
 		fetchJson<UserProfile>('/@api/users/profile', {
