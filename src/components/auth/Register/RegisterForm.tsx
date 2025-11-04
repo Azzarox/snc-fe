@@ -20,15 +20,19 @@ import { Input } from '@shadcn/components/ui/input';
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { authService } from '@/services/auth/authService';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { toastService } from '@/services/common/toastService';
+import { useAuthService } from '@/hooks/useAuthService';
+import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
+import { ErrorMessages } from '@/consts/errors';
 
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
+		setError,
 	} = useForm<RegisterFormData>({
 		resolver: zodResolver(registerSchema),
 		mode: 'onTouched',
@@ -37,18 +41,26 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	const navigate = useNavigate();
 	const [errorsState, setErrorsState] = useState<string[]>([]);
 
+	const { registerUser } = useAuthService();
+
 	const onSubmit = async (data: RegisterFormData) => {
-		const res = await authService.registerUser(data);
+		const res = await registerUser(data);
+
 		if (!res.success && res.errors) {
-			setErrorsState(errorsState);
+			setError('root', res.errors);
 			return;
 		}
 
 		if (!res.success) {
-			setErrorsState([res.message]);
+			setError('root', {
+				message: res.message ?? ErrorMessages.UNEXPECTED_ERROR,
+			});
 			return;
 		}
 
+		toastService.success(
+			'Successfully created user! Redirecting to login!'
+		);
 		navigate('/login');
 	};
 
@@ -65,6 +77,18 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
+				{errors.root && (
+					<>
+						{errors.root && (
+							<>
+								<DissmissableErrorAlert
+									title="Registration Failed"
+									message={errors.root && errors.root.message}
+								/>
+							</>
+						)}
+					</>
+				)}
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<FieldGroup>
 						{/* <Field>

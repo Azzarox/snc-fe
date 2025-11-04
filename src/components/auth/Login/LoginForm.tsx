@@ -18,21 +18,26 @@ import { loginSchema, type LoginFormData } from '@/schemas/auth/registerSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router';
-import { authService } from '@/services/auth/authService';
+import { toastService } from '@/services/common/toastService';
+import { useAuthService } from '@/hooks/useAuthService';
+import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
+import { ErrorMessages } from '@/consts/errors';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { localStorageService } from '@/services/common/storage/localStorageService';
 
 export function LoginForm({
 	className,
 	...props
 }: React.ComponentProps<'div'>) {
 	const { login } = useAuth();
+
+	const { loginUser } = useAuthService();
 	const [errorsState, setErrorsState] = useState<string[]>([]);
 
 	const {
 		register,
 		handleSubmit,
+		setError,
 		formState: { errors, isSubmitting },
 	} = useForm<LoginFormData>({
 		resolver: zodResolver(loginSchema),
@@ -42,19 +47,22 @@ export function LoginForm({
 	const navigate = useNavigate();
 
 	const onSubmit = async (data: LoginFormData) => {
-		const res = await authService.loginUser(data);
+		const res = await loginUser(data);
+
 		if (!res.success && res.errors) {
-			const errorsArray = Array.from(Object.values(res.errors));
-			setErrorsState(errorsArray);
+			setError('root', res.errors);
 			return;
 		}
 
 		if (!res.success) {
-			setErrorsState([res.message]);
+			setError('root', {
+				message: res.message ?? ErrorMessages.UNEXPECTED_ERROR,
+			});
 			return;
 		}
 
 		login(res.data.accessToken);
+		toastService.success('Successfully logged in!');
 		navigate('/');
 	};
 
@@ -72,6 +80,15 @@ export function LoginForm({
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
+					{errors.root && (
+						<>
+							<DissmissableErrorAlert
+								title="Login Failed"
+								message={errors.root && errors.root.message}
+							/>
+						</>
+					)}
+
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<FieldGroup>
 							<Field>

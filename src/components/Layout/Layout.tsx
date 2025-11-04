@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router';
 import Header from '../header/Header';
 import { ErrorBoundaryWrapper } from '../common/ErrorBoundaryWrapper';
+import { Toaster } from 'sonner';
 
 const Layout = () => {
 	return (
@@ -11,6 +12,7 @@ const Layout = () => {
 					<Outlet />
 				</main>
 			</ErrorBoundaryWrapper>
+			<Toaster richColors position="bottom-right" closeButton />
 		</>
 	);
 };
