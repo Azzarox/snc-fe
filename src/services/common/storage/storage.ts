@@ -1,14 +1,17 @@
 import { Theme } from '@/context/ThemeContext';
+import { UserLock } from 'lucide-react';
 import { z } from 'zod';
 
 export enum StorageKeys {
 	ACCESS_TOKEN_KEY = 'accessToken',
 	THEME = 'vite-ui-theme',
+	USER = 'user'
 }
 
 const storageSchema = {
 	[StorageKeys.ACCESS_TOKEN_KEY]: z.string(),
 	[StorageKeys.THEME]: z.enum([Theme.DARK, Theme.LIGHT, Theme.SYSTEM]),
+	[StorageKeys.USER]: z.null().or(z.object({username: z.string().nonoptional()}))
 } as const;
 
 type StorageSchemas = typeof storageSchema;
@@ -27,7 +30,7 @@ class StorageAdapter {
 	}
 
 	get<K extends keyof StorageTypes>(key: K): StorageTypes[K] | null {
-		const item = localStorage.getItem(key);
+		const item = this.storage.getItem(key);
 		if (!item) return null;
 		try {
 			const parsed = JSON.parse(item);
@@ -40,15 +43,15 @@ class StorageAdapter {
 	}
 
 	set<K extends keyof StorageTypes>(key: K, value: StorageTypes[K]): void {
-		localStorage.setItem(key, JSON.stringify(value));
+		this.storage.setItem(key, JSON.stringify(value));
 	}
 
 	remove(key: keyof StorageTypes): void {
-		localStorage.removeItem(key);
+		this.storage.removeItem(key);
 	}
 
 	clear(): void {
-		localStorage.clear();
+		this.storage.clear();
 	}
 }
 
