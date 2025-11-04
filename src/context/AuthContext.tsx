@@ -70,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				}
 			})
 			.catch(() => {
-				 	resetUserState();
+				resetUserState();
 			})
 			.finally(() => setLoading(false));
 	}, [token]);

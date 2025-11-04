@@ -17,16 +17,10 @@ import {
 	FieldLabel,
 } from '@shadcn/components/ui/field';
 import { Input } from '@shadcn/components/ui/input';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@shadcn/components/ui/select';
+
 import { Textarea } from '@shadcn/components/ui/textarea';
 
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
@@ -112,7 +106,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 
 		if (!res.success && res.errors) {
 			setError('root', res.errors);
-			setCurrentStep(1)
+			setCurrentStep(1);
 			return;
 		}
 
@@ -120,18 +114,22 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 			setError('root', {
 				message: res.message ?? ErrorMessages.UNEXPECTED_ERROR,
 			});
-			setCurrentStep(1)
+			setCurrentStep(1);
 			return;
 		}
 
-		toastService.success('Successfully created user! Redirecting to login!');
+		toastService.success(
+			'Successfully created user! Redirecting to login!'
+		);
 		navigate('/login');
 	};
 
 	return (
 		<Card
 			{...props}
-			className={currentStep === 1 ? 'max-w-md mx-auto' : 'max-w-lg mx-auto'}
+			className={
+				currentStep === 1 ? 'max-w-md mx-auto' : 'max-w-lg mx-auto'
+			}
 		>
 			<CardHeader>
 				<CardTitle>Create an account</CardTitle>
@@ -156,7 +154,9 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 						{currentStep === 1 && (
 							<>
 								<Field>
-									<FieldLabel htmlFor="username">Username</FieldLabel>
+									<FieldLabel htmlFor="username">
+										Username
+									</FieldLabel>
 									<Input
 										id="username"
 										type="text"
@@ -172,7 +172,9 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 								</Field>
 
 								<Field>
-									<FieldLabel htmlFor="email">Email</FieldLabel>
+									<FieldLabel htmlFor="email">
+										Email
+									</FieldLabel>
 									<Input
 										id="email"
 										type="email"
@@ -188,7 +190,9 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 								</Field>
 
 								<Field>
-									<FieldLabel htmlFor="password">Password</FieldLabel>
+									<FieldLabel htmlFor="password">
+										Password
+									</FieldLabel>
 									<Input
 										id="password"
 										type="password"
@@ -228,7 +232,9 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 							<>
 								<div className="grid grid-cols-2 gap-4">
 									<Field>
-										<FieldLabel htmlFor="firstName">First Name</FieldLabel>
+										<FieldLabel htmlFor="firstName">
+											First Name
+										</FieldLabel>
 										<Input
 											id="firstName"
 											type="text"
@@ -244,7 +250,9 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 									</Field>
 
 									<Field>
-										<FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+										<FieldLabel htmlFor="lastName">
+											Last Name
+										</FieldLabel>
 										<Input
 											id="lastName"
 											type="text"
@@ -268,21 +276,43 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 										placeholder="e.g., Jazz guitarist from NYC"
 										{...register('bio')}
 									/>
-									
-									<FieldDescription className={errors.bio && 'text-red-500'}>
-									{ errors.bio ? <>{errors.bio.message}</> : <>Optional: Tell us about yourself in few words</>} 
+
+									<FieldDescription
+										className={errors.bio && 'text-red-500'}
+									>
+										{errors.bio ? (
+											<>{errors.bio.message}</>
+										) : (
+											<>
+												Optional: Tell us about yourself
+												in few words
+											</>
+										)}
 									</FieldDescription>
 								</Field>
 
 								<Field>
-									<FieldLabel htmlFor="description">Description</FieldLabel>
+									<FieldLabel htmlFor="description">
+										Description
+									</FieldLabel>
 									<Textarea
 										id="description"
 										placeholder="Tell us about yourself..."
 										{...register('description')}
 									/>
-									<FieldDescription className={errors.description && 'text-red-500'}>
-									{ errors.description ? <>{errors.description.message}</> : <>Optional: Share more about your musical journey</>} 
+									<FieldDescription
+										className={
+											errors.description && 'text-red-500'
+										}
+									>
+										{errors.description ? (
+											<>{errors.description.message}</>
+										) : (
+											<>
+												Optional: Share more about your
+												musical journey
+											</>
+										)}
 									</FieldDescription>
 								</Field>
 
@@ -369,12 +399,15 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 											type="submit"
 											disabled={isSubmitting}
 										>
-											{isSubmitting ? 'Creating...' : 'Create Account'}
+											{isSubmitting
+												? 'Creating...'
+												: 'Create Account'}
 										</Button>
 									</div>
 								)}
 								<FieldDescription className="px-6 text-center">
-									Already have an account? <Link to="/login">Sign in</Link>
+									Already have an account?{' '}
+									<Link to="/login">Sign in</Link>
 								</FieldDescription>
 							</Field>
 						</FieldGroup>
