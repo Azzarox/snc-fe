@@ -1,1 +1,10 @@
-/* @import 'tailwindcss' */
+/* @import 'tailwindcss'; */
+:root {
+    --header-offset: calc(100vh - 4rem);
+  }
+
+  @layer components {
+    .header-offset {
+        min-height: var(--header-offset) 
+    }
+  }

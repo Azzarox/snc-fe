@@ -2,7 +2,6 @@
 
 import { AlertCircle, RotateCcw } from "lucide-react"
 import { Button } from "@shadcn/components/ui/button"
-import PageContainer from "./PageContainer"
 
 interface UnableToLoadProps {
     title?: string
@@ -17,10 +16,8 @@ export function UnableToLoad({
     onRetry = () => window.location.reload(),
     onGoBack = () => window.history.back(),
 }: UnableToLoadProps) {
-
-
     return (
-        <PageContainer>
+        <div className="flex header-offset w-full items-center justify-center p-4 md:p-10 bg-background" >
             <div className="flex flex-col items-center justify-center gap-6 px-4 text-center max-w-md">
 
                 <AlertCircle className="h-16 w-16 text-muted-foreground" />
@@ -44,7 +41,6 @@ export function UnableToLoad({
                     )}
                 </div>
             </div>
-        </PageContainer>
-
+        </div>
     )
 }
