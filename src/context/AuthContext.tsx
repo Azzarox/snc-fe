@@ -1,7 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { localStorageService } from '@/services/common/storage/localStorageService';
 import { useAuthService } from '@/hooks/useAuthService';
+import { isTokenExpired } from '@/services/utils/jwtUtils';
+import { useTokenExpiration } from '@/hooks/useTokenExpiration';
 import type { User } from '@/types/domain/user';
+import { toastService } from '@/services/common/toastService';
+import { useNavigate } from 'react-router';
 
 type AuthContextValue = {
 	user: User | null;
@@ -20,13 +24,21 @@ const AuthContext = createContext<AuthContextValue>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const [token, setToken] = useState<string | null>(
-		localStorageService.getAccessToken() ?? null
-	);
+	const [token, setToken] = useState<string | null>(() => {
+		const storedToken = localStorageService.getAccessToken();
+		if (storedToken && isTokenExpired(storedToken)) {
+			localStorageService.removeAccessToken();
+			setUser(null);
+			return null;
+		}
+		return storedToken ?? null;
+	});
 	
 	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(false);
 	const { getAuthenticatedUserData } = useAuthService({ getAuthenticatedUserData: { toast: true }});
+
+	const navigate = useNavigate();
 
 	const login = (accessToken: string) => {
 		localStorageService.setAccessToken(accessToken);
@@ -64,6 +76,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			})
 			.finally(() => setLoading(false));
 	}, [token]);
+
+	useTokenExpiration(token, () => {
+		logout();
+		navigate('/login')
+		toastService.error('Session Expired', "Please log in again!", { duration: 10000 });
+	});
 
 	return (
 		<AuthContext.Provider value={{ user, token, loading, login, logout }}>

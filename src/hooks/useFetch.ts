@@ -1,7 +1,10 @@
 import type { ApiResponse, ErrorResponse } from '@/types/api/response';
 import { toastService } from '@/services/common/toastService';
 import { isDev } from '@/services/utils/getEnvironmentMode';
+import { isTokenExpired } from '@/services/utils/jwtUtils';
+import { useAuth } from '@/context/AuthContext';
 import { useCallback } from 'react';
+import { useNavigate } from 'react-router';
 
 export interface FetchOptions extends RequestInit {
 	toast?: boolean;
@@ -12,12 +15,21 @@ function isErrorResponse<T>(json: ApiResponse<T>): json is ErrorResponse {
 }
 
 export function useFetch() {
+	const { token, logout } = useAuth();
+	const navigate = useNavigate();
+
 	const fetchJson = useCallback(
 		async <T>(
 			url: string,
 			options?: FetchOptions,
 		): Promise<ApiResponse<T> | never> => {
 			try {
+				if (token && isTokenExpired(token)) {
+					logout();
+					navigate('/login')
+					throw new Error('Session Expired', { cause: "Expired JWT" });
+				}
+
 				const { toast = false, ...fetchOptions } = options || {};
 				const headers = {
 					'Content-Type': 'application/json',
@@ -58,15 +70,20 @@ export function useFetch() {
 
 				return json;
 			} catch (err: any) {
-				toastService.error(
-					isDev
-						? `Fetch Error: ${err.message}`
-						: 'Oops! Something went wrong! Unexpected Error Occurred!'
-				);
+				if (err.cause === 'Expired JWT') {
+					toastService.error(err.message, 'Please log in again!', { duration: 10000 })
+				} else {
+					toastService.error(
+						isDev
+							? `Fetch Error: ${err.message}`
+							: 'Oops! Something went wrong! Unexpected Error Occurred!'
+					);
+				}
+
 				throw err;
 			}
 		},
-		[]
+		[token, logout]
 	);
 
 	return { fetchJson };
