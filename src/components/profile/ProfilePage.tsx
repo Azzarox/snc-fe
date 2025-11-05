@@ -16,6 +16,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useProfileService } from '@/hooks/useProfileService';
 import PageLoader from '../common/PageLoader.tsx';
 import ProfileAbout from './components/ProfileAbout.tsx';
+import { UnableToLoad } from '../common/PageUnableToLoad.tsx';
 
 interface ProfilePost {
 	id: number;
@@ -59,9 +60,7 @@ export default function ProfilePage() {
 
 	if (!profile) {
 		return (
-			<div className="flex flex-col items-center justify-center min-h-screen bg-background gap-4">
-				<p className="text-muted-foreground">Unable to load profile</p>
-			</div>
+			<UnableToLoad title="Profile not found" message="We couldn't load this profile. It may have been deleted or there was a connection issue."/>
 		);
 	}
 
@@ -79,7 +78,6 @@ export default function ProfilePage() {
 	return (
 		<div className="min-h-screen bg-background">
 
-			{/* Cover Photo */}
 			<div className="relative w-full h-64 bg-gradient-to-br from-primary/20 to-accent/20">
 				<img
 					src="/guitar-music-stage-concert.jpg"
@@ -92,10 +90,8 @@ export default function ProfilePage() {
 				</button>
 			</div>
 
-			{/* Profile Header */}
 			<div className="container mx-auto px-4 max-w-5xl">
 				<div className="relative">
-					{/* Avatar */}
 					<div className="absolute -top-20 left-0">
 						<div className="relative">
 							<img
@@ -109,7 +105,6 @@ export default function ProfilePage() {
 						</div>
 					</div>
 
-					{/* Action Buttons */}
 					<div className="pt-6 flex justify-end gap-3">
 						<Button variant="outline" size="sm">
 							<Settings className="h-4 w-4 mr-2" />
@@ -119,7 +114,6 @@ export default function ProfilePage() {
 					</div>
 				</div>
 
-				{/* User Info */}
 				<div className="mt-4 pb-6 border-b border-border">
 					<h1 className="text-3xl font-bold text-foreground">
 						{profile.firstName} {profile.lastName}
@@ -153,7 +147,6 @@ export default function ProfilePage() {
 							</div></>}
 					</div>
 
-					{/* Stats */}
 					<div className="mt-6 flex items-center gap-6">
 						<div>
 							<span className="font-bold text-foreground">
@@ -182,7 +175,6 @@ export default function ProfilePage() {
 					</div>
 				</div>
 
-				{/* Tabs */}
 				<div className="mt-6 flex gap-8 border-b border-border">
 					<button
 						onClick={() => setActiveTab('posts')}
@@ -222,7 +214,6 @@ export default function ProfilePage() {
 					</button>
 				</div>
 
-				{/* Tab Content */}
 				<div className="mt-6 pb-12">
 					{activeTab === 'posts' && (
 						<div className="space-y-6">

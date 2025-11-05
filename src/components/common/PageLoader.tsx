@@ -7,5 +7,3 @@ const PageLoader = () => {
 }
 
 export default PageLoader;
-
-// TODO: Add unable to load page html 
