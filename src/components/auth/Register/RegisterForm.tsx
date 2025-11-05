@@ -285,7 +285,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 										) : (
 											<>
 												Optional: Tell us about yourself
-												in few words
+												in few words (max 120 characters)
 											</>
 										)}
 									</FieldDescription>

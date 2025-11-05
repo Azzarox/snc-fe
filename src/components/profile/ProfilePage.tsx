@@ -17,6 +17,7 @@ import { useProfileService } from '@/hooks/useProfileService';
 import PageLoader from '../common/PageLoader.tsx';
 import ProfileAbout from './components/ProfileAbout.tsx';
 import { UnableToLoad } from '../common/PageUnableToLoad.tsx';
+import { EditProfileModal } from './EditProfileModal.tsx';
 
 interface ProfilePost {
 	id: number;
@@ -55,19 +56,21 @@ export default function ProfilePage() {
 		'posts'
 	);
 
+	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
 	const { user } = useAuth();
 	const { profile, loading } = useProfileService();
 
 	if (!profile) {
 		return (
-			<UnableToLoad title="Profile not found" message="We couldn't load this profile. It may have been deleted or there was a connection issue."/>
+			<UnableToLoad title="Profile not found" message="We couldn't load this profile. It may have been deleted or there was a connection issue." />
 		);
 	}
 
 	const displayJoined = new Date(profile.createdAt).toLocaleDateString('en-US', {
-			month: 'long',
-			year: 'numeric'
-		})
+		month: 'long',
+		year: 'numeric'
+	})
 
 	if (loading) {
 		return (
@@ -84,7 +87,7 @@ export default function ProfilePage() {
 					alt="Cover"
 					className="w-full h-full object-cover"
 				/>
-				<button className="absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-background transition-colors">
+				<button className="cursor-pointer absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-background transition-colors">
 					<Camera className="h-4 w-4" />
 					<span className="text-sm font-medium">Edit Cover</span>
 				</button>
@@ -106,11 +109,11 @@ export default function ProfilePage() {
 					</div>
 
 					<div className="pt-6 flex justify-end gap-3">
-						<Button variant="outline" size="sm">
+						<Button className="cursor-pointer" onClick={() => setIsEditModalOpen(true)} variant="outline" size="sm">
 							<Settings className="h-4 w-4 mr-2" />
 							Edit Profile
 						</Button>
-						<Button size="sm">Share Profile</Button>
+						<Button size="sm" className='cursor-pointer'>Share Profile</Button>
 					</div>
 				</div>
 
@@ -316,6 +319,13 @@ export default function ProfilePage() {
 					)}
 				</div>
 			</div>
+
+			<EditProfileModal
+				isOpen={isEditModalOpen}
+				onClose={() => setIsEditModalOpen(false)}
+				onSave={async (profile) => {}}
+				profile={profile}
+			/>
 		</div>
 	);
 }
