@@ -8,12 +8,14 @@ import {
 	MessageCircle,
 	Share2,
 	MoreHorizontal,
+	Loader2,
 } from 'lucide-react';
 import { Button } from '@shadcn/components/ui/button';
-import { useEffect, useState } from 'react';
-import { useFetch } from '@/hooks/useFetch';
-import type { UserProfile } from '@/types/domain/user';
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { useProfileService } from '@/hooks/useProfileService';
+import PageLoader from '../common/PageLoader.tsx';
+import ProfileAbout from './components/ProfileAbout.tsx';
 
 interface ProfilePost {
 	id: number;
@@ -51,26 +53,28 @@ export default function ProfilePage() {
 	const [activeTab, setActiveTab] = useState<'posts' | 'media' | 'about'>(
 		'posts'
 	);
-	const [profile, setProfile] = useState<UserProfile>();
 
-	const { fetchJson } = useFetch()
+	const { user } = useAuth();
+	const { profile, loading } = useProfileService();
 
-	const { token, user } = useAuth();
+	if (!profile) {
+		return (
+			<div className="flex flex-col items-center justify-center min-h-screen bg-background gap-4">
+				<p className="text-muted-foreground">Unable to load profile</p>
+			</div>
+		);
+	}
 
-	// TODO: Handle this in a hook
-	useEffect(() => {
-		if (!token) return
-		fetchJson<UserProfile>('/@api/users/profile', {
-			method: 'GET',
-			headers: {
-				"Authorization": `Bearer ${token}`
-			}
-		}).then(res => {
-			if(res.data) {
-				setProfile(res.data);
-			}	
+	const displayJoined = new Date(profile.createdAt).toLocaleDateString('en-US', {
+			month: 'long',
+			year: 'numeric'
 		})
-	}, [token])
+
+	if (loading) {
+		return (
+			<PageLoader />
+		);
+	}
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -118,15 +122,15 @@ export default function ProfilePage() {
 				{/* User Info */}
 				<div className="mt-4 pb-6 border-b border-border">
 					<h1 className="text-3xl font-bold text-foreground">
-						{profile?.firstName} {profile?.lastName}
+						{profile.firstName} {profile.lastName}
 					</h1>
-					<p className="text-muted-foreground mt-1">@{user?.username}</p>
 
-					<p className="mt-4 text-foreground leading-relaxed max-w-2xl">
-						Acoustic guitarist & songwriter 🎸 | Recording artist |
-						Sharing my musical journey and gear reviews | Martin
-						D-28 enthusiast | Teaching guitar online
-					</p>
+					{user?.username && <p className="text-muted-foreground mt-1">@{user?.username}</p>}
+
+
+					{profile?.bio && <p className="mt-4 text-foreground leading-relaxed max-w-2xl">
+						{profile.bio}
+					</p>}
 
 					<div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
 						<div className="flex items-center gap-1">
@@ -142,10 +146,11 @@ export default function ProfilePage() {
 								sarahmitchellmusic.com
 							</a>
 						</div>
-						<div className="flex items-center gap-1">
-							<Calendar className="h-4 w-4" />
-							<span>Joined March 2022</span>
-						</div>
+						{displayJoined && <>
+							<div className="flex items-center gap-1">
+								<Calendar className="h-4 w-4" />
+								<span>Joined {displayJoined}</span>
+							</div></>}
 					</div>
 
 					{/* Stats */}
@@ -182,8 +187,8 @@ export default function ProfilePage() {
 					<button
 						onClick={() => setActiveTab('posts')}
 						className={`pb-4 px-2 font-medium transition-colors relative ${activeTab === 'posts'
-								? 'text-primary'
-								: 'text-muted-foreground hover:text-foreground'
+							? 'text-primary'
+							: 'text-muted-foreground hover:text-foreground'
 							}`}
 					>
 						Posts
@@ -194,8 +199,8 @@ export default function ProfilePage() {
 					<button
 						onClick={() => setActiveTab('media')}
 						className={`pb-4 px-2 font-medium transition-colors relative ${activeTab === 'media'
-								? 'text-primary'
-								: 'text-muted-foreground hover:text-foreground'
+							? 'text-primary'
+							: 'text-muted-foreground hover:text-foreground'
 							}`}
 					>
 						Media
@@ -206,8 +211,8 @@ export default function ProfilePage() {
 					<button
 						onClick={() => setActiveTab('about')}
 						className={`pb-4 px-2 font-medium transition-colors relative ${activeTab === 'about'
-								? 'text-primary'
-								: 'text-muted-foreground hover:text-foreground'
+							? 'text-primary'
+							: 'text-muted-foreground hover:text-foreground'
 							}`}
 					>
 						About
@@ -316,54 +321,7 @@ export default function ProfilePage() {
 					)}
 
 					{activeTab === 'about' && (
-						<div className="space-y-6">
-							<div className="bg-card rounded-lg border border-border p-6">
-								<h3 className="text-lg font-semibold text-card-foreground mb-4">
-									About
-								</h3>
-								<p className="text-muted-foreground leading-relaxed">
-									Professional guitarist and music educator
-									with over 10 years of experience.
-									Specializing in acoustic fingerstyle and
-									contemporary songwriting. I love sharing my
-									passion for music and helping others on
-									their guitar journey.
-								</p>
-							</div>
-
-							<div className="bg-card rounded-lg border border-border p-6">
-								<h3 className="text-lg font-semibold text-card-foreground mb-4">
-									Gear
-								</h3>
-								<ul className="space-y-2 text-muted-foreground">
-									<li>• Martin D-28 Acoustic Guitar</li>
-									<li>• Taylor 814ce</li>
-									<li>
-										• Fender American Professional
-										Stratocaster
-									</li>
-									<li>• Strymon BigSky Reverb</li>
-									<li>• Universal Audio Apollo Twin</li>
-								</ul>
-							</div>
-
-							<div className="bg-card rounded-lg border border-border p-6">
-								<h3 className="text-lg font-semibold text-card-foreground mb-4">
-									Achievements
-								</h3>
-								<ul className="space-y-2 text-muted-foreground">
-									<li>
-										• Featured in Guitar World Magazine
-										(2023)
-									</li>
-									<li>• 50K+ YouTube subscribers</li>
-									<li>• Released 3 studio albums</li>
-									<li>
-										• Endorsed artist for Martin Guitars
-									</li>
-								</ul>
-							</div>
-						</div>
+						<ProfileAbout profile={profile} />
 					)}
 				</div>
 			</div>
