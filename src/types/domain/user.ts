@@ -9,4 +9,7 @@ export type UserProfile = {
     id: string;
     firstName: string;
     lastName: string;
+    description?: string;
+    bio?: string;
+    createdAt: string;
 }
