@@ -43,7 +43,7 @@ const AvatarProfileDropdown = () => {
 				setProfile(res.data);
 			}
 		})
-	}, [token])
+	}, [token, fetchJson])
 
 	return (
 		<DropdownMenu>

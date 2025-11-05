@@ -83,7 +83,7 @@ export function useFetch() {
 				throw err;
 			}
 		},
-		[token, logout]
+		[token, logout, navigate]
 	);
 
 	return { fetchJson };
