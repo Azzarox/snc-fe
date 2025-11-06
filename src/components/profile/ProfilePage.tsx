@@ -11,13 +11,14 @@ import {
 	Loader2,
 } from 'lucide-react';
 import { Button } from '@shadcn/components/ui/button';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import PageLoader from '../common/PageLoader.tsx';
 import ProfileAbout from './components/ProfileAbout.tsx';
 import { UnableToLoad } from '../common/PageUnableToLoad.tsx';
 import { EditProfileModal } from './EditProfileModal.tsx';
 import { useProfile } from '@/hooks/useProfile.ts';
+import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle.ts';
 
 interface ProfilePost {
 	id: number;
@@ -56,7 +57,7 @@ export default function ProfilePage() {
 		'posts'
 	);
 
-	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+	const modalRef = useRef<ModalImperativeHandle>(null);
 
 	const { user } = useAuth();
 	const { profile, loading, refetch } = useProfile();
@@ -109,7 +110,7 @@ export default function ProfilePage() {
 					</div>
 
 					<div className="pt-6 flex justify-end gap-3">
-						<Button className="cursor-pointer" onClick={() => setIsEditModalOpen(true)} variant="outline" size="sm">
+						<Button className="cursor-pointer" onClick={() => modalRef.current?.openModal()} variant="outline" size="sm">
 							<Settings className="h-4 w-4 mr-2" />
 							Edit Profile
 						</Button>
@@ -320,14 +321,9 @@ export default function ProfilePage() {
 				</div>
 			</div>
 
-			<EditProfileModal
-				isOpen={isEditModalOpen}
-				onClose={(updateProfile: boolean | undefined) => {
-					if (updateProfile) {
-						refetch()
-					}
-					setIsEditModalOpen(false)
-				}}
+			<EditProfileModal 
+				ref={modalRef}
+				onSuccess={() => refetch()}
 				profile={profile}
 			/>
 		</div>

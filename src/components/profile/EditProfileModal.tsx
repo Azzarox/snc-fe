@@ -10,18 +10,21 @@ import { updateProfileSchema, type UpdateProfileFormData } from "@/schemas/profi
 import { useProfileService } from "@/hooks/useProfileService"
 import { ErrorMessages } from "@/consts/errors"
 import { toastService } from "@/services/common/toastService"
+import { forwardRef } from "react"
+import type { ModalImperativeHandle } from "@/types/common/ModalImpretiveHandle"
+import { useModal } from "@/hooks/useModal"
 
-interface EditProfileModalProps {
-    isOpen: boolean
-    onClose: (updateProfile?: boolean) => void
+type EditProfileModalProps = {
     profile?: UserProfile | null
+    onSuccess: () => void
 }
 
-export function EditProfileModal({
-    isOpen,
-    onClose,
+export const EditProfileModal = forwardRef<ModalImperativeHandle, EditProfileModalProps>(({
     profile,
-}: EditProfileModalProps) {
+    onSuccess,
+}, ref) => {
+    const { isOpen, closeModal } = useModal(ref);
+
     const { updateUserProfile } = useProfileService();
     const {
         register,
@@ -54,14 +57,16 @@ export function EditProfileModal({
             });
             return;
         };
-        
-        onClose(res.success);
+
         reset();
+        closeModal();
+        onSuccess();
+        toastService.success('Successfully updated profile!')
     }
 
     const handleClose = () => {
-        reset()
-        onClose(false)
+        reset();
+        closeModal();
     }
 
     return (
@@ -150,4 +155,4 @@ export function EditProfileModal({
             </DialogContent>
         </Dialog>
     )
-}
+})
