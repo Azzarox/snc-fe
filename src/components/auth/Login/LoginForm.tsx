@@ -21,6 +21,7 @@ import { toastService } from '@/services/common/toastService';
 import { useAuthService } from '@/hooks/useAuthService';
 import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
 import { ErrorMessages } from '@/consts/errors';
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { type LoginFormData, loginSchema } from '@/schemas/auth/loginSchema';
 
