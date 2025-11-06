@@ -1,9 +1,9 @@
-import type { User } from "@/types/domain/user";
+import type { User } from '@/types/domain/user';
 
 type JWTPayload = User & {
 	exp?: number;
 	iat?: number;
-}
+};
 
 function decodeJWT(token: string): JWTPayload | null {
 	try {

@@ -21,20 +21,22 @@ export function useFetch() {
 	const fetchJson = useCallback(
 		async <T>(
 			url: string,
-			options?: FetchOptions,
+			options?: FetchOptions
 		): Promise<ApiResponse<T> | never> => {
 			try {
 				if (token && isTokenExpired(token)) {
 					logout();
-					navigate('/login')
-					throw new Error('Session Expired', { cause: "Expired JWT" });
+					navigate('/login');
+					throw new Error('Session Expired', {
+						cause: 'Expired JWT',
+					});
 				}
 
 				const { toast = false, ...fetchOptions } = options || {};
 				const headers = {
 					'Content-Type': 'application/json',
 					...fetchOptions.headers,
-				}
+				};
 
 				const res = await fetch(url, {
 					...fetchOptions,
@@ -71,7 +73,9 @@ export function useFetch() {
 				return json;
 			} catch (err: any) {
 				if (err.cause === 'Expired JWT') {
-					toastService.error(err.message, 'Please log in again!', { duration: 10000 })
+					toastService.error(err.message, 'Please log in again!', {
+						duration: 10000,
+					});
 				} else {
 					toastService.error(
 						isDev

@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import {
+	createContext,
+	useContext,
+	useEffect,
+	useState,
+	useCallback,
+} from 'react';
 import { localStorageService } from '@/services/common/storage/localStorageService';
 import { useAuthService } from '@/hooks/useAuthService';
 import { isTokenExpired } from '@/services/utils/jwtUtils';
@@ -32,10 +38,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		}
 		return storedToken ?? null;
 	});
-	
+
 	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(false);
-	const { getAuthenticatedUserData } = useAuthService({ getAuthenticatedUserData: { toast: true }});
+	const { getAuthenticatedUserData } = useAuthService({
+		getAuthenticatedUserData: { toast: true },
+	});
 
 	const navigate = useNavigate();
 
@@ -67,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 						email: res.data.email,
 					});
 				} else {
-					setUser(null)
+					setUser(null);
 				}
 			})
 			.catch(() => {
@@ -79,7 +87,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const handleTokenExpired = useCallback(() => {
 		logout();
 		navigate('/login');
-		toastService.error('Session Expired', "Please log in again!", { duration: 10000 });
+		toastService.error('Session Expired', 'Please log in again!', {
+			duration: 10000,
+		});
 	}, [logout, navigate]);
 
 	useTokenExpiration(token, handleTokenExpired);

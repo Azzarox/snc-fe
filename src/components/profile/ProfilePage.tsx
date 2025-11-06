@@ -64,24 +64,27 @@ export default function ProfilePage() {
 
 	if (!profile) {
 		return (
-			<UnableToLoad title="Profile not found" message="We couldn't load this profile. It may have been deleted or there was a connection issue." />
+			<UnableToLoad
+				title="Profile not found"
+				message="We couldn't load this profile. It may have been deleted or there was a connection issue."
+			/>
 		);
 	}
 
-	const displayJoined = new Date(profile.createdAt).toLocaleDateString('en-US', {
-		month: 'long',
-		year: 'numeric'
-	})
+	const displayJoined = new Date(profile.createdAt).toLocaleDateString(
+		'en-US',
+		{
+			month: 'long',
+			year: 'numeric',
+		}
+	);
 
 	if (loading) {
-		return (
-			<PageLoader />
-		);
+		return <PageLoader />;
 	}
 
 	return (
 		<div className="min-h-screen bg-background">
-
 			<div className="relative w-full h-64 bg-gradient-to-br from-primary/20 to-accent/20">
 				<img
 					src="/guitar-music-stage-concert.jpg"
@@ -110,11 +113,18 @@ export default function ProfilePage() {
 					</div>
 
 					<div className="pt-6 flex justify-end gap-3">
-						<Button className="cursor-pointer" onClick={() => modalRef.current?.openModal()} variant="outline" size="sm">
+						<Button
+							className="cursor-pointer"
+							onClick={() => modalRef.current?.openModal()}
+							variant="outline"
+							size="sm"
+						>
 							<Settings className="h-4 w-4 mr-2" />
 							Edit Profile
 						</Button>
-						<Button size="sm" className='cursor-pointer'>Share Profile</Button>
+						<Button size="sm" className="cursor-pointer">
+							Share Profile
+						</Button>
 					</div>
 				</div>
 
@@ -123,12 +133,17 @@ export default function ProfilePage() {
 						{profile.firstName} {profile.lastName}
 					</h1>
 
-					{user?.username && <p className="text-muted-foreground mt-1">@{user?.username}</p>}
+					{user?.username && (
+						<p className="text-muted-foreground mt-1">
+							@{user?.username}
+						</p>
+					)}
 
-
-					{profile?.bio && <p className="mt-4 text-foreground leading-relaxed max-w-2xl">
-						{profile.bio}
-					</p>}
+					{profile?.bio && (
+						<p className="mt-4 text-foreground leading-relaxed max-w-2xl">
+							{profile.bio}
+						</p>
+					)}
 
 					<div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
 						<div className="flex items-center gap-1">
@@ -144,11 +159,14 @@ export default function ProfilePage() {
 								sarahmitchellmusic.com
 							</a>
 						</div>
-						{displayJoined && <>
-							<div className="flex items-center gap-1">
-								<Calendar className="h-4 w-4" />
-								<span>Joined {displayJoined}</span>
-							</div></>}
+						{displayJoined && (
+							<>
+								<div className="flex items-center gap-1">
+									<Calendar className="h-4 w-4" />
+									<span>Joined {displayJoined}</span>
+								</div>
+							</>
+						)}
 					</div>
 
 					<div className="mt-6 flex items-center gap-6">
@@ -182,10 +200,11 @@ export default function ProfilePage() {
 				<div className="mt-6 flex gap-8 border-b border-border">
 					<button
 						onClick={() => setActiveTab('posts')}
-						className={`pb-4 px-2 font-medium transition-colors relative ${activeTab === 'posts'
-							? 'text-primary'
-							: 'text-muted-foreground hover:text-foreground'
-							}`}
+						className={`pb-4 px-2 font-medium transition-colors relative ${
+							activeTab === 'posts'
+								? 'text-primary'
+								: 'text-muted-foreground hover:text-foreground'
+						}`}
 					>
 						Posts
 						{activeTab === 'posts' && (
@@ -194,10 +213,11 @@ export default function ProfilePage() {
 					</button>
 					<button
 						onClick={() => setActiveTab('media')}
-						className={`pb-4 px-2 font-medium transition-colors relative ${activeTab === 'media'
-							? 'text-primary'
-							: 'text-muted-foreground hover:text-foreground'
-							}`}
+						className={`pb-4 px-2 font-medium transition-colors relative ${
+							activeTab === 'media'
+								? 'text-primary'
+								: 'text-muted-foreground hover:text-foreground'
+						}`}
 					>
 						Media
 						{activeTab === 'media' && (
@@ -206,10 +226,11 @@ export default function ProfilePage() {
 					</button>
 					<button
 						onClick={() => setActiveTab('about')}
-						className={`pb-4 px-2 font-medium transition-colors relative ${activeTab === 'about'
-							? 'text-primary'
-							: 'text-muted-foreground hover:text-foreground'
-							}`}
+						className={`pb-4 px-2 font-medium transition-colors relative ${
+							activeTab === 'about'
+								? 'text-primary'
+								: 'text-muted-foreground hover:text-foreground'
+						}`}
 					>
 						About
 						{activeTab === 'about' && (
@@ -321,7 +342,7 @@ export default function ProfilePage() {
 				</div>
 			</div>
 
-			<EditProfileModal 
+			<EditProfileModal
 				ref={modalRef}
 				onSuccess={() => refetch()}
 				profile={profile}

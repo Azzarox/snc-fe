@@ -30,20 +30,20 @@ const AvatarProfileDropdown = () => {
 		navigate('/login');
 	};
 
-	// TODO: Handle this in a hook ... 
+	// TODO: Handle this in a hook ...
 	useEffect(() => {
-		if (!token) return
+		if (!token) return;
 		fetchJson<UserProfile>('/@api/users/profile', {
 			method: 'GET',
 			headers: {
-				"Authorization": `Bearer ${token}`
-			}
-		}).then(res => {
+				Authorization: `Bearer ${token}`,
+			},
+		}).then((res) => {
 			if (res.data) {
 				setProfile(res.data);
 			}
-		})
-	}, [token, fetchJson])
+		});
+	}, [token, fetchJson]);
 
 	return (
 		<DropdownMenu>

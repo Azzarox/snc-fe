@@ -71,7 +71,8 @@ export function LoginForm({
 				<CardHeader>
 					<CardTitle>Login to your account</CardTitle>
 					<CardDescription>
-						Enter your email or username below to login to your account
+						Enter your email or username below to login to your
+						account
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -121,7 +122,7 @@ export function LoginForm({
 									id="password"
 									type="password"
 									{...register('password')}
-									placeholder='Please enter your password'
+									placeholder="Please enter your password"
 									required
 								/>
 								{errors.password && (

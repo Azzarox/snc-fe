@@ -1,4 +1,4 @@
 export type ModalImperativeHandle = {
-    openModal: () => void;
-    closeModal: () => void;
-}
+	openModal: () => void;
+	closeModal: () => void;
+};

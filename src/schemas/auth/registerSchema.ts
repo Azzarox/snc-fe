@@ -11,8 +11,14 @@ export const registerSchema = z
 			.min(6, 'Password must be at least 6 characters long'),
 		confirmPassword: z.string().nonempty('Please confirm your password'),
 
-		firstName: z.string().min(1, 'Please enter a first name!').max(50, 'First name is too long!'),
-		lastName: z.string().min(1, 'Please enter a last name!').max(50, 'Last name is too long!'),
+		firstName: z
+			.string()
+			.min(1, 'Please enter a first name!')
+			.max(50, 'First name is too long!'),
+		lastName: z
+			.string()
+			.min(1, 'Please enter a last name!')
+			.max(50, 'Last name is too long!'),
 		bio: z
 			.string()
 			.max(120, 'Please shorten the bio information!')
