@@ -1,21 +1,12 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import { Button } from "@shadcn/components/ui/button"
 import { Input } from "@shadcn/components/ui/input"
 import { Textarea } from "@shadcn/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@shadcn/components/ui/dialog"
 import { Field, FieldLabel, FieldDescription, FieldError } from "@shadcn/components/ui/field"
 import type { UserProfile } from "@/types/domain/user"
-
-const editProfileSchema = z.object({
-    firstName: z.string().min(1, "First name is required").max(50, "First name is too long"),
-    lastName: z.string().min(1, "Last name is required").max(50, "Last name is too long"),
-    bio: z.string().max(120, "Bio must be 120 characters or less").optional(),
-    description: z.string().max(255, "Description must be 255 characters or less").optional(),
-})
-
-type EditProfileFormData = z.infer<typeof editProfileSchema>
+import { editProfileSchema, type EditProfileFormData } from "@/schemas/profile/editProfileSchema"
 
 interface EditProfileModalProps {
     isOpen: boolean
@@ -105,7 +96,7 @@ export function EditProfileModal({
                         <Textarea
                             id="bio"
                             {...register("bio")}
-                            placeholder="Acoustic guitarist & songwriter 🎸"
+                            placeholder="ex: Acoustic guitarist & songwriter 🎸"
                             rows={2}
                         />
                         {errors.bio && <>

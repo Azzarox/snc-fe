@@ -13,11 +13,11 @@ import {
 import { Button } from '@shadcn/components/ui/button';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { useProfileService } from '@/hooks/useProfileService';
 import PageLoader from '../common/PageLoader.tsx';
 import ProfileAbout from './components/ProfileAbout.tsx';
 import { UnableToLoad } from '../common/PageUnableToLoad.tsx';
 import { EditProfileModal } from './EditProfileModal.tsx';
+import { useProfile } from '@/hooks/useProfile.ts';
 
 interface ProfilePost {
 	id: number;
@@ -59,7 +59,7 @@ export default function ProfilePage() {
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
 	const { user } = useAuth();
-	const { profile, loading } = useProfileService();
+	const { profile, loading } = useProfile();
 
 	if (!profile) {
 		return (
