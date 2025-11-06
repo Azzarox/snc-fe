@@ -58,10 +58,10 @@ export const EditProfileModal = forwardRef<ModalImperativeHandle, EditProfileMod
             return;
         };
 
-        reset();
-        closeModal();
         onSuccess();
         toastService.success('Successfully updated profile!')
+
+        handleClose();
     }
 
     const handleClose = () => {
