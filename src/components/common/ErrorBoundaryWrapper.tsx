@@ -1,5 +1,6 @@
+import { isDev } from '@/services/utils/getEnvironmentMode';
 import { Button } from '@shadcn/components/ui/button';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useLocation } from 'react-router';
 
@@ -10,7 +11,6 @@ function ErrorFallback({
 	error: Error;
 	resetErrorBoundary: () => void;
 }) {
-	const showErrorMessage = import.meta.env.MODE === 'development';
 
 	return (
 		<div className="flex flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
@@ -19,7 +19,7 @@ function ErrorFallback({
 				<h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
 					Oops! Something went wrong.
 				</h1>
-				{showErrorMessage && (
+				{isDev && (
 					<>
 						<h3 className="mt-4 scroll-m-20 text-2xl font-semibold tracking-tight text-red-500">
 							Error: {error.message}

@@ -32,7 +32,6 @@ export function LoginForm({
 	const { login } = useAuth();
 
 	const { loginUser } = useAuthService();
-	const [errorsState, setErrorsState] = useState<string[]>([]);
 
 	const {
 		register,
@@ -70,10 +69,6 @@ export function LoginForm({
 		<div className={cn('flex flex-col gap-6', className)} {...props}>
 			<Card>
 				<CardHeader>
-					{/* TODO: Remove later */}{' '}
-					<CardDescription className="text-red-500 text-xl">
-						{errorsState}
-					</CardDescription>
 					<CardTitle>Login to your account</CardTitle>
 					<CardDescription>
 						Enter your username below to login to your account

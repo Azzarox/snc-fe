@@ -39,7 +39,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	});
 
 	const navigate = useNavigate();
-	const [errorsState, setErrorsState] = useState<string[]>([]);
+	const [errorsState, setErrorsState] = useState([] as string[]);
 
 	const { registerUser } = useAuthService();
 
