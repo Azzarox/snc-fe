@@ -119,7 +119,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 		}
 
 		toastService.success(
-			'Successfully created user! Redirecting to login!'
+			'Successfully created user!'
 		);
 		navigate('/login');
 	};
