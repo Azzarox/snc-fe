@@ -6,28 +6,31 @@ import { Textarea } from "@shadcn/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@shadcn/components/ui/dialog"
 import { Field, FieldLabel, FieldDescription, FieldError } from "@shadcn/components/ui/field"
 import type { UserProfile } from "@/types/domain/user"
-import { editProfileSchema, type EditProfileFormData } from "@/schemas/profile/editProfileSchema"
+import { updateProfileSchema, type UpdateProfileFormData } from "@/schemas/profile/updateProfileSchema"
+import { useProfileService } from "@/hooks/useProfileService"
+import { ErrorMessages } from "@/consts/errors"
+import { toastService } from "@/services/common/toastService"
 
 interface EditProfileModalProps {
     isOpen: boolean
-    onClose: () => void
-    onSave: (profile: EditProfileFormData) => Promise<void>
+    onClose: (updateProfile?: boolean) => void
     profile?: UserProfile | null
 }
 
 export function EditProfileModal({
     isOpen,
     onClose,
-    onSave,
     profile,
 }: EditProfileModalProps) {
+    const { updateUserProfile } = useProfileService();
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
         reset,
-    } = useForm<EditProfileFormData>({
-        resolver: zodResolver(editProfileSchema),
+        setError,
+    } = useForm<UpdateProfileFormData>({
+        resolver: zodResolver(updateProfileSchema),
         defaultValues: {
             firstName: profile?.firstName || "",
             lastName: profile?.lastName || "",
@@ -37,19 +40,28 @@ export function EditProfileModal({
         mode: 'onTouched'
     })
 
-    const onSubmit = async (data: EditProfileFormData) => {
-        try {
-            await onSave(data)
-            onClose()
-            reset()
-        } catch (error) {
-            console.error('Failed to save profile:', error)
-        }
+    const onSubmit = async (data: UpdateProfileFormData) => {
+        const res = await updateUserProfile(data);
+
+        if (!res.success && res.errors) {
+            setError('root', res.errors);
+            return;
+        };
+
+        if (!res.success) {
+            setError('root', {
+                message: res.message ?? ErrorMessages.UNEXPECTED_ERROR,
+            });
+            return;
+        };
+        
+        onClose(res.success);
+        reset();
     }
 
     const handleClose = () => {
         reset()
-        onClose()
+        onClose(false)
     }
 
     return (

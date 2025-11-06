@@ -59,7 +59,7 @@ export default function ProfilePage() {
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
 	const { user } = useAuth();
-	const { profile, loading } = useProfile();
+	const { profile, loading, refetch } = useProfile();
 
 	if (!profile) {
 		return (
@@ -322,8 +322,12 @@ export default function ProfilePage() {
 
 			<EditProfileModal
 				isOpen={isEditModalOpen}
-				onClose={() => setIsEditModalOpen(false)}
-				onSave={async (profile) => {}}
+				onClose={(updateProfile: boolean | undefined) => {
+					if (updateProfile) {
+						refetch()
+					}
+					setIsEditModalOpen(false)
+				}}
 				profile={profile}
 			/>
 		</div>

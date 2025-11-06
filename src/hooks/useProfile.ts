@@ -37,5 +37,5 @@ export const useProfile = () => {
         fetchProfile();
     }, [fetchProfile]);
 
-    return { profile, loading };
+    return { profile, loading, refetch: fetchProfile };
 }
