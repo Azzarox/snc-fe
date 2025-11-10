@@ -8,7 +8,6 @@ import {
 	MessageCircle,
 	Share2,
 	MoreHorizontal,
-	Loader2,
 } from 'lucide-react';
 import { Button } from '@shadcn/components/ui/button';
 import { useState, useRef } from 'react';

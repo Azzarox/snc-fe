@@ -118,9 +118,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 			return;
 		}
 
-		toastService.success(
-			'Successfully created user!'
-		);
+		toastService.success('Successfully created user!');
 		navigate('/login');
 	};
 

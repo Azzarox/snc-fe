@@ -3,7 +3,6 @@ import type { RegisterFormData } from '@/schemas/auth/registerSchema';
 import type { LoginFormData } from '@/schemas/auth/loginSchema';
 import z from 'zod';
 import type { User } from '@/types/domain/user';
-import type { ApiResponse } from '@/types/api/response';
 
 type AuthServiceOptions = {
 	registerUser?: FetchOptions;
