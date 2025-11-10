@@ -1,12 +1,20 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+	createContext,
+	useContext,
+	useEffect,
+	useState,
+	useCallback,
+} from 'react';
 import { localStorageService } from '@/services/common/storage/localStorageService';
-import { sessionStorageService } from '@/services/common/storage/sessionStorageService';
 import { useAuthService } from '@/hooks/useAuthService';
-
-export type User = { username: string } | null;
+import { isTokenExpired } from '@/services/utils/jwtUtils';
+import { useTokenExpiration } from '@/hooks/useTokenExpiration';
+import type { User } from '@/types/domain/user';
+import { toastService } from '@/services/common/toastService';
+import { useNavigate } from 'react-router';
 
 type AuthContextValue = {
-	user: User;
+	user: User | null;
 	token: string | null;
 	loading: boolean;
 	login: (token: string) => void;
@@ -22,38 +30,37 @@ const AuthContext = createContext<AuthContextValue>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const [token, setToken] = useState<string | null>(
-		localStorageService.getAccessToken() ?? null
-	);
-	const [user, setUser] = useState<User>(null);
-	const [loading, setLoading] = useState(false);
-	const { getAuthenticatedUserData } = useAuthService();
+	const [token, setToken] = useState<string | null>(() => {
+		const storedToken = localStorageService.getAccessToken();
+		if (storedToken && isTokenExpired(storedToken)) {
+			localStorageService.removeAccessToken();
+			return null;
+		}
+		return storedToken ?? null;
+	});
 
-	const login = (accessToken: string) => {
+	const [user, setUser] = useState<User | null>(null);
+	const [loading, setLoading] = useState(false);
+	const { getAuthenticatedUserData } = useAuthService({
+		getAuthenticatedUserData: { toast: true },
+	});
+
+	const navigate = useNavigate();
+
+	const login = useCallback((accessToken: string) => {
 		localStorageService.setAccessToken(accessToken);
 		setToken(accessToken);
-	};
+	}, []);
 
-	const logout = () => {
+	const logout = useCallback(() => {
 		localStorageService.removeAccessToken();
 		setToken(null);
-		resetUserState();
-	};
-
-	const resetUserState = () => {
 		setUser(null);
-		sessionStorageService.removeCachedUser();
-	};
+	}, []);
 
 	useEffect(() => {
 		if (!token) {
-			resetUserState();
-			return;
-		}
-
-		const cachedUser = sessionStorage.getItem('user');
-		if (cachedUser) {
-			setUser(JSON.parse(cachedUser));
+			setUser(null);
 			return;
 		}
 
@@ -62,18 +69,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		getAuthenticatedUserData(token)
 			.then((res) => {
 				if (res.data) {
-					const user = { username: res.data.username };
-					setUser(user);
-					sessionStorageService.setCachedUser(user);
+					setUser({
+						id: res.data.id,
+						username: res.data.username,
+						email: res.data.email,
+					});
 				} else {
-					resetUserState();
+					setUser(null);
 				}
 			})
 			.catch(() => {
-				 	resetUserState();
+				setUser(null);
 			})
 			.finally(() => setLoading(false));
 	}, [token]);
+
+	const handleTokenExpired = useCallback(() => {
+		logout();
+		navigate('/login');
+		toastService.error('Session Expired', 'Please log in again!', {
+			duration: 10000,
+		});
+	}, [logout, navigate]);
+
+	useTokenExpiration(token, handleTokenExpired);
 
 	return (
 		<AuthContext.Provider value={{ user, token, loading, login, logout }}>

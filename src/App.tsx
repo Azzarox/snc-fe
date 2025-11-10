@@ -7,8 +7,8 @@ import HomePage from './components/home/HomePage';
 import NotFoundPage from './components/common/NotFoundPage';
 
 import { useAuth } from './context/AuthContext';
-import { ProfilePage } from './components/profile/ProfilePage';
 import { SettingsPage } from './components/settings/SettingsPage';
+import { lazy } from 'react';
 
 export const DiscoverPage = () => {
 	const { user } = useAuth();
@@ -24,6 +24,8 @@ export const DiscoverPage = () => {
 	);
 };
 
+const ProfilePage = lazy(() => import('./components/profile/ProfilePage'));
+
 function App() {
 	return (
 		<>
@@ -35,8 +37,8 @@ function App() {
 					<Route path="/discover" element={<DiscoverPage />} />
 					<Route path="/profile" element={<ProfilePage />} />
 					<Route path="/settings" element={<SettingsPage />} />
+					<Route path="*" element={<NotFoundPage />}></Route>
 				</Route>
-				<Route path="*" element={<NotFoundPage />}></Route>
 			</Routes>
 		</>
 	);

@@ -1,6 +1,6 @@
 import { isDev } from '@/services/utils/getEnvironmentMode';
 import { Button } from '@shadcn/components/ui/button';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useLocation } from 'react-router';
 
@@ -11,7 +11,6 @@ function ErrorFallback({
 	error: Error;
 	resetErrorBoundary: () => void;
 }) {
-
 	return (
 		<div className="flex flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
 			<div>

@@ -14,7 +14,6 @@ import {
 	FieldLabel,
 } from '@shadcn/components/ui/field';
 import { Input } from '@shadcn/components/ui/input';
-import { loginSchema, type LoginFormData } from '@/schemas/auth/registerSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router';
@@ -22,8 +21,8 @@ import { toastService } from '@/services/common/toastService';
 import { useAuthService } from '@/hooks/useAuthService';
 import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
 import { ErrorMessages } from '@/consts/errors';
-import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { type LoginFormData, loginSchema } from '@/schemas/auth/loginSchema';
 
 export function LoginForm({
 	className,
@@ -71,7 +70,8 @@ export function LoginForm({
 				<CardHeader>
 					<CardTitle>Login to your account</CardTitle>
 					<CardDescription>
-						Enter your username below to login to your account
+						Enter your email or username below to login to your
+						account
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -87,20 +87,20 @@ export function LoginForm({
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<FieldGroup>
 							<Field>
-								<FieldLabel htmlFor="username">
-									Username
+								<FieldLabel htmlFor="identifier">
+									Email or Username
 								</FieldLabel>
 								<Input
-									id="username"
-									type="username"
-									placeholder="ex: guitarhero688"
-									{...register('username')}
+									id="identifier"
+									type="identifier"
+									placeholder="Please enter email or username"
+									{...register('identifier')}
 									required
 								/>
-								{errors.username && (
+								{errors.identifier && (
 									<>
 										<FieldDescription className="text-red-500">
-											{errors.username.message}
+											{errors.identifier.message}
 										</FieldDescription>
 									</>
 								)}
@@ -121,6 +121,7 @@ export function LoginForm({
 									id="password"
 									type="password"
 									{...register('password')}
+									placeholder="Please enter your password"
 									required
 								/>
 								{errors.password && (

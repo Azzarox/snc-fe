@@ -13,17 +13,15 @@ import {
 	Avatar,
 } from '@shadcn/components/ui/avatar';
 import { useAuth } from '@/context/AuthContext';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { LogOutIcon, Settings, UserIcon } from 'lucide-react';
+import { useProfile } from '@/hooks/useProfile';
+import useLogout from '@/hooks/useLogout';
 
 const AvatarProfileDropdown = () => {
-	const { logout } = useAuth();
-	const navigate = useNavigate();
-
-	const handleLogout = () => {
-		logout();
-		navigate('/login');
-	};
+	const { user } = useAuth();
+	const { profile } = useProfile();
+	const { handleLogout } = useLogout();
 
 	return (
 		<DropdownMenu>
@@ -55,10 +53,12 @@ const AvatarProfileDropdown = () => {
 					</Avatar>
 					<div className="flex flex-1 flex-col">
 						<span className="text-popover-foreground">
-							Sarah Mitchell
+							{/* Sarah Mitchell */}
+							{profile?.firstName} {profile?.lastName}
 						</span>
 						<span className="text-muted-foreground text-xs">
-							sarahmitchell@example.com
+							{/* sarahmitchell@example.com */}
+							{user?.email}
 						</span>
 					</div>
 				</DropdownMenuLabel>

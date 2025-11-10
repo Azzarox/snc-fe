@@ -10,7 +10,14 @@ import {
 	MoreHorizontal,
 } from 'lucide-react';
 import { Button } from '@shadcn/components/ui/button';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import PageLoader from '../common/PageLoader.tsx';
+import ProfileAbout from './components/ProfileAbout.tsx';
+import { UnableToLoad } from '../common/PageUnableToLoad.tsx';
+import { EditProfileModal } from './EditProfileModal.tsx';
+import { useProfile } from '@/hooks/useProfile.ts';
+import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle.ts';
 
 interface ProfilePost {
 	id: number;
@@ -44,30 +51,53 @@ const userPosts: ProfilePost[] = [
 	},
 ];
 
-export function ProfilePage() {
+export default function ProfilePage() {
 	const [activeTab, setActiveTab] = useState<'posts' | 'media' | 'about'>(
 		'posts'
 	);
 
+	const modalRef = useRef<ModalImperativeHandle>(null);
+
+	const { user } = useAuth();
+	const { profile, loading, refetch } = useProfile();
+
+	if (!profile) {
+		return (
+			<UnableToLoad
+				title="Profile not found"
+				message="We couldn't load this profile. It may have been deleted or there was a connection issue."
+			/>
+		);
+	}
+
+	const displayJoined = new Date(profile.createdAt).toLocaleDateString(
+		'en-US',
+		{
+			month: 'long',
+			year: 'numeric',
+		}
+	);
+
+	if (loading) {
+		return <PageLoader />;
+	}
+
 	return (
 		<div className="min-h-screen bg-background">
-			{/* Cover Photo */}
 			<div className="relative w-full h-64 bg-gradient-to-br from-primary/20 to-accent/20">
 				<img
 					src="/guitar-music-stage-concert.jpg"
 					alt="Cover"
 					className="w-full h-full object-cover"
 				/>
-				<button className="absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-background transition-colors">
+				<button className="cursor-pointer absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-background transition-colors">
 					<Camera className="h-4 w-4" />
 					<span className="text-sm font-medium">Edit Cover</span>
 				</button>
 			</div>
 
-			{/* Profile Header */}
 			<div className="container mx-auto px-4 max-w-5xl">
 				<div className="relative">
-					{/* Avatar */}
 					<div className="absolute -top-20 left-0">
 						<div className="relative">
 							<img
@@ -81,28 +111,38 @@ export function ProfilePage() {
 						</div>
 					</div>
 
-					{/* Action Buttons */}
 					<div className="pt-6 flex justify-end gap-3">
-						<Button variant="outline" size="sm">
+						<Button
+							className="cursor-pointer"
+							onClick={() => modalRef.current?.openModal()}
+							variant="outline"
+							size="sm"
+						>
 							<Settings className="h-4 w-4 mr-2" />
 							Edit Profile
 						</Button>
-						<Button size="sm">Share Profile</Button>
+						<Button size="sm" className="cursor-pointer">
+							Share Profile
+						</Button>
 					</div>
 				</div>
 
-				{/* User Info */}
 				<div className="mt-4 pb-6 border-b border-border">
 					<h1 className="text-3xl font-bold text-foreground">
-						Sarah Mitchell
+						{profile.firstName} {profile.lastName}
 					</h1>
-					<p className="text-muted-foreground mt-1">@sarahmitchell</p>
 
-					<p className="mt-4 text-foreground leading-relaxed max-w-2xl">
-						Acoustic guitarist & songwriter 🎸 | Recording artist |
-						Sharing my musical journey and gear reviews | Martin
-						D-28 enthusiast | Teaching guitar online
-					</p>
+					{user?.username && (
+						<p className="text-muted-foreground mt-1">
+							@{user?.username}
+						</p>
+					)}
+
+					{profile?.bio && (
+						<p className="mt-4 text-foreground leading-relaxed max-w-2xl">
+							{profile.bio}
+						</p>
+					)}
 
 					<div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
 						<div className="flex items-center gap-1">
@@ -118,13 +158,16 @@ export function ProfilePage() {
 								sarahmitchellmusic.com
 							</a>
 						</div>
-						<div className="flex items-center gap-1">
-							<Calendar className="h-4 w-4" />
-							<span>Joined March 2022</span>
-						</div>
+						{displayJoined && (
+							<>
+								<div className="flex items-center gap-1">
+									<Calendar className="h-4 w-4" />
+									<span>Joined {displayJoined}</span>
+								</div>
+							</>
+						)}
 					</div>
 
-					{/* Stats */}
 					<div className="mt-6 flex items-center gap-6">
 						<div>
 							<span className="font-bold text-foreground">
@@ -153,7 +196,6 @@ export function ProfilePage() {
 					</div>
 				</div>
 
-				{/* Tabs */}
 				<div className="mt-6 flex gap-8 border-b border-border">
 					<button
 						onClick={() => setActiveTab('posts')}
@@ -196,7 +238,6 @@ export function ProfilePage() {
 					</button>
 				</div>
 
-				{/* Tab Content */}
 				<div className="mt-6 pb-12">
 					{activeTab === 'posts' && (
 						<div className="space-y-6">
@@ -295,57 +336,16 @@ export function ProfilePage() {
 					)}
 
 					{activeTab === 'about' && (
-						<div className="space-y-6">
-							<div className="bg-card rounded-lg border border-border p-6">
-								<h3 className="text-lg font-semibold text-card-foreground mb-4">
-									About
-								</h3>
-								<p className="text-muted-foreground leading-relaxed">
-									Professional guitarist and music educator
-									with over 10 years of experience.
-									Specializing in acoustic fingerstyle and
-									contemporary songwriting. I love sharing my
-									passion for music and helping others on
-									their guitar journey.
-								</p>
-							</div>
-
-							<div className="bg-card rounded-lg border border-border p-6">
-								<h3 className="text-lg font-semibold text-card-foreground mb-4">
-									Gear
-								</h3>
-								<ul className="space-y-2 text-muted-foreground">
-									<li>• Martin D-28 Acoustic Guitar</li>
-									<li>• Taylor 814ce</li>
-									<li>
-										• Fender American Professional
-										Stratocaster
-									</li>
-									<li>• Strymon BigSky Reverb</li>
-									<li>• Universal Audio Apollo Twin</li>
-								</ul>
-							</div>
-
-							<div className="bg-card rounded-lg border border-border p-6">
-								<h3 className="text-lg font-semibold text-card-foreground mb-4">
-									Achievements
-								</h3>
-								<ul className="space-y-2 text-muted-foreground">
-									<li>
-										• Featured in Guitar World Magazine
-										(2023)
-									</li>
-									<li>• 50K+ YouTube subscribers</li>
-									<li>• Released 3 studio albums</li>
-									<li>
-										• Endorsed artist for Martin Guitars
-									</li>
-								</ul>
-							</div>
-						</div>
+						<ProfileAbout profile={profile} />
 					)}
 				</div>
 			</div>
+
+			<EditProfileModal
+				ref={modalRef}
+				onSuccess={() => refetch()}
+				profile={profile}
+			/>
 		</div>
 	);
 }
