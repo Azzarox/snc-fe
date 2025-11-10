@@ -5,6 +5,7 @@ import { isTokenExpired } from '@/services/utils/jwtUtils';
 import { useAuth } from '@/context/AuthContext';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
+import useLogout from './useLogout';
 
 export interface FetchOptions extends RequestInit {
 	toast?: boolean;
@@ -15,8 +16,8 @@ function isErrorResponse<T>(json: ApiResponse<T>): json is ErrorResponse {
 }
 
 export function useFetch() {
-	const { token, logout } = useAuth();
-	const navigate = useNavigate();
+	const { token } = useAuth();
+	const { handleLogout } = useLogout();
 
 	const fetchJson = useCallback(
 		async <T>(
@@ -25,8 +26,7 @@ export function useFetch() {
 		): Promise<ApiResponse<T> | never> => {
 			try {
 				if (token && isTokenExpired(token)) {
-					logout();
-					navigate('/login');
+					handleLogout();
 					throw new Error('Session Expired', {
 						cause: 'Expired JWT',
 					});
@@ -87,7 +87,7 @@ export function useFetch() {
 				throw err;
 			}
 		},
-		[token, logout, navigate]
+		[token, handleLogout]
 	);
 
 	return { fetchJson };

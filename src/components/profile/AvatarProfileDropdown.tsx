@@ -13,37 +13,15 @@ import {
 	Avatar,
 } from '@shadcn/components/ui/avatar';
 import { useAuth } from '@/context/AuthContext';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { LogOutIcon, Settings, UserIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useFetch } from '@/hooks/useFetch';
-import type { UserProfile } from '@/types/domain/user';
+import { useProfile } from '@/hooks/useProfile';
+import useLogout from '@/hooks/useLogout';
 
 const AvatarProfileDropdown = () => {
-	const { logout, user, token } = useAuth();
-	const { fetchJson } = useFetch();
-	const [profile, setProfile] = useState<UserProfile>();
-	const navigate = useNavigate();
-
-	const handleLogout = () => {
-		logout();
-		navigate('/login');
-	};
-
-	// TODO: Handle this in a hook ...
-	useEffect(() => {
-		if (!token) return;
-		fetchJson<UserProfile>('/@api/users/profile', {
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		}).then((res) => {
-			if (res.data) {
-				setProfile(res.data);
-			}
-		});
-	}, [token, fetchJson]);
+	const { user } = useAuth();
+	const { profile } = useProfile();
+	const { handleLogout } = useLogout();
 
 	return (
 		<DropdownMenu>
