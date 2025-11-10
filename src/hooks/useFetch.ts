@@ -4,7 +4,6 @@ import { isDev } from '@/services/utils/getEnvironmentMode';
 import { isTokenExpired } from '@/services/utils/jwtUtils';
 import { useAuth } from '@/context/AuthContext';
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router';
 import useLogout from './useLogout';
 
 export interface FetchOptions extends RequestInit {

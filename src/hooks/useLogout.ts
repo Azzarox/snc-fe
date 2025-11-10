@@ -9,7 +9,7 @@ const useLogout = () => {
 	const handleLogout = useCallback(() => {
 		logout();
 		navigate('/login');
-	}, [logout, navigate])
+	}, [logout, navigate]);
 
 	return {
 		handleLogout,
