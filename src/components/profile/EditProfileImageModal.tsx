@@ -12,7 +12,9 @@ export const EditProfileImageModal = forwardRef<
 	ModalImperativeHandle,
 	EditProfileImageModalProps
 >(({ currentImageUrl, onSuccess }, ref) => {
-	const { updateProfileImage } = useProfileService();
+	const { updateProfileImage, resetProfileImage } = useProfileService();
+
+	const handleReset = async () => { await resetProfileImage() }
 
 	return (
 		<ImageUploadModal
@@ -33,6 +35,8 @@ export const EditProfileImageModal = forwardRef<
 					'image/webp',
 				],
 			}}
+			onReset={handleReset}
+			showResetButton={true}
 		/>
 	);
 });

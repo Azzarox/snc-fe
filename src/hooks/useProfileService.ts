@@ -43,5 +43,16 @@ export const useProfileService = () => {
 		[fetchJson, token]
 	);
 
-	return { getUserProfile, updateUserProfile, updateProfileImage };
+	const resetProfileImage = useCallback(
+		() =>
+			fetchJson<UserProfile>('/@api/users/profile/avatar', {
+				method: 'DELETE',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
+		[fetchJson, token]
+	);
+
+	return { getUserProfile, updateUserProfile, updateProfileImage, resetProfileImage };
 };

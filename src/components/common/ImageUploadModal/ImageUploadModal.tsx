@@ -28,9 +28,11 @@ type ImageUploadModalProps = {
 	currentImageUrl?: string;
 	imageClassName?: string;
 	onSuccess: () => void;
-	uploadFn: <T>(formData: FormData) => Promise<ApiResponse<T>>;
+	uploadFn: (formData: FormData) => Promise<ApiResponse<any>>;
 	successMessage?: string;
 	uploadOptions?: ImageUploadOptions;
+	onReset?: () => Promise<void>;
+	showResetButton?: boolean;
 };
 
 export type ImageUploadState = ReturnType<typeof useImageUpload>;
@@ -49,6 +51,8 @@ export const ImageUploadModal = forwardRef<
 			uploadFn,
 			successMessage = 'Image uploaded successfully!',
 			uploadOptions,
+			onReset,
+			showResetButton = false,
 		},
 		ref
 	) => {
@@ -73,6 +77,25 @@ export const ImageUploadModal = forwardRef<
 		const handleClose = () => {
 			imageUpload.reset();
 			closeModal();
+		};
+
+		const handleReset = async () => {
+			if (!onReset) return;
+
+			try {
+				await onReset();
+				const { toastService } = await import(
+					'@/services/common/toastService'
+				);
+				toastService.success('Image reset to default!');
+				onSuccess();
+				handleClose();
+			} catch (error) {
+				const { toastService } = await import(
+					'@/services/common/toastService'
+				);
+				toastService.error('Failed to reset image!');
+			}
 		};
 
 		return (
@@ -110,28 +133,41 @@ export const ImageUploadModal = forwardRef<
 							)}
 						</Field>
 
-						<div className="flex gap-2 justify-end pt-4">
-							<Button
-								type="button"
-								variant="outline"
-								onClick={handleClose}
-								disabled={imageUpload.isUploading}
-								className="cursor-pointer"
-							>
-								Cancel
-							</Button>
-							<Button
-								className="cursor-pointer"
-								type="submit"
-								disabled={
-									imageUpload.isUploading ||
-									!imageUpload.selectedFile
-								}
-							>
-								{imageUpload.isUploading
-									? 'Uploading...'
-									: 'Upload Image'}
-							</Button>
+						<div className="flex gap-2 justify-between pt-4">
+							{showResetButton && onReset && (
+								<Button
+									type="button"
+									variant="destructive"
+									onClick={handleReset}
+									disabled={imageUpload.isUploading}
+									className="cursor-pointer"
+								>
+									Reset to Default
+								</Button>
+							)}
+							<div className="flex gap-2 ml-auto">
+								<Button
+									type="button"
+									variant="outline"
+									onClick={handleClose}
+									disabled={imageUpload.isUploading}
+									className="cursor-pointer"
+								>
+									Cancel
+								</Button>
+								<Button
+									className="cursor-pointer"
+									type="submit"
+									disabled={
+										imageUpload.isUploading ||
+										!imageUpload.selectedFile
+									}
+								>
+									{imageUpload.isUploading
+										? 'Uploading...'
+										: 'Upload Image'}
+								</Button>
+							</div>
 						</div>
 					</form>
 				</DialogContent>
