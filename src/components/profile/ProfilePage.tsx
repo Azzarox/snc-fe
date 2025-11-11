@@ -3,11 +3,12 @@ import {
 	MapPin,
 	Calendar,
 	LinkIcon,
-	Settings,
 	Heart,
 	MessageCircle,
 	Share2,
 	MoreHorizontal,
+	Upload,
+	Settings2,
 } from 'lucide-react';
 import { Button } from '@shadcn/components/ui/button';
 import { useState, useRef } from 'react';
@@ -17,6 +18,7 @@ import ProfileAbout from './components/ProfileAbout.tsx';
 import { UnableToLoad } from '../common/PageUnableToLoad.tsx';
 import { EditProfileModal } from './EditProfileModal.tsx';
 import { EditProfileImageModal } from './EditProfileImageModal.tsx';
+import { CustomTooltip } from '../common/CustomTooltip.tsx';
 import { useProfile } from '@/hooks/useProfile.ts';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle.ts';
 
@@ -101,20 +103,22 @@ export default function ProfilePage() {
 			<div className="container mx-auto px-4 max-w-5xl">
 				<div className="relative">
 					<div className="absolute -top-20 left-0">
-						<div className="relative">
+						<div className="relative group">
 							<img
 								src={profile.avatarUrl}
 								alt={`${profile.firstName} ${profile.lastName}`}
 								className="w-40 h-40 rounded-full border-4 border-background object-cover"
 							/>
-							<button
-								onClick={() =>
-									imageModalRef.current?.openModal()
-								}
-								className="cursor-pointer absolute bottom-2 right-2 bg-primary text-primary-foreground p-2 rounded-full hover:opacity-90 transition-opacity"
-							>
-								<Camera className="h-4 w-4" />
-							</button>
+							<CustomTooltip content="Change profile picture">
+								<button
+									onClick={() =>
+										imageModalRef.current?.openModal()
+									}
+									className="cursor-pointer absolute bottom-2 right-2 bg-primary text-primary-foreground p-2.5 rounded-full hover:scale-110 hover:shadow-lg transition-all duration-200 ring-2 ring-background"
+								>
+									<Upload className="h-4.5 w-4.5" />
+								</button>
+							</CustomTooltip>
 						</div>
 					</div>
 
@@ -125,7 +129,7 @@ export default function ProfilePage() {
 							variant="outline"
 							size="sm"
 						>
-							<Settings className="h-4 w-4 mr-2" />
+							<Settings2 className="h-4 w-4 mr-2" />
 							Edit Profile
 						</Button>
 						<Button size="sm" className="cursor-pointer">

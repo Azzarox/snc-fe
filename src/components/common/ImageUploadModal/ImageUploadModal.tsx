@@ -11,12 +11,6 @@ import {
 	FieldDescription,
 	FieldError,
 } from '@shadcn/components/ui/field';
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from '@shadcn/components/ui/tooltip';
 import { forwardRef } from 'react';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle';
 import { useModal } from '@/hooks/useModal';
@@ -28,6 +22,7 @@ import type { ApiResponse } from '@/types/api/response';
 import ImageUploadPreview from './ImageUploadPreview';
 import UploadZone from './UploadZone';
 import { RotateCcw } from 'lucide-react';
+import { CustomTooltip } from '../CustomTooltip';
 
 type ImageUploadModalProps = {
 	title?: string;
@@ -94,7 +89,7 @@ export const ImageUploadModal = forwardRef<
 				const { toastService } = await import(
 					'@/services/common/toastService'
 				);
-				toastService.success('Image reset to default!');
+				toastService.success('Image successfully reset!');
 				onSuccess();
 				handleClose();
 			} catch (error) {
@@ -106,8 +101,8 @@ export const ImageUploadModal = forwardRef<
 		};
 
 		return (
-			<Dialog open={isOpen} onOpenChange={handleClose}>
-				<DialogContent className="max-w-md">
+			<Dialog open={isOpen} onOpenChange={handleClose} >
+				<DialogContent className="max-w-md" onOpenAutoFocus={e => e.preventDefault()}>
 					<DialogHeader>
 						<DialogTitle>{title}</DialogTitle>
 					</DialogHeader>
@@ -117,26 +112,23 @@ export const ImageUploadModal = forwardRef<
 							<div className="flex items-center justify-between">
 								<div>
 									<FieldLabel>Image</FieldLabel>
-									<FieldDescription>{description}</FieldDescription>
+									<FieldDescription>
+										{description}
+									</FieldDescription>
 								</div>
 								{showResetButton && onReset && (
-									<TooltipProvider>
-										<Tooltip>
-											<TooltipTrigger asChild>
-												<button
-													type="button"
-													onClick={handleReset}
-													disabled={imageUpload.isUploading}
-													className="cursor-pointer text-destructive hover:text-destructive transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-												>
-													<RotateCcw className="h-5 w-5" />
-												</button>
-											</TooltipTrigger>
-											<TooltipContent>
-												<p>Reset to default</p>
-											</TooltipContent>
-										</Tooltip>
-									</TooltipProvider>
+									<CustomTooltip content="Reset default image">
+										<button
+											type="button"
+											onClick={handleReset}
+											disabled={
+												imageUpload.isUploading
+											}
+											className="cursor-pointer text-destructive hover:text-destructive transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+										>
+											<RotateCcw className="h-5 w-5" />
+										</button>
+									</CustomTooltip>
 								)}
 							</div>
 
