@@ -14,7 +14,9 @@ export const EditProfileImageModal = forwardRef<
 >(({ currentImageUrl, onSuccess }, ref) => {
 	const { updateProfileImage, resetProfileImage } = useProfileService();
 
-	const handleReset = async () => { await resetProfileImage() }
+	const handleReset = async () => {
+		await resetProfileImage();
+	};
 
 	return (
 		<ImageUploadModal

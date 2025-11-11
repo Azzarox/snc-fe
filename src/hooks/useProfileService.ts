@@ -54,5 +54,10 @@ export const useProfileService = () => {
 		[fetchJson, token]
 	);
 
-	return { getUserProfile, updateUserProfile, updateProfileImage, resetProfileImage };
+	return {
+		getUserProfile,
+		updateUserProfile,
+		updateProfileImage,
+		resetProfileImage,
+	};
 };

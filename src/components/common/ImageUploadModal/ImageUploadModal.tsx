@@ -108,97 +108,100 @@ export const ImageUploadModal = forwardRef<
 
 		return (
 			<>
-			<Dialog open={isOpen} onOpenChange={handleClose} >
-				<DialogContent className="max-w-md" onOpenAutoFocus={e => e.preventDefault()}>
-					<DialogHeader>
-						<DialogTitle>{title}</DialogTitle>
-					</DialogHeader>
+				<Dialog open={isOpen} onOpenChange={handleClose}>
+					<DialogContent
+						className="max-w-md"
+						onOpenAutoFocus={(e) => e.preventDefault()}
+					>
+						<DialogHeader>
+							<DialogTitle>{title}</DialogTitle>
+						</DialogHeader>
 
-					<form onSubmit={handleSubmit} className="space-y-6">
-						<Field>
-							<div className="flex items-center justify-between">
-								<div>
-									<FieldLabel>Image</FieldLabel>
-									<FieldDescription>
-										{description}
-									</FieldDescription>
+						<form onSubmit={handleSubmit} className="space-y-6">
+							<Field>
+								<div className="flex items-center justify-between">
+									<div>
+										<FieldLabel>Image</FieldLabel>
+										<FieldDescription>
+											{description}
+										</FieldDescription>
+									</div>
+									{showResetButton && onReset && (
+										<CustomTooltip content="Reset default image">
+											<button
+												type="button"
+												onClick={handleResetClick}
+												disabled={
+													imageUpload.isUploading
+												}
+												className="cursor-pointer text-destructive hover:text-destructive transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+											>
+												<RotateCcw className="h-5 w-5" />
+											</button>
+										</CustomTooltip>
+									)}
 								</div>
-								{showResetButton && onReset && (
-									<CustomTooltip content="Reset default image">
-										<button
-											type="button"
-											onClick={handleResetClick}
-											disabled={
-												imageUpload.isUploading
-											}
-											className="cursor-pointer text-destructive hover:text-destructive transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-										>
-											<RotateCcw className="h-5 w-5" />
-										</button>
-									</CustomTooltip>
+
+								<div className="space-y-4">
+									<ImageUploadPreview
+										imageUpload={imageUpload}
+										currentImageUrl={currentImageUrl}
+										imageClassName={imageClassName}
+									/>
+
+									<UploadZone imageUpload={imageUpload} />
+
+									<input
+										ref={imageUpload.fileInputRef}
+										type="file"
+										accept="image/*"
+										onChange={imageUpload.handleFileSelect}
+										className="hidden"
+									/>
+								</div>
+
+								{imageUpload.error && (
+									<FieldError>{imageUpload.error}</FieldError>
 								)}
+							</Field>
+
+							<div className="flex gap-2 justify-end pt-4">
+								<Button
+									type="button"
+									variant="outline"
+									onClick={handleClose}
+									disabled={imageUpload.isUploading}
+									className="cursor-pointer"
+								>
+									Cancel
+								</Button>
+								<Button
+									className="cursor-pointer"
+									type="submit"
+									disabled={
+										imageUpload.isUploading ||
+										!imageUpload.selectedFile
+									}
+								>
+									{imageUpload.isUploading
+										? 'Uploading...'
+										: 'Upload Image'}
+								</Button>
 							</div>
+						</form>
+					</DialogContent>
+				</Dialog>
 
-							<div className="space-y-4">
-								<ImageUploadPreview
-									imageUpload={imageUpload}
-									currentImageUrl={currentImageUrl}
-									imageClassName={imageClassName}
-								/>
-
-								<UploadZone imageUpload={imageUpload} />
-
-								<input
-									ref={imageUpload.fileInputRef}
-									type="file"
-									accept="image/*"
-									onChange={imageUpload.handleFileSelect}
-									className="hidden"
-								/>
-							</div>
-
-							{imageUpload.error && (
-								<FieldError>{imageUpload.error}</FieldError>
-							)}
-						</Field>
-
-						<div className="flex gap-2 justify-end pt-4">
-							<Button
-								type="button"
-								variant="outline"
-								onClick={handleClose}
-								disabled={imageUpload.isUploading}
-								className="cursor-pointer"
-							>
-								Cancel
-							</Button>
-							<Button
-								className="cursor-pointer"
-								type="submit"
-								disabled={
-									imageUpload.isUploading ||
-									!imageUpload.selectedFile
-								}
-							>
-								{imageUpload.isUploading
-									? 'Uploading...'
-									: 'Upload Image'}
-							</Button>
-						</div>
-					</form>
-				</DialogContent>
-			</Dialog>
-
-			<ConfirmModal
-				ref={confirmModalRef}
-				title="Reset profile picture?"
-				description="This will replace your current profile picture with the default avatar. This action cannot be undone."
-				confirmText="Reset"
-				cancelText="Cancel"
-				variant="destructive"
-				onConfirm={handleResetConfirm}
-			/>
-		</>
+				<ConfirmModal
+					ref={confirmModalRef}
+					title="Reset profile picture?"
+					description="This will replace your current profile picture with the default avatar. This action cannot be undone."
+					confirmText="Reset"
+					cancelText="Cancel"
+					variant="destructive"
+					onConfirm={handleResetConfirm}
+				/>
+			</>
 		);
 	}
 );

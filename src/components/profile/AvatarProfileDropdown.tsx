@@ -18,12 +18,10 @@ import { LogOutIcon, Settings, UserIcon } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import useLogout from '@/hooks/useLogout';
 
-
 const AvatarProfileDropdown = () => {
 	const { user } = useAuth();
 	const { profile } = useProfile();
 	const { handleLogout } = useLogout();
-
 
 	return (
 		<DropdownMenu>
