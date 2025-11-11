@@ -11,7 +11,7 @@ import {
 	FieldDescription,
 	FieldError,
 } from '@shadcn/components/ui/field';
-import { forwardRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle';
 import { useModal } from '@/hooks/useModal';
 import {
@@ -23,6 +23,7 @@ import ImageUploadPreview from './ImageUploadPreview';
 import UploadZone from './UploadZone';
 import { RotateCcw } from 'lucide-react';
 import { CustomTooltip } from '../CustomTooltip';
+import { ConfirmModal } from '../ConfirmModal';
 
 type ImageUploadModalProps = {
 	title?: string;
@@ -60,6 +61,7 @@ export const ImageUploadModal = forwardRef<
 	) => {
 		const { isOpen, closeModal } = useModal(ref);
 		const imageUpload = useImageUpload(uploadOptions);
+		const confirmModalRef = useRef<ModalImperativeHandle>(null);
 
 		const handleSubmit = async (e: React.FormEvent) => {
 			e.preventDefault();
@@ -81,7 +83,11 @@ export const ImageUploadModal = forwardRef<
 			closeModal();
 		};
 
-		const handleReset = async () => {
+		const handleResetClick = () => {
+			confirmModalRef.current?.openModal();
+		};
+
+		const handleResetConfirm = async () => {
 			if (!onReset) return;
 
 			try {
@@ -101,6 +107,7 @@ export const ImageUploadModal = forwardRef<
 		};
 
 		return (
+			<>
 			<Dialog open={isOpen} onOpenChange={handleClose} >
 				<DialogContent className="max-w-md" onOpenAutoFocus={e => e.preventDefault()}>
 					<DialogHeader>
@@ -120,7 +127,7 @@ export const ImageUploadModal = forwardRef<
 									<CustomTooltip content="Reset default image">
 										<button
 											type="button"
-											onClick={handleReset}
+											onClick={handleResetClick}
 											disabled={
 												imageUpload.isUploading
 											}
@@ -181,6 +188,17 @@ export const ImageUploadModal = forwardRef<
 					</form>
 				</DialogContent>
 			</Dialog>
+
+			<ConfirmModal
+				ref={confirmModalRef}
+				title="Reset profile picture?"
+				description="This will replace your current profile picture with the default avatar. This action cannot be undone."
+				confirmText="Reset"
+				cancelText="Cancel"
+				variant="destructive"
+				onConfirm={handleResetConfirm}
+			/>
+		</>
 		);
 	}
 );
