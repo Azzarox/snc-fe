@@ -26,7 +26,12 @@ export const EditProfileImageModal = forwardRef<
 			successMessage="Profile image updated successfully!"
 			uploadOptions={{
 				maxSizeMB: 5,
-				acceptedTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+				acceptedTypes: [
+					'image/jpeg',
+					'image/png',
+					'image/gif',
+					'image/webp',
+				],
 			}}
 		/>
 	);

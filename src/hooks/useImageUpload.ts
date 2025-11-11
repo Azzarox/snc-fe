@@ -22,8 +22,11 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 
 	const validateFile = useCallback(
 		(file: File): string | null => {
-
-			if (!acceptedTypes.some((type) => file.type.startsWith(type.split('/')[0]))) {
+			if (
+				!acceptedTypes.some((type) =>
+					file.type.startsWith(type.split('/')[0])
+				)
+			) {
 				return 'Please select a valid image file';
 			}
 
@@ -116,7 +119,7 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 	}, []);
 
 	const uploadImage = useCallback(
-		async <T,>(
+		async <T>(
 			uploadFn: (formData: FormData) => Promise<ApiResponse<T>>
 		): Promise<{ success: boolean; message?: string | null; data?: T }> => {
 			if (!selectedFile) {
@@ -130,7 +133,7 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 
 			try {
 				const formData = new FormData();
-				formData.append('image', selectedFile); 
+				formData.append('image', selectedFile);
 
 				const result = await uploadFn(formData);
 
@@ -139,9 +142,9 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 				}
 
 				return result;
-			} catch (err:any) {
-				console.error(err.message)
-				throw err
+			} catch (err: any) {
+				console.error(err.message);
+				throw err;
 			} finally {
 				setIsUploading(false);
 			}

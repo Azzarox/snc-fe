@@ -14,7 +14,6 @@ import {
 import { forwardRef } from 'react';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle';
 import { useModal } from '@/hooks/useModal';
-import { ImageUp, Upload, X } from 'lucide-react';
 import {
 	useImageUpload,
 	type ImageUploadOptions,
@@ -29,7 +28,7 @@ type ImageUploadModalProps = {
 	currentImageUrl?: string;
 	imageClassName?: string;
 	onSuccess: () => void;
-	uploadFn: (formData: FormData) => Promise<ApiResponse<any>>;
+	uploadFn: <T>(formData: FormData) => Promise<ApiResponse<T>>;
 	successMessage?: string;
 	uploadOptions?: ImageUploadOptions;
 };
@@ -124,9 +123,14 @@ export const ImageUploadModal = forwardRef<
 							<Button
 								className="cursor-pointer"
 								type="submit"
-								disabled={imageUpload.isUploading || !imageUpload.selectedFile}
+								disabled={
+									imageUpload.isUploading ||
+									!imageUpload.selectedFile
+								}
 							>
-								{imageUpload.isUploading ? 'Uploading...' : 'Upload Image'}
+								{imageUpload.isUploading
+									? 'Uploading...'
+									: 'Upload Image'}
 							</Button>
 						</div>
 					</form>

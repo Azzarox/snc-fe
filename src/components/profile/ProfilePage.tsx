@@ -108,7 +108,9 @@ export default function ProfilePage() {
 								className="w-40 h-40 rounded-full border-4 border-background object-cover"
 							/>
 							<button
-								onClick={() => imageModalRef.current?.openModal()}
+								onClick={() =>
+									imageModalRef.current?.openModal()
+								}
 								className="cursor-pointer absolute bottom-2 right-2 bg-primary text-primary-foreground p-2 rounded-full hover:opacity-90 transition-opacity"
 							>
 								<Camera className="h-4 w-4" />

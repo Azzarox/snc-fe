@@ -35,7 +35,9 @@ export function useFetch() {
 
 				const isFormData = fetchOptions.body instanceof FormData;
 				const headers = {
-					...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+					...(isFormData
+						? {}
+						: { 'Content-Type': 'application/json' }),
 					...fetchOptions.headers,
 				};
 
