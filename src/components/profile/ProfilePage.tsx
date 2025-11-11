@@ -16,6 +16,7 @@ import PageLoader from '../common/PageLoader.tsx';
 import ProfileAbout from './components/ProfileAbout.tsx';
 import { UnableToLoad } from '../common/PageUnableToLoad.tsx';
 import { EditProfileModal } from './EditProfileModal.tsx';
+import { EditProfileImageModal } from './EditProfileImageModal.tsx';
 import { useProfile } from '@/hooks/useProfile.ts';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle.ts';
 
@@ -57,6 +58,7 @@ export default function ProfilePage() {
 	);
 
 	const modalRef = useRef<ModalImperativeHandle>(null);
+	const imageModalRef = useRef<ModalImperativeHandle>(null);
 
 	const { user } = useAuth();
 	const { profile, loading, refetch } = useProfile();
@@ -101,11 +103,14 @@ export default function ProfilePage() {
 					<div className="absolute -top-20 left-0">
 						<div className="relative">
 							<img
-								src="/woman-guitarist.jpg"
-								alt="Sarah Mitchell"
+								src={profile.avatarUrl}
+								alt={`${profile.firstName} ${profile.lastName}`}
 								className="w-40 h-40 rounded-full border-4 border-background object-cover"
 							/>
-							<button className="absolute bottom-2 right-2 bg-primary text-primary-foreground p-2 rounded-full hover:opacity-90 transition-opacity">
+							<button
+								onClick={() => imageModalRef.current?.openModal()}
+								className="cursor-pointer absolute bottom-2 right-2 bg-primary text-primary-foreground p-2 rounded-full hover:opacity-90 transition-opacity"
+							>
 								<Camera className="h-4 w-4" />
 							</button>
 						</div>
@@ -345,6 +350,12 @@ export default function ProfilePage() {
 				ref={modalRef}
 				onSuccess={() => refetch()}
 				profile={profile}
+			/>
+
+			<EditProfileImageModal
+				ref={imageModalRef}
+				onSuccess={() => refetch()}
+				currentImageUrl={profile.avatarUrl}
 			/>
 		</div>
 	);

@@ -31,5 +31,17 @@ export const useProfileService = () => {
 		[fetchJson, token]
 	);
 
-	return { getUserProfile, updateUserProfile };
+	const updateProfileImage = useCallback(
+		(formData: FormData) =>
+			fetchJson<UserProfile>('/@api/users/profile/avatar', {
+				method: 'PUT',
+				body: formData,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
+		[fetchJson, token]
+	);
+
+	return { getUserProfile, updateUserProfile, updateProfileImage };
 };

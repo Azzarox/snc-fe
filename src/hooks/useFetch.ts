@@ -32,8 +32,10 @@ export function useFetch() {
 				}
 
 				const { toast = false, ...fetchOptions } = options || {};
+
+				const isFormData = fetchOptions.body instanceof FormData;
 				const headers = {
-					'Content-Type': 'application/json',
+					...(isFormData ? {} : { 'Content-Type': 'application/json' }),
 					...fetchOptions.headers,
 				};
 
