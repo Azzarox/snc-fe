@@ -11,6 +11,12 @@ import {
 	FieldDescription,
 	FieldError,
 } from '@shadcn/components/ui/field';
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from '@shadcn/components/ui/tooltip';
 import { forwardRef } from 'react';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle';
 import { useModal } from '@/hooks/useModal';
@@ -21,6 +27,7 @@ import {
 import type { ApiResponse } from '@/types/api/response';
 import ImageUploadPreview from './ImageUploadPreview';
 import UploadZone from './UploadZone';
+import { RotateCcw } from 'lucide-react';
 
 type ImageUploadModalProps = {
 	title?: string;
@@ -107,8 +114,31 @@ export const ImageUploadModal = forwardRef<
 
 					<form onSubmit={handleSubmit} className="space-y-6">
 						<Field>
-							<FieldLabel>Image</FieldLabel>
-							<FieldDescription>{description}</FieldDescription>
+							<div className="flex items-center justify-between">
+								<div>
+									<FieldLabel>Image</FieldLabel>
+									<FieldDescription>{description}</FieldDescription>
+								</div>
+								{showResetButton && onReset && (
+									<TooltipProvider>
+										<Tooltip>
+											<TooltipTrigger asChild>
+												<button
+													type="button"
+													onClick={handleReset}
+													disabled={imageUpload.isUploading}
+													className="cursor-pointer text-destructive hover:text-destructive transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+												>
+													<RotateCcw className="h-5 w-5" />
+												</button>
+											</TooltipTrigger>
+											<TooltipContent>
+												<p>Reset to default</p>
+											</TooltipContent>
+										</Tooltip>
+									</TooltipProvider>
+								)}
+							</div>
 
 							<div className="space-y-4">
 								<ImageUploadPreview
@@ -133,41 +163,28 @@ export const ImageUploadModal = forwardRef<
 							)}
 						</Field>
 
-						<div className="flex gap-2 justify-between pt-4">
-							{showResetButton && onReset && (
-								<Button
-									type="button"
-									variant="destructive"
-									onClick={handleReset}
-									disabled={imageUpload.isUploading}
-									className="cursor-pointer"
-								>
-									Reset to Default
-								</Button>
-							)}
-							<div className="flex gap-2 ml-auto">
-								<Button
-									type="button"
-									variant="outline"
-									onClick={handleClose}
-									disabled={imageUpload.isUploading}
-									className="cursor-pointer"
-								>
-									Cancel
-								</Button>
-								<Button
-									className="cursor-pointer"
-									type="submit"
-									disabled={
-										imageUpload.isUploading ||
-										!imageUpload.selectedFile
-									}
-								>
-									{imageUpload.isUploading
-										? 'Uploading...'
-										: 'Upload Image'}
-								</Button>
-							</div>
+						<div className="flex gap-2 justify-end pt-4">
+							<Button
+								type="button"
+								variant="outline"
+								onClick={handleClose}
+								disabled={imageUpload.isUploading}
+								className="cursor-pointer"
+							>
+								Cancel
+							</Button>
+							<Button
+								className="cursor-pointer"
+								type="submit"
+								disabled={
+									imageUpload.isUploading ||
+									!imageUpload.selectedFile
+								}
+							>
+								{imageUpload.isUploading
+									? 'Uploading...'
+									: 'Upload Image'}
+							</Button>
 						</div>
 					</form>
 				</DialogContent>
