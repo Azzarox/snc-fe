@@ -43,7 +43,9 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 	const createPreview = useCallback((file: File) => {
 		const reader = new FileReader();
 		reader.onloadend = () => {
-			setPreviewUrl(reader.result as string);
+			if (typeof reader.result === 'string') {
+				setPreviewUrl(reader.result);
+			}
 		};
 		reader.readAsDataURL(file);
 	}, []);

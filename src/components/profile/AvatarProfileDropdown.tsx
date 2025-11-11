@@ -18,10 +18,12 @@ import { LogOutIcon, Settings, UserIcon } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import useLogout from '@/hooks/useLogout';
 
+
 const AvatarProfileDropdown = () => {
 	const { user } = useAuth();
 	const { profile } = useProfile();
 	const { handleLogout } = useLogout();
+
 
 	return (
 		<DropdownMenu>
@@ -29,7 +31,7 @@ const AvatarProfileDropdown = () => {
 				<Avatar>
 					<AvatarImage
 						className="rounded"
-						src="https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-5.png"
+						src={profile?.avatarUrl}
 						alt="Sarah Mitchell"
 					/>
 					<AvatarFallback className="text-xs">SM</AvatarFallback>
@@ -46,7 +48,7 @@ const AvatarProfileDropdown = () => {
 					<Avatar className="size-10">
 						<AvatarImage
 							className="rounded-md"
-							src="https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-5.png"
+							src={profile?.avatarUrl}
 							alt="Hallie Richards"
 						/>
 						<AvatarFallback className="text-xs">HR</AvatarFallback>
