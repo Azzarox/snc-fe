@@ -202,7 +202,7 @@ export const ImageUploadModal = forwardRef<
 										!imageUpload.selectedFile
 									}
 								>
-									{true
+									{imageUpload.isUploading
 										? <div className='flex flex-row-reverse justify-between items-center gap-x-1'><span>Uploading</span><Spinner/></div>
 										: 'Upload Image'}
 								</Button>

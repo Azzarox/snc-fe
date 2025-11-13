@@ -2,20 +2,18 @@ import { useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import type { Area } from 'react-easy-crop';
 import { Slider } from '@shadcn/components/ui/slider';
-import { FieldLabel, FieldDescription } from '@shadcn/components/ui/field';
+import { FieldLabel } from '@shadcn/components/ui/field';
 import { Button } from '@shadcn/components/ui/button';
 import type { ImageUploadState } from './ImageUploadModal';
 
 type ImageUploadCropperPreviewProps = {
 	imageUpload: ImageUploadState;
 	aspectRatio?: number;
-	previewHeight?: string;
 };
 
 const ImageUploadCropperPreview = ({
 	imageUpload,
 	aspectRatio = 5, // 5:1 for cover images (1280px / 256px = 5:1)
-	previewHeight = 'h-32',
 }: ImageUploadCropperPreviewProps) => {
 	const {
 		previewUrl,
@@ -44,8 +42,8 @@ const ImageUploadCropperPreview = ({
 	if (!previewUrl) return null;
 
 	return (
-		<div className="space-y-6">
-			<div className="relative w-full h-[400px] bg-black rounded-lg overflow-hidden border-2 border-border">
+		<div className="space-y-4">
+			<div className="relative w-full h-[450px] bg-muted/30 rounded-xl overflow-hidden border border-border/50">
 				<Cropper
 					image={previewUrl}
 					crop={crop}
@@ -54,38 +52,50 @@ const ImageUploadCropperPreview = ({
 					onCropChange={setCrop}
 					onZoomChange={setZoom}
 					onCropComplete={onCropComplete}
-					objectFit="contain"
+					objectFit="horizontal-cover"
+					style={{
+						containerStyle: {
+							background: 'transparent',
+						},
+						mediaStyle: {
+							opacity: 0.9,
+						},
+						cropAreaStyle: {
+							border: '2px solid hsl(var(--primary))',
+							boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.5)',
+						},
+					}}
 				/>
 			</div>
 
-			<div className="flex items-center gap-4">
-				<div className="flex-1 space-y-2">
-					<div className="flex items-center justify-between">
-						<FieldLabel className="text-sm">Zoom</FieldLabel>
-						<span className="text-xs text-muted-foreground">{zoom.toFixed(1)}x</span>
-					</div>
+			<div className="flex items-center gap-3">
+				<div className="flex-1 flex items-center gap-3">
+					<FieldLabel className="text-sm whitespace-nowrap">Zoom</FieldLabel>
 					<Slider
 						value={[zoom]}
 						onValueChange={(value) => setZoom(value[0])}
 						min={1}
 						max={3}
 						step={0.1}
-						className="w-full"
+						className="flex-1"
 					/>
+					<span className="text-xs text-muted-foreground w-12 text-right">{zoom.toFixed(1)}x</span>
 				</div>
+
 				<Button
 					type="button"
-					variant="outline"
+					variant="ghost"
+					size="sm"
 					onClick={removeImage}
-					className="cursor-pointer"
+					className="cursor-pointer shrink-0"
 				>
-					Change Image
+					Change
 				</Button>
 			</div>
 
-			<div className="text-sm text-muted-foreground text-center">
-				<p>Drag to reposition • Scroll or use slider to zoom</p>
-				<p className="text-xs mt-1">The selected area will be your cover image</p>
+			<div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/30 rounded-lg px-3 py-2">
+				<span>💡</span>
+				<span>Drag the image to reposition, use the slider or scroll to zoom</span>
 			</div>
 		</div>
 	);
