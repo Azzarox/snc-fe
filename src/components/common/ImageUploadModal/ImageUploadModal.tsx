@@ -20,6 +20,7 @@ import {
 } from '@/hooks/useImageUpload';
 import type { ApiResponse } from '@/types/api/response';
 import ImageUploadPreview from './ImageUploadPreview';
+import ImageUploadCropperPreview from './ImageUploadCropperPreview';
 import UploadZone from './UploadZone';
 import { RotateCcw } from 'lucide-react';
 import { CustomTooltip } from '../CustomTooltip';
@@ -110,7 +111,11 @@ export const ImageUploadModal = forwardRef<
 			<>
 				<Dialog open={isOpen} onOpenChange={handleClose}>
 					<DialogContent
-						className="max-w-md"
+						className={
+							imageUpload.enableCropping
+								? 'max-w-3xl max-h-[90vh] overflow-y-auto'
+								: 'max-w-md'
+						}
 						onOpenAutoFocus={(e) => e.preventDefault()}
 					>
 						<DialogHeader>
@@ -143,13 +148,26 @@ export const ImageUploadModal = forwardRef<
 								</div>
 
 								<div className="space-y-4">
-									<ImageUploadPreview
-										imageUpload={imageUpload}
-										currentImageUrl={currentImageUrl}
-										imageClassName={imageClassName}
-									/>
+									{imageUpload.enableCropping &&
+									imageUpload.previewUrl ? (
+										<ImageUploadCropperPreview
+											imageUpload={imageUpload}
+										/>
+									) : (
+										<>
+											<ImageUploadPreview
+												imageUpload={imageUpload}
+												currentImageUrl={
+													currentImageUrl
+												}
+												imageClassName={imageClassName}
+											/>
 
-									<UploadZone imageUpload={imageUpload} />
+											<UploadZone
+												imageUpload={imageUpload}
+											/>
+										</>
+									)}
 
 									<input
 										ref={imageUpload.fileInputRef}

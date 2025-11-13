@@ -91,8 +91,13 @@ export default function ProfilePage() {
 	return (
 		<div className="min-h-screen bg-background">
 			<div
-				className="relative w-full h-64"
-				style={{ backgroundImage: `url(${profile.coverUrl})`}}
+				className="relative w-full h-64 bg-muted"
+				style={{
+					backgroundImage: `url(${profile.coverUrl})`,
+					backgroundSize: 'cover',
+					backgroundPosition: 'center',
+					backgroundRepeat: 'no-repeat'
+				}}
 			>
 				<button
 					onClick={() => coverImageModalRef.current?.openModal()}

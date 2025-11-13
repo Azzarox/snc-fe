@@ -1,10 +1,12 @@
 import type { ApiResponse } from '@/types/api/response';
 import { useState, useRef, useCallback } from 'react';
+import type { Area } from 'react-easy-crop';
 
 export type ImageUploadOptions = {
 	maxSizeMB?: number;
 	acceptedTypes?: string[];
 	onValidationError?: (error: string) => void;
+	enableCropping?: boolean;
 };
 
 export const useImageUpload = (options: ImageUploadOptions = {}) => {
@@ -12,6 +14,7 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 		maxSizeMB = 5,
 		acceptedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
 		onValidationError,
+		enableCropping = false,
 	} = options;
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -19,6 +22,10 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [isUploading, setIsUploading] = useState(false);
+
+	const [crop, setCrop] = useState({ x: 0, y: 0 });
+	const [zoom, setZoom] = useState(1);
+	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
 
 	const validateFile = useCallback(
 		(file: File): string | null => {
@@ -106,6 +113,9 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 		setSelectedFile(null);
 		setPreviewUrl(null);
 		setError(null);
+		setCrop({ x: 0, y: 0 });
+		setZoom(1);
+		setCroppedAreaPixels(null);
 		if (fileInputRef.current) {
 			fileInputRef.current.value = '';
 		}
@@ -130,12 +140,25 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 				return { success: false, message: errorMsg };
 			}
 
+			if (enableCropping && !croppedAreaPixels) {
+				const errorMsg = 'Please adjust the crop area';
+				setError(errorMsg);
+				return { success: false, message: errorMsg };
+			}
+
 			setIsUploading(true);
 			setError(null);
 
 			try {
 				const formData = new FormData();
 				formData.append('image', selectedFile);
+
+				if (enableCropping && croppedAreaPixels) {
+					formData.append('cropX', croppedAreaPixels.x.toString());
+					formData.append('cropY', croppedAreaPixels.y.toString());
+					formData.append('cropWidth', croppedAreaPixels.width.toString());
+					formData.append('cropHeight', croppedAreaPixels.height.toString());
+				}
 
 				const result = await uploadFn(formData);
 
@@ -151,7 +174,7 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 				setIsUploading(false);
 			}
 		},
-		[selectedFile]
+		[selectedFile, enableCropping, croppedAreaPixels]
 	);
 
 	return {
@@ -170,5 +193,13 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 		triggerFileInput,
 		uploadImage,
 		setError,
+
+		enableCropping,
+		crop,
+		setCrop,
+		zoom,
+		setZoom,
+		croppedAreaPixels,
+		setCroppedAreaPixels,
 	};
 };

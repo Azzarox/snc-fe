@@ -36,6 +36,7 @@ export const EditCoverImageModal = forwardRef<
 					'image/gif',
 					'image/webp',
 				],
+				enableCropping: true,
 			}}
 			onReset={handleReset}
 			showResetButton={true}
