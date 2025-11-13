@@ -16,13 +16,21 @@ const ImageUploadPreview = ({
 
 	if (!previewUrl && !currentImageUrl) return null;
 
+	const displayUrl = previewUrl || currentImageUrl;
+	const isPattern = displayUrl?.startsWith('data:');
+	const hasFullWidth = imageClassName.includes('w-full');
+
 	return (
 		<div className="flex justify-center">
-			<div className="relative w-full">
-				<img
-					src={previewUrl || currentImageUrl}
-					alt="Preview"
+			<div className={`relative ${hasFullWidth && 'w-full'}`}>
+				<div
 					className={imageClassName}
+					style={{
+						backgroundImage: `url(${displayUrl})`,
+						backgroundSize: isPattern ? 'auto' : 'cover',
+						backgroundPosition: 'center',
+						backgroundRepeat: isPattern ? 'repeat' : 'no-repeat',
+					}}
 				/>
 				{previewUrl && (
 					<button
