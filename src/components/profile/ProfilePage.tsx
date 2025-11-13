@@ -90,9 +90,9 @@ export default function ProfilePage() {
 		<div className="min-h-screen bg-background">
 			<div className="relative w-full h-64 bg-gradient-to-br from-primary/20 to-accent/20">
 				<img
-					src="/guitar-music-stage-concert.jpg"
+					src={profile.coverUrl}
 					alt="Cover"
-					className="w-full h-full object-cover"
+					className="w-full h-full object-cover object-center"
 				/>
 				<button className="cursor-pointer absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-background transition-colors">
 					<Camera className="h-4 w-4" />
