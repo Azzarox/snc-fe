@@ -18,7 +18,7 @@ const ImageUploadPreview = ({
 
 	return (
 		<div className="flex justify-center">
-			<div className="relative">
+			<div className="relative w-full">
 				<img
 					src={previewUrl || currentImageUrl}
 					alt="Preview"
