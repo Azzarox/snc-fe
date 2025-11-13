@@ -88,12 +88,10 @@ export default function ProfilePage() {
 
 	return (
 		<div className="min-h-screen bg-background">
-			<div className="relative w-full h-64 bg-gradient-to-br from-primary/20 to-accent/20">
-				<img
-					src={profile.coverUrl}
-					alt="Cover"
-					className="w-full h-full object-cover object-center"
-				/>
+			<div
+				className="relative w-full h-64"
+				style={{ backgroundImage: `url(${profile.coverUrl})`}}
+			>
 				<button className="cursor-pointer absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-background transition-colors">
 					<Camera className="h-4 w-4" />
 					<span className="text-sm font-medium">Edit Cover</span>
