@@ -22,9 +22,10 @@ import type { ApiResponse } from '@/types/api/response';
 import ImageUploadPreview from './ImageUploadPreview';
 import ImageUploadCropperPreview from './ImageUploadCropperPreview';
 import UploadZone from './UploadZone';
-import { RotateCcw } from 'lucide-react';
+import { Loader, RotateCcw } from 'lucide-react';
 import { CustomTooltip } from '../CustomTooltip';
 import { ConfirmModal } from '../ConfirmModal';
+import { Spinner } from '@shadcn/components/ui/spinner';
 
 type ImageUploadModalProps = {
 	title?: string;
@@ -201,8 +202,8 @@ export const ImageUploadModal = forwardRef<
 										!imageUpload.selectedFile
 									}
 								>
-									{imageUpload.isUploading
-										? 'Uploading...'
+									{true
+										? <div className='flex flex-row-reverse justify-between items-center gap-x-1'><span>Uploading</span><Spinner/></div>
 										: 'Upload Image'}
 								</Button>
 							</div>
