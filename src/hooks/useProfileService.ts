@@ -54,10 +54,35 @@ export const useProfileService = () => {
 		[fetchJson, token]
 	);
 
+	const updateCoverImage = useCallback(
+		(formData: FormData) =>
+			fetchJson<UserProfile>('/@api/users/profile/cover', {
+				method: 'PUT',
+				body: formData,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
+		[fetchJson, token]
+	);
+
+	const resetCoverImage = useCallback(
+		() =>
+			fetchJson<UserProfile>('/@api/users/profile/cover', {
+				method: 'DELETE',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
+		[fetchJson, token]
+	);
+
 	return {
 		getUserProfile,
 		updateUserProfile,
 		updateProfileImage,
 		resetProfileImage,
+		updateCoverImage,
+		resetCoverImage
 	};
 };
