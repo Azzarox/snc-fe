@@ -1,4 +1,9 @@
-import { type ReactNode, type FC, type ForwardRefExoticComponent, type RefAttributes } from 'react';
+import {
+	type ReactNode,
+	type FC,
+	type ForwardRefExoticComponent,
+	type RefAttributes,
+} from 'react';
 import { ImageUploadProvider } from './context/ImageUploadContext';
 import type { ImageUploadOptions } from '@/hooks/useImageUpload';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle';
@@ -31,33 +36,33 @@ type ModalProps = {
 	showResetButton?: boolean;
 };
 
-// Define the compound component type
 type ImageUploadComponent = FC<ImageUploadProps> & {
 	Preview: FC<PreviewProps>;
 	CropperPreview: FC<CropperPreviewProps>;
 	UploadZone: FC;
 	FileInput: FC;
 	ErrorMessage: FC;
-	Modal: ForwardRefExoticComponent<ModalProps & RefAttributes<ModalImperativeHandle>>;
+	Modal: ForwardRefExoticComponent<
+		ModalProps & RefAttributes<ModalImperativeHandle>
+	>;
 };
 
 export const ImageUpload = (({ children, options }: ImageUploadProps) => {
-	return <ImageUploadProvider options={options}>{children}</ImageUploadProvider>;
+	return (
+		<ImageUploadProvider options={options}>{children}</ImageUploadProvider>
+	);
 }) as ImageUploadComponent;
 
-// Import and attach compound components
 import Preview from './Preview';
 import CropperPreview from './CropperPreview';
 import UploadZone from './UploadZone';
 import FileInput from './FileInput';
 import ErrorMessage from './ErrorMessage';
+import Modal from './Modal';
 
 ImageUpload.Preview = Preview;
 ImageUpload.CropperPreview = CropperPreview;
 ImageUpload.UploadZone = UploadZone;
 ImageUpload.FileInput = FileInput;
 ImageUpload.ErrorMessage = ErrorMessage;
-
-// Import Modal LAST (it uses the other compound components)
-import Modal from './Modal';
 ImageUpload.Modal = Modal;

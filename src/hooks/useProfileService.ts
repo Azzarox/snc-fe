@@ -83,6 +83,6 @@ export const useProfileService = () => {
 		updateProfileImage,
 		resetProfileImage,
 		updateCoverImage,
-		resetCoverImage
+		resetCoverImage,
 	};
 };

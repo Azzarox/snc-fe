@@ -15,8 +15,7 @@ const Preview = ({
 	if (!previewUrl && !currentImageUrl) return null;
 
 	const displayUrl = previewUrl || currentImageUrl;
-	// Only treat as pattern if it's an SVG data URL (geopattern), not uploaded images
-	const isPattern = displayUrl?.startsWith('data:image/svg+xml');
+	const isPattern = displayUrl?.startsWith('data:image/svg+xml'); // GeoPattern default cover image
 	const hasFullWidth = imageClassName.includes('w-full');
 
 	return (

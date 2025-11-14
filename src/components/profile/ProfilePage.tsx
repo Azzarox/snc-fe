@@ -94,9 +94,13 @@ export default function ProfilePage() {
 				className="relative w-full h-64 bg-muted"
 				style={{
 					backgroundImage: `url(${profile.coverUrl})`,
-					backgroundSize: profile.coverUrl?.startsWith('data:') ? 'auto' : 'cover',
+					backgroundSize: profile.coverUrl?.startsWith('data:')
+						? 'auto'
+						: 'cover',
 					backgroundPosition: 'center',
-					backgroundRepeat: profile.coverUrl?.startsWith('data:') ? 'repeat' : 'no-repeat'
+					backgroundRepeat: profile.coverUrl?.startsWith('data:')
+						? 'repeat'
+						: 'no-repeat',
 				}}
 			>
 				<button

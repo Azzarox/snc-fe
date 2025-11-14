@@ -13,8 +13,15 @@ type CropperPreviewProps = {
 const CropperPreview = ({
 	aspectRatio = 5, // 5:1 for cover images (1280px / 256px = 5:1)
 }: CropperPreviewProps) => {
-	const { previewUrl, crop, setCrop, zoom, setZoom, setCroppedAreaPixels, removeImage } =
-		useCropper();
+	const {
+		previewUrl,
+		crop,
+		setCrop,
+		zoom,
+		setZoom,
+		setCroppedAreaPixels,
+		removeImage,
+	} = useCropper();
 
 	const onCropComplete = useCallback(
 		(_croppedArea: Area, croppedAreaPixels: Area) => {
@@ -61,7 +68,9 @@ const CropperPreview = ({
 
 			<div className="flex items-center gap-3">
 				<div className="flex-1 flex items-center gap-3">
-					<FieldLabel className="text-sm whitespace-nowrap">Zoom</FieldLabel>
+					<FieldLabel className="text-sm whitespace-nowrap">
+						Zoom
+					</FieldLabel>
 					<Slider
 						value={[zoom]}
 						onValueChange={(value) => setZoom(value[0])}
@@ -70,7 +79,9 @@ const CropperPreview = ({
 						step={0.1}
 						className="flex-1"
 					/>
-					<span className="text-xs text-muted-foreground w-12 text-right">{zoom.toFixed(1)}x</span>
+					<span className="text-xs text-muted-foreground w-12 text-right">
+						{zoom.toFixed(1)}x
+					</span>
 				</div>
 
 				<Button
@@ -86,7 +97,10 @@ const CropperPreview = ({
 
 			<div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/30 rounded-lg px-3 py-2">
 				<span>💡</span>
-				<span>Drag the image to reposition, use the slider or scroll to zoom</span>
+				<span>
+					Drag the image to reposition, use the slider or scroll to
+					zoom
+				</span>
 			</div>
 		</div>
 	);
