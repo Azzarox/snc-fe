@@ -9,6 +9,14 @@ export type ImageUploadOptions = {
 	enableCropping?: boolean;
 };
 
+const VALIDATION_ERRORS = {
+	INVALID_TYPE: 'Please select a valid image file',
+	FILE_TOO_LARGE: (sizeMB: number) => `Image size must be less than ${sizeMB}MB`,
+	NO_FILE_SELECTED: 'Please select an image',
+	CROP_REQUIRED: 'Please adjust the crop area',
+	UPLOAD_FAILED: 'Upload failed',
+} as const;
+
 export const useImageUpload = (options: ImageUploadOptions = {}) => {
 	const {
 		maxSizeMB = 5,
@@ -18,9 +26,11 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 	} = options;
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
+
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
+
 	const [isUploading, setIsUploading] = useState(false);
 
 	const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -29,17 +39,17 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 
 	const validateFile = useCallback(
 		(file: File): string | null => {
-			if (
-				!acceptedTypes.some((type) =>
-					file.type.startsWith(type.split('/')[0])
-				)
-			) {
-				return 'Please select a valid image file';
+			const isValidType = acceptedTypes.some((type) =>
+				file.type.startsWith(type.split('/')[0])
+			);
+
+			if (!isValidType) {
+				return VALIDATION_ERRORS.INVALID_TYPE;
 			}
 
 			const maxSizeBytes = maxSizeMB * 1024 * 1024;
 			if (file.size > maxSizeBytes) {
-				return `Image size must be less than ${maxSizeMB}MB`;
+				return VALIDATION_ERRORS.FILE_TOO_LARGE(maxSizeMB);
 			}
 
 			return null;
@@ -57,23 +67,32 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 		reader.readAsDataURL(file);
 	}, []);
 
-	const handleFileSelect = useCallback(
-		(event: React.ChangeEvent<HTMLInputElement>) => {
-			const file = event.target.files?.[0];
-			if (!file) return;
-
+	const processFile = useCallback(
+		(file: File): boolean => {
 			const validationError = validateFile(file);
+
 			if (validationError) {
 				setError(validationError);
 				onValidationError?.(validationError);
-				return;
+				return false;
 			}
 
 			setError(null);
 			setSelectedFile(file);
 			createPreview(file);
+			return true;
 		},
 		[validateFile, createPreview, onValidationError]
+	);
+
+	const handleFileSelect = useCallback(
+		(event: React.ChangeEvent<HTMLInputElement>) => {
+			const file = event.target.files?.[0];
+			if (!file) return;
+
+			processFile(file);
+		},
+		[processFile]
 	);
 
 	const handleDrop = useCallback(
@@ -84,29 +103,24 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 			const file = event.dataTransfer.files?.[0];
 			if (!file) return;
 
-			const validationError = validateFile(file);
-			if (validationError) {
-				setError(validationError);
-				onValidationError?.(validationError);
-				return;
-			}
+			const isValid = processFile(file);
 
-			setError(null);
-			setSelectedFile(file);
-			createPreview(file);
-
-			if (fileInputRef.current) {
+			if (isValid && fileInputRef.current) {
 				const dataTransfer = new DataTransfer();
 				dataTransfer.items.add(file);
 				fileInputRef.current.files = dataTransfer.files;
 			}
 		},
-		[validateFile, createPreview, onValidationError]
+		[processFile]
 	);
 
 	const handleDragOver = useCallback((event: React.DragEvent) => {
 		event.preventDefault();
 		event.stopPropagation();
+	}, []);
+
+	const triggerFileInput = useCallback(() => {
+		fileInputRef.current?.click();
 	}, []);
 
 	const removeImage = useCallback(() => {
@@ -126,22 +140,32 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 		setIsUploading(false);
 	}, [removeImage]);
 
-	const triggerFileInput = useCallback(() => {
-		fileInputRef.current?.click();
-	}, []);
+	const buildFormData = useCallback((): FormData => {
+		const formData = new FormData();
+		formData.append('image', selectedFile!);
+
+		if (enableCropping && croppedAreaPixels) {
+			formData.append('cropX', croppedAreaPixels.x.toString());
+			formData.append('cropY', croppedAreaPixels.y.toString());
+			formData.append('cropWidth', croppedAreaPixels.width.toString());
+			formData.append('cropHeight', croppedAreaPixels.height.toString());
+		}
+
+		return formData;
+	}, [selectedFile, enableCropping, croppedAreaPixels]);
 
 	const uploadImage = useCallback(
 		async <T>(
 			uploadFn: (formData: FormData) => Promise<ApiResponse<T>>
 		): Promise<{ success: boolean; message?: string | null; data?: T }> => {
 			if (!selectedFile) {
-				const errorMsg = 'Please select an image';
+				const errorMsg = VALIDATION_ERRORS.NO_FILE_SELECTED;
 				setError(errorMsg);
 				return { success: false, message: errorMsg };
 			}
 
 			if (enableCropping && !croppedAreaPixels) {
-				const errorMsg = 'Please adjust the crop area';
+				const errorMsg = VALIDATION_ERRORS.CROP_REQUIRED;
 				setError(errorMsg);
 				return { success: false, message: errorMsg };
 			}
@@ -150,20 +174,11 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 			setError(null);
 
 			try {
-				const formData = new FormData();
-				formData.append('image', selectedFile);
-
-				if (enableCropping && croppedAreaPixels) {
-					formData.append('cropX', croppedAreaPixels.x.toString());
-					formData.append('cropY', croppedAreaPixels.y.toString());
-					formData.append('cropWidth', croppedAreaPixels.width.toString());
-					formData.append('cropHeight', croppedAreaPixels.height.toString());
-				}
-
+				const formData = buildFormData();
 				const result = await uploadFn(formData);
 
 				if (!result.success) {
-					setError(result.message || 'Upload failed');
+					setError(result.message || VALIDATION_ERRORS.UPLOAD_FAILED);
 				}
 
 				return result;
@@ -174,27 +189,26 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 				setIsUploading(false);
 			}
 		},
-		[selectedFile, enableCropping, croppedAreaPixels]
+		[selectedFile, enableCropping, croppedAreaPixels, buildFormData]
 	);
 
 	return {
+		fileInputRef,
 		selectedFile,
 		previewUrl,
 		error,
+		setError,
 		isUploading,
-
-		fileInputRef,
+		enableCropping,
 
 		handleFileSelect,
 		handleDrop,
 		handleDragOver,
+		triggerFileInput,
 		removeImage,
 		reset,
-		triggerFileInput,
 		uploadImage,
-		setError,
 
-		enableCropping,
 		crop,
 		setCrop,
 		zoom,
