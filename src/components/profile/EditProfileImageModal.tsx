@@ -3,6 +3,9 @@ import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle'
 import { useProfileService } from '@/hooks/useProfileService';
 import { ImageUpload } from '@/components/common/ImageUpload/ImageUpload';
 
+const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+const MAX_SIZE_MB = 5;
+
 type EditProfileImageModalProps = {
 	currentImageUrl?: string;
 	onSuccess: () => void;
@@ -29,13 +32,8 @@ export const EditProfileImageModal = forwardRef<
 			uploadFn={updateProfileImage}
 			successMessage="Profile image updated successfully!"
 			uploadOptions={{
-				maxSizeMB: 5,
-				acceptedTypes: [
-					'image/jpeg',
-					'image/png',
-					'image/gif',
-					'image/webp',
-				],
+				maxSizeMB: MAX_SIZE_MB,
+				acceptedTypes: ACCEPTED_TYPES,
 			}}
 			onReset={handleReset}
 			showResetButton={true}
