@@ -1,12 +1,8 @@
 import { Upload } from 'lucide-react';
-import type { ImageUploadState } from './ImageUploadModal';
+import { useUploadZone } from './hooks/useUploadZone';
 
-type UploadZoneProps = {
-	imageUpload: ImageUploadState;
-};
-
-const UploadZone = ({ imageUpload }: UploadZoneProps) => {
-	const { handleDragOver, handleDrop, triggerFileInput } = imageUpload;
+const UploadZone = () => {
+	const { handleDragOver, handleDrop, triggerFileInput } = useUploadZone();
 
 	return (
 		<div

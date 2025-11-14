@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle';
 import { useProfileService } from '@/hooks/useProfileService';
-import { ImageUploadModal } from '@/components/common/ImageUploadModal/ImageUploadModal';
+import { ImageUpload } from '@/components/common/ImageUpload/ImageUpload';
 
 type EditCoverImageModalProps = {
 	currentImageUrl?: string;
@@ -19,7 +19,7 @@ export const EditCoverImageModal = forwardRef<
 	};
 	
 	return (
-		<ImageUploadModal
+		<ImageUpload.Modal
 			ref={ref}
 			title="Update Cover Image"
 			description="Upload a new cover image (max 5MB)"

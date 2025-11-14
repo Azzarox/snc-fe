@@ -4,26 +4,17 @@ import type { Area } from 'react-easy-crop';
 import { Slider } from '@shadcn/components/ui/slider';
 import { FieldLabel } from '@shadcn/components/ui/field';
 import { Button } from '@shadcn/components/ui/button';
-import type { ImageUploadState } from './ImageUploadModal';
+import { useCropper } from './hooks/useCropper';
 
-type ImageUploadCropperPreviewProps = {
-	imageUpload: ImageUploadState;
+type CropperPreviewProps = {
 	aspectRatio?: number;
 };
 
-const ImageUploadCropperPreview = ({
-	imageUpload,
+const CropperPreview = ({
 	aspectRatio = 5, // 5:1 for cover images (1280px / 256px = 5:1)
-}: ImageUploadCropperPreviewProps) => {
-	const {
-		previewUrl,
-		crop,
-		setCrop,
-		zoom,
-		setZoom,
-		setCroppedAreaPixels,
-		removeImage,
-	} = imageUpload;
+}: CropperPreviewProps) => {
+	const { previewUrl, crop, setCrop, zoom, setZoom, setCroppedAreaPixels, removeImage } =
+		useCropper();
 
 	const onCropComplete = useCallback(
 		(_croppedArea: Area, croppedAreaPixels: Area) => {
@@ -101,4 +92,4 @@ const ImageUploadCropperPreview = ({
 	);
 };
 
-export default ImageUploadCropperPreview;
+export default CropperPreview;

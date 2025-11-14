@@ -1,37 +1,44 @@
 import { X } from 'lucide-react';
-import type { ImageUploadState } from './ImageUploadModal';
+import { usePreview } from './hooks/usePreview';
 
-type ImageUploadPreviewProps = {
-	imageUpload: ImageUploadState;
+type PreviewProps = {
 	currentImageUrl?: string;
 	imageClassName?: string;
 };
 
-const ImageUploadPreview = ({
-	imageUpload,
+const Preview = ({
 	currentImageUrl,
 	imageClassName = 'w-32 h-32 rounded-lg object-cover border-4 border-border',
-}: ImageUploadPreviewProps) => {
-	const { previewUrl, removeImage } = imageUpload;
+}: PreviewProps) => {
+	const { previewUrl, removeImage } = usePreview();
 
 	if (!previewUrl && !currentImageUrl) return null;
 
 	const displayUrl = previewUrl || currentImageUrl;
-	const isPattern = displayUrl?.startsWith('data:');
+	// Only treat as pattern if it's an SVG data URL (geopattern), not uploaded images
+	const isPattern = displayUrl?.startsWith('data:image/svg+xml');
 	const hasFullWidth = imageClassName.includes('w-full');
 
 	return (
 		<div className="flex justify-center">
 			<div className={`relative ${hasFullWidth && 'w-full'}`}>
-				<div
-					className={imageClassName}
-					style={{
-						backgroundImage: `url(${displayUrl})`,
-						backgroundSize: isPattern ? 'auto' : 'cover',
-						backgroundPosition: 'center',
-						backgroundRepeat: isPattern ? 'repeat' : 'no-repeat',
-					}}
-				/>
+				{isPattern ? (
+					<div
+						className={imageClassName}
+						style={{
+							backgroundImage: `url(${displayUrl})`,
+							backgroundSize: 'auto',
+							backgroundPosition: 'center',
+							backgroundRepeat: 'repeat',
+						}}
+					/>
+				) : (
+					<img
+						src={displayUrl}
+						alt="Preview"
+						className={imageClassName}
+					/>
+				)}
 				{previewUrl && (
 					<button
 						type="button"
@@ -46,4 +53,4 @@ const ImageUploadPreview = ({
 	);
 };
 
-export default ImageUploadPreview;
+export default Preview;
