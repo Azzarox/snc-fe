@@ -145,10 +145,7 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 		formData.append('image', selectedFile!);
 
 		if (enableCropping && croppedAreaPixels) {
-			formData.append('cropX', croppedAreaPixels.x.toString());
-			formData.append('cropY', croppedAreaPixels.y.toString());
-			formData.append('cropWidth', croppedAreaPixels.width.toString());
-			formData.append('cropHeight', croppedAreaPixels.height.toString());
+			formData.append('croppedAreaPixels', JSON.stringify(croppedAreaPixels));
 		}
 
 		return formData;
