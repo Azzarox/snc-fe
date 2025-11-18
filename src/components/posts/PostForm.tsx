@@ -5,6 +5,9 @@ import { createPostSchema, type CreatePostFormData } from '@/schemas/posts/creat
 import { usePostService } from '@/hooks/usePostService';
 import { useConfirmModal } from '@/hooks/useConfirmModal';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
+import { Info } from 'lucide-react';
+
+
 
 type PostFormProps = {
 	onPostCreated?: () => void;
@@ -48,6 +51,7 @@ export const PostForm = ({ onPostCreated }: PostFormProps) => {
 			<form onSubmit={handleSubmit(onFormSubmit)}>
 				<div className="space-y-3">
 					<div>
+                        
 						<input
 							{...register('title')}
 							type="text"
@@ -64,13 +68,18 @@ export const PostForm = ({ onPostCreated }: PostFormProps) => {
 					<div>
 						<textarea
 							{...register('content')}
-							placeholder="What's on your mind? Share your music, gear, or tips..."
-							className="w-full min-h-24 p-3 bg-background border border-input rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground"
+							placeholder="What's on your mind? Share your music, gear, or tips...&#10;&#10;"
+							className="w-full min-h-32 p-3 bg-background border border-input rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground font-mono text-sm"
 						/>
-						{errors.content && (
+						{errors.content ? (
 							<p className="text-sm text-destructive mt-1">
 								{errors.content.message}
 							</p>
+						) : (
+							<div className="flex items-center gap-1.5 mt-1.5 text-xs text-muted-foreground">
+								<Info className="h-3.5 w-3.5" />
+								<span>Markdown formatting supported!</span>
+							</div>
 						)}
 					</div>
 				</div>

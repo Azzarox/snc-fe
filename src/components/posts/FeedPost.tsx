@@ -11,6 +11,8 @@ import type { Post } from '@/types/domain/post';
 import { useAuth } from '@/context/AuthContext';
 import { usePostActions } from '@/hooks/usePostActions';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 type FeedPostProps = {
 	post: Post;
@@ -96,9 +98,11 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 				<h4 className="text-lg font-semibold text-card-foreground mb-2">
 					{post.title}
 				</h4>
-				<p className="text-card-foreground leading-relaxed whitespace-pre-wrap">
-					{post.content}
-				</p>
+				<div className="markdown-prose max-w-none">
+					<Markdown remarkPlugins={[remarkGfm]}>
+						{post.content}
+					</Markdown>
+				</div>
 			</div>
 
 			<div className="px-4 pb-4 flex items-center gap-6">
