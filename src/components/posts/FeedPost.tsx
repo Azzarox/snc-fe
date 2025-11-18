@@ -6,7 +6,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 } from '@shadcn/components/ui/dropdown-menu';
-import { MoreHorizontal, Eye, Trash2 } from 'lucide-react';
+import { MoreHorizontal, Eye, Trash2, MessageCircle } from 'lucide-react';
 import type { Post } from '@/types/domain/post';
 import { useAuth } from '@/context/AuthContext';
 import { usePostActions } from '@/hooks/usePostActions';
@@ -31,21 +31,32 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 		year: 'numeric',
 	});
 
+	const fullName = `${post.user.firstName} ${post.user.lastName}`;
+	const initials = `${post.user.firstName.charAt(0)}${post.user.lastName.charAt(0)}`.toUpperCase();
+
 	return (
 		<article className="bg-card rounded-lg border border-border overflow-hidden">
 			<div className="p-4 flex items-start justify-between">
 				<div className="flex items-start gap-3">
-					<div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-						<span className="text-sm font-medium text-muted-foreground">
-							{post.username.charAt(0).toUpperCase()}
-						</span>
+					<div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+						{post.user.avatarUrl ? (
+							<img
+								src={post.user.avatarUrl}
+								alt={fullName}
+								className="w-full h-full object-cover"
+							/>
+						) : (
+							<span className="text-sm font-medium text-muted-foreground">
+								{initials}
+							</span>
+						)}
 					</div>
 					<div>
 						<h3 className="font-semibold text-card-foreground">
-							{post.username}
+							{fullName}
 						</h3>
 						<p className="text-sm text-muted-foreground">
-							{formattedDate}
+							&#64;{post.user.username} · {formattedDate}
 						</p>
 					</div>
 				</div>
@@ -85,6 +96,13 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 				<p className="text-card-foreground leading-relaxed whitespace-pre-wrap">
 					{post.content}
 				</p>
+			</div>
+
+			<div className="px-4 pb-4 flex items-center gap-6">
+				<button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+					<MessageCircle className="h-5 w-5" />
+					<span className="text-sm font-medium">{post.commentsCount}</span>
+				</button>
 			</div>
 
 			{/* {post.image && (
