@@ -8,13 +8,14 @@ export const usePosts = () => {
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [loading, setLoading] = useState(false);
 
-	const { token } = useAuth();
+	// NOTE: Currently the backend returns posts without need of authentication
+	// const { token } = useAuth();
 
 	const fetchPosts = useCallback(async () => {
-		if (!token) {
-			setPosts([]);
-			return;
-		}
+		// if (!token) {
+		// 	setPosts([]);
+		// 	return;
+		// }
 
 		setLoading(true);
 
@@ -31,7 +32,8 @@ export const usePosts = () => {
 		} finally {
 			setLoading(false);
 		}
-	}, [token, getPosts]);
+	}, [getPosts]);
+	// }, [token, getPosts]);
 
 	useEffect(() => {
 		fetchPosts();

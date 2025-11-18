@@ -18,7 +18,7 @@ type FeedPostProps = {
 };
 
 const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
-	const { user } = useAuth();
+	const { token, user } = useAuth();
 	const isOwner = user?.id ? Number(user.id) === post.userId : false;
 	const { handleViewDetails, deleteConfirmModal } = usePostActions({
 		post,
@@ -32,7 +32,8 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 	});
 
 	const fullName = `${post.user.firstName} ${post.user.lastName}`;
-	const initials = `${post.user.firstName.charAt(0)}${post.user.lastName.charAt(0)}`.toUpperCase();
+	const initials =
+		`${post.user.firstName.charAt(0)}${post.user.lastName.charAt(0)}`.toUpperCase();
 
 	return (
 		<article className="bg-card rounded-lg border border-border overflow-hidden">
@@ -61,32 +62,34 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 					</div>
 				</div>
 
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button variant="ghost" size="icon">
-							<MoreHorizontal className="h-5 w-5" />
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						<DropdownMenuItem onClick={handleViewDetails}>
-							<Eye />
-							View Details
-						</DropdownMenuItem>
+				{token && (
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="ghost" size="icon">
+								<MoreHorizontal className="h-5 w-5" />
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							<DropdownMenuItem onClick={handleViewDetails}>
+								<Eye />
+								View Details
+							</DropdownMenuItem>
 
-						{isOwner && (
-							<>
-								<DropdownMenuSeparator />
-								<DropdownMenuItem
-									variant="destructive"
-									onClick={deleteConfirmModal.openModal}
-								>
-									<Trash2 />
-									Delete
-								</DropdownMenuItem>
-							</>
-						)}
-					</DropdownMenuContent>
-				</DropdownMenu>
+							{isOwner && (
+								<>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem
+										variant="destructive"
+										onClick={deleteConfirmModal.openModal}
+									>
+										<Trash2 />
+										Delete
+									</DropdownMenuItem>
+								</>
+							)}
+						</DropdownMenuContent>
+					</DropdownMenu>
+				)}
 			</div>
 
 			<div className="px-4 pb-3">
@@ -101,7 +104,9 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 			<div className="px-4 pb-4 flex items-center gap-6">
 				<button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
 					<MessageCircle className="h-5 w-5" />
-					<span className="text-sm font-medium">{post.commentsCount}</span>
+					<span className="text-sm font-medium">
+						{post.commentsCount}
+					</span>
 				</button>
 			</div>
 
