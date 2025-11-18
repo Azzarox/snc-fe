@@ -1,40 +1,33 @@
 import { Button } from '@shadcn/components/ui/button';
-import { Heart, MessageCircle, Share2, MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
+import type { Post } from '@/types/domain/post';
 
-interface Post {
-	id: number;
-	author: {
-		name: string;
-		username: string;
-		avatar: string;
-	};
-	content: string;
-	image?: string;
-	timestamp: string;
-	likes: number;
-	comments: number;
-	shares: number;
-}
+type FeedPostProps = {
+	post: Post;
+};
 
-const FeedPost = ({ post }: { post: Post }) => {
+const FeedPost = ({ post }: FeedPostProps) => {
+	const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
+		month: 'short',
+		day: 'numeric',
+		year: 'numeric',
+	});
+
 	return (
 		<article className="bg-card rounded-lg border border-border overflow-hidden">
-			{/* Post Header */}
 			<div className="p-4 flex items-start justify-between">
 				<div className="flex items-start gap-3">
-					{/* <Image
-            src={post.author.avatar || "/placeholder.svg"}
-            alt={post.author.name}
-            width={40}
-            height={40}
-            className="rounded-full"
-          /> */}
+					<div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+						<span className="text-sm font-medium text-muted-foreground">
+							{post.username.charAt(0).toUpperCase()}
+						</span>
+					</div>
 					<div>
 						<h3 className="font-semibold text-card-foreground">
-							{post.author.name}
+							{post.username}
 						</h3>
 						<p className="text-sm text-muted-foreground">
-							{post.author.username} · {post.timestamp}
+							{formattedDate}
 						</p>
 					</div>
 				</div>
@@ -43,43 +36,37 @@ const FeedPost = ({ post }: { post: Post }) => {
 				</Button>
 			</div>
 
-			{/* Post Content */}
 			<div className="px-4 pb-3">
-				<p className="text-card-foreground leading-relaxed">
+				<h4 className="text-lg font-semibold text-card-foreground mb-2">
+					{post.title}
+				</h4>
+				<p className="text-card-foreground leading-relaxed whitespace-pre-wrap">
 					{post.content}
 				</p>
 			</div>
 
-			{/* Post Image */}
-			{post.image && (
+			{/* {post.image && (
 				<div className="relative w-full aspect-video bg-muted">
-					{/* <Image src={post.image || "/placeholder.svg"} alt="Post content" fill className="object-cover" /> */}
+					<Image src={post.image || "/placeholder.svg"} alt="Post content" fill className="object-cover" />
 				</div>
-			)}
+			)} */}
 
-			{/* Post Actions */}
-			<div className="p-4 flex items-center justify-between border-t border-border">
+			{/* <div className="p-4 flex items-center justify-between border-t border-border">
 				<div className="flex items-center gap-6">
 					<button className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors group">
 						<Heart className="h-5 w-5 group-hover:fill-accent" />
-						<span className="text-sm font-medium">
-							{post.likes}
-						</span>
+						<span className="text-sm font-medium">{post.likes}</span>
 					</button>
 					<button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
 						<MessageCircle className="h-5 w-5" />
-						<span className="text-sm font-medium">
-							{post.comments}
-						</span>
+						<span className="text-sm font-medium">{post.comments}</span>
 					</button>
 					<button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
 						<Share2 className="h-5 w-5" />
-						<span className="text-sm font-medium">
-							{post.shares}
-						</span>
+						<span className="text-sm font-medium">{post.shares}</span>
 					</button>
 				</div>
-			</div>
+			</div> */}
 		</article>
 	);
 };
