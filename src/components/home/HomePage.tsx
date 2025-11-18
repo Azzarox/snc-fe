@@ -39,7 +39,7 @@ const HomePage = () => {
 					) : (
 						<div className="space-y-6">
 							{posts.map((post) => (
-								<FeedPost key={post.id} post={post} />
+								<FeedPost key={post.id} post={post} onUpdate={refetch} />
 							))}
 						</div>
 					)}

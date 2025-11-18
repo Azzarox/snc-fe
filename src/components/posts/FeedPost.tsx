@@ -1,12 +1,31 @@
 import { Button } from '@shadcn/components/ui/button';
-import { MoreHorizontal } from 'lucide-react';
+import {
+	DropdownMenu,
+	DropdownMenuTrigger,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+} from '@shadcn/components/ui/dropdown-menu';
+import { MoreHorizontal, Eye, Pencil, Trash2 } from 'lucide-react';
 import type { Post } from '@/types/domain/post';
+import { useAuth } from '@/context/AuthContext';
+import { usePostActions } from '@/hooks/usePostActions';
+import { ConfirmModal } from '@/components/common/ConfirmModal';
 
 type FeedPostProps = {
 	post: Post;
+	onUpdate?: () => void;
 };
 
-const FeedPost = ({ post }: FeedPostProps) => {
+const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
+	const { user } = useAuth();
+	const isOwner = user?.id ? Number(user.id) === post.userId : false;
+	const {
+		handleViewDetails,
+		handleEdit,
+		deleteConfirmModal,
+	} = usePostActions({ post, onUpdate });
+
 	const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
 		month: 'short',
 		day: 'numeric',
@@ -31,9 +50,37 @@ const FeedPost = ({ post }: FeedPostProps) => {
 						</p>
 					</div>
 				</div>
-				<Button variant="ghost" size="icon">
-					<MoreHorizontal className="h-5 w-5" />
-				</Button>
+
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button variant="ghost" size="icon">
+							<MoreHorizontal className="h-5 w-5" />
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end">
+						<DropdownMenuItem onClick={handleViewDetails}>
+							<Eye />
+							View Details
+						</DropdownMenuItem>
+
+						{isOwner && (
+							<>
+								<DropdownMenuSeparator />
+								<DropdownMenuItem onClick={handleEdit}>
+									<Pencil />
+									Edit
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									variant="destructive"
+									onClick={deleteConfirmModal.openModal}
+								>
+									<Trash2 />
+									Delete
+								</DropdownMenuItem>
+							</>
+						)}
+					</DropdownMenuContent>
+				</DropdownMenu>
 			</div>
 
 			<div className="px-4 pb-3">
@@ -67,6 +114,16 @@ const FeedPost = ({ post }: FeedPostProps) => {
 					</button>
 				</div>
 			</div> */}
+
+			<ConfirmModal
+				ref={deleteConfirmModal.modalRef}
+				title="Delete Post"
+				description="Are you sure you want to delete this post? This action cannot be undone."
+				confirmText="Delete"
+				cancelText="Cancel"
+				variant="destructive"
+				onConfirm={deleteConfirmModal.handleConfirm}
+			/>
 		</article>
 	);
 };

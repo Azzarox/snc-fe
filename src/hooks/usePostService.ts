@@ -31,5 +31,16 @@ export const usePostService = () => {
 		[fetchJson, token]
 	);
 
-	return { getPosts, createPost };
+	const deletePost = useCallback(
+		(id: number) =>
+			fetchJson<Post>(`/@api/posts/${id}`, {
+				method: 'DELETE',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
+		[fetchJson, token]
+	);
+
+	return { getPosts, createPost, deletePost };
 };

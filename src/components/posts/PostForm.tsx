@@ -1,11 +1,10 @@
-import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toastService } from '@/services/common/toastService';
 import { createPostSchema, type CreatePostFormData } from '@/schemas/posts/createPostSchema';
 import { usePostService } from '@/hooks/usePostService';
+import { useConfirmModal } from '@/hooks/useConfirmModal';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
-import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle';
 
 type PostFormProps = {
 	onPostCreated?: () => void;
@@ -13,7 +12,6 @@ type PostFormProps = {
 
 export const PostForm = ({ onPostCreated }: PostFormProps) => {
 	const { createPost } = usePostService();
-	const confirmModalRef = useRef<ModalImperativeHandle>(null);
 
 	const {
 		register,
@@ -25,19 +23,21 @@ export const PostForm = ({ onPostCreated }: PostFormProps) => {
 		resolver: zodResolver(createPostSchema),
 	});
 
+	const confirmModal = useConfirmModal({
+		onConfirm: async () => {
+			const data = getValues();
+			const response = await createPost(data);
+
+			if (response.success) {
+				reset();
+				toastService.success('Post created successfully!');
+				onPostCreated?.();
+			}
+		},
+	});
+
 	const onFormSubmit = () => {
-		confirmModalRef.current?.openModal();
-	};
-
-	const handleConfirmPost = async () => {
-		const data = getValues();
-		const response = await createPost(data);
-
-		if (response.success) {
-			reset();
-			toastService.success('Post created successfully!');
-			onPostCreated?.();
-		}
+		confirmModal.openModal();
 	};
 
 	return (
@@ -87,13 +87,13 @@ export const PostForm = ({ onPostCreated }: PostFormProps) => {
 			</form>
 
 			<ConfirmModal
-				ref={confirmModalRef}
+				ref={confirmModal.modalRef}
 				title="Confirm Post"
 				description="Are you sure you want to publish this post?"
 				confirmText="Post"
 				cancelText="Cancel"
 				variant="default"
-				onConfirm={handleConfirmPost}
+				onConfirm={confirmModal.handleConfirm}
 				isLoading={isSubmitting}
 			/>
 		</div>
