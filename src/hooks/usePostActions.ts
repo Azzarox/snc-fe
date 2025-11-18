@@ -27,13 +27,8 @@ export const usePostActions = ({ post, onUpdate }: UsePostActionsProps) => {
 		console.log('View details:', post);
 	};
 
-	const handleEdit = () => {
-		console.log('Edit post:', post);
-	};
-
 	return {
 		handleViewDetails,
-		handleEdit,
 		deleteConfirmModal,
 	};
 };

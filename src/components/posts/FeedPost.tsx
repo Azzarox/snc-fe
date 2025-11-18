@@ -6,7 +6,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 } from '@shadcn/components/ui/dropdown-menu';
-import { MoreHorizontal, Eye, Pencil, Trash2 } from 'lucide-react';
+import { MoreHorizontal, Eye, Trash2 } from 'lucide-react';
 import type { Post } from '@/types/domain/post';
 import { useAuth } from '@/context/AuthContext';
 import { usePostActions } from '@/hooks/usePostActions';
@@ -20,11 +20,10 @@ type FeedPostProps = {
 const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 	const { user } = useAuth();
 	const isOwner = user?.id ? Number(user.id) === post.userId : false;
-	const {
-		handleViewDetails,
-		handleEdit,
-		deleteConfirmModal,
-	} = usePostActions({ post, onUpdate });
+	const { handleViewDetails, deleteConfirmModal } = usePostActions({
+		post,
+		onUpdate,
+	});
 
 	const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
 		month: 'short',
@@ -66,10 +65,6 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 						{isOwner && (
 							<>
 								<DropdownMenuSeparator />
-								<DropdownMenuItem onClick={handleEdit}>
-									<Pencil />
-									Edit
-								</DropdownMenuItem>
 								<DropdownMenuItem
 									variant="destructive"
 									onClick={deleteConfirmModal.openModal}
