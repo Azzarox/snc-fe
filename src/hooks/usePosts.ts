@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { usePostService } from './usePostService';
 import type { Post } from '@/types/domain/post';
-import { useAuth } from '@/context/AuthContext';
 
 export const usePosts = () => {
 	const { getPosts } = usePostService();
@@ -39,6 +38,5 @@ export const usePosts = () => {
 		fetchPosts();
 	}, [fetchPosts]);
 
-	
 	return { posts, loading, refetch: fetchPosts };
 };

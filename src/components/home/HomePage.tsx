@@ -5,13 +5,17 @@ import TrendingTopics from './components/TrendingTopics';
 import { PostForm } from '../posts/PostForm';
 import { usePosts } from '@/hooks/usePosts';
 import { Spinner } from '@shadcn/components/ui/spinner';
-import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@shadcn/components/ui/empty';
+import {
+	Empty,
+	EmptyHeader,
+	EmptyTitle,
+	EmptyDescription,
+} from '@shadcn/components/ui/empty';
 
 const HomePage = () => {
 	const { token, user } = useAuth();
 	const { posts, loading, refetch } = usePosts();
 
-	
 	return (
 		<main className="container mx-auto px-4 py-6 max-w-7xl">
 			<div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -39,7 +43,11 @@ const HomePage = () => {
 					) : (
 						<div className="space-y-6">
 							{posts.map((post) => (
-								<FeedPost key={post.id} post={post} onUpdate={refetch} />
+								<FeedPost
+									key={post.id}
+									post={post}
+									onUpdate={refetch}
+								/>
 							))}
 						</div>
 					)}

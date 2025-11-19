@@ -56,7 +56,7 @@ export const useCommentService = () => {
 	);
 
 	const deleteComment = useCallback(
-		(postId:number, commentId: number) =>
+		(postId: number, commentId: number) =>
 			fetchJson<Comment>(`/@api/posts/${postId}/comments/${commentId}`, {
 				method: 'DELETE',
 				headers: {
@@ -66,5 +66,11 @@ export const useCommentService = () => {
 		[fetchJson, token]
 	);
 
-	return { getPostComments, getAllComments, createComment, updateComment, deleteComment };
+	return {
+		getPostComments,
+		getAllComments,
+		createComment,
+		updateComment,
+		deleteComment,
+	};
 };

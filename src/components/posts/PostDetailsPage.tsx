@@ -22,8 +22,17 @@ const PostDetailsPage = () => {
 	const { token } = useAuth();
 	const postIdNumber = postId ? parseInt(postId, 10) : 0;
 
-	const { post, loading: postLoading, error, refetch: refetchPost } = usePost(postIdNumber);
-	const { comments, loading: commentsLoading, refetch: refetchComments } = useComments(postIdNumber);
+	const {
+		post,
+		loading: postLoading,
+		error,
+		refetch: refetchPost,
+	} = usePost(postIdNumber);
+	const {
+		comments,
+		loading: commentsLoading,
+		refetch: refetchComments,
+	} = useComments(postIdNumber);
 
 	const handleBack = () => {
 		navigate(-1);
@@ -47,11 +56,7 @@ const PostDetailsPage = () => {
 	if (error || !post) {
 		return (
 			<div className="container mx-auto px-4 max-w-2xl py-8">
-				<Button
-					variant="ghost"
-					onClick={handleBack}
-					className="mb-6"
-				>
+				<Button variant="ghost" onClick={handleBack} className="mb-6">
 					<ArrowLeft className="h-4 w-4 mr-2" />
 					Back
 				</Button>
@@ -61,7 +66,8 @@ const PostDetailsPage = () => {
 					</EmptyHeader>
 					<EmptyTitle>Post Not Found</EmptyTitle>
 					<EmptyDescription>
-						The post you're looking for doesn't exist or has been removed.
+						The post you're looking for doesn't exist or has been
+						removed.
 					</EmptyDescription>
 					<Button onClick={() => navigate('/')} className="mt-4">
 						Go Home
@@ -73,11 +79,7 @@ const PostDetailsPage = () => {
 
 	return (
 		<div className="container mx-auto px-4 max-w-2xl py-8">
-			<Button
-				variant="ghost"
-				onClick={handleBack}
-				className="mb-6"
-			>
+			<Button variant="ghost" onClick={handleBack} className="mb-6">
 				<ArrowLeft className="h-4 w-4 mr-2" />
 				Back
 			</Button>
@@ -98,7 +100,6 @@ const PostDetailsPage = () => {
 						/>
 					</div>
 				)}
-
 
 				<CommentList
 					comments={comments}

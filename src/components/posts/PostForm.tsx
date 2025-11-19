@@ -1,13 +1,14 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toastService } from '@/services/common/toastService';
-import { createPostSchema, type CreatePostFormData } from '@/schemas/posts/createPostSchema';
+import {
+	createPostSchema,
+	type CreatePostFormData,
+} from '@/schemas/posts/createPostSchema';
 import { usePostService } from '@/hooks/usePostService';
 import { useConfirmModal } from '@/hooks/useConfirmModal';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
 import { Info } from 'lucide-react';
-
-
 
 type PostFormProps = {
 	onPostCreated?: () => void;
@@ -51,7 +52,6 @@ export const PostForm = ({ onPostCreated }: PostFormProps) => {
 			<form onSubmit={handleSubmit(onFormSubmit)}>
 				<div className="space-y-3">
 					<div>
-                        
 						<input
 							{...register('title')}
 							type="text"

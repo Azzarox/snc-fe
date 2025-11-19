@@ -25,7 +25,9 @@ export const DiscoverPage = () => {
 };
 
 const ProfilePage = lazy(() => import('./components/profile/ProfilePage'));
-const PostDetailsPage = lazy(() => import('./components/posts/PostDetailsPage'));
+const PostDetailsPage = lazy(
+	() => import('./components/posts/PostDetailsPage')
+);
 
 function App() {
 	return (
@@ -38,7 +40,10 @@ function App() {
 					<Route path="/discover" element={<DiscoverPage />} />
 					<Route path="/profile" element={<ProfilePage />} />
 					<Route path="/settings" element={<SettingsPage />} />
-					<Route path="/posts/:postId/details" element={<PostDetailsPage />} />
+					<Route
+						path="/posts/:postId/details"
+						element={<PostDetailsPage />}
+					/>
 					<Route path="*" element={<NotFoundPage />}></Route>
 				</Route>
 			</Routes>

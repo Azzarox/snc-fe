@@ -40,7 +40,8 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 	);
 
 	const fullName = `${comment.user.firstName} ${comment.user.lastName}`;
-	const initials = `${comment.user.firstName.charAt(0)}${comment.user.lastName.charAt(0)}`.toUpperCase();
+	const initials =
+		`${comment.user.firstName.charAt(0)}${comment.user.lastName.charAt(0)}`.toUpperCase();
 
 	const deleteConfirmModal = useConfirmModal({
 		onConfirm: async () => {
@@ -111,7 +112,11 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 				{isOwner && (
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button variant="ghost" size="icon" className="h-8 w-8">
+							<Button
+								variant="ghost"
+								size="icon"
+								className="h-8 w-8"
+							>
 								<MoreHorizontal className="h-4 w-4" />
 							</Button>
 						</DropdownMenuTrigger>
@@ -134,7 +139,9 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 			</div>
 
 			<div className="markdown-prose max-w-none text-sm pl-11">
-				<Markdown remarkPlugins={[remarkGfm]}>{comment.content}</Markdown>
+				<Markdown remarkPlugins={[remarkGfm]}>
+					{comment.content}
+				</Markdown>
 			</div>
 
 			<ConfirmModal

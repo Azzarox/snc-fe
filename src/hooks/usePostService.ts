@@ -31,12 +31,15 @@ export const usePostService = () => {
 
 	const getPost = useCallback(
 		(id: number, includeComments = false) =>
-			fetchJson<Post>(`/@api/posts/${id}?includeComments=${includeComments}`, {
-				method: 'GET',
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}),
+			fetchJson<Post>(
+				`/@api/posts/${id}?includeComments=${includeComments}`,
+				{
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			),
 		[fetchJson, token]
 	);
 

@@ -22,11 +22,10 @@ export const usePostActions = ({ post, onUpdate }: UsePostActionsProps) => {
 				onUpdate?.();
 			}
 		},
-		
 	});
 
 	const handleViewDetails = () => {
-		navigate(`/posts/${post.id}/details`)
+		navigate(`/posts/${post.id}/details`);
 	};
 
 	return {

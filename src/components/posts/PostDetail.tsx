@@ -10,7 +10,13 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 } from '@shadcn/components/ui/dropdown-menu';
-import { MoreHorizontal, Edit, Trash2, MessageCircle, Info } from 'lucide-react';
+import {
+	MoreHorizontal,
+	Edit,
+	Trash2,
+	MessageCircle,
+	Info,
+} from 'lucide-react';
 import type { Post } from '@/types/domain/post';
 import { useAuth } from '@/context/AuthContext';
 import { usePostService } from '@/hooks/usePostService';
@@ -45,7 +51,8 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 	});
 
 	const fullName = `${post.user.firstName} ${post.user.lastName}`;
-	const initials = `${post.user.firstName.charAt(0)}${post.user.lastName.charAt(0)}`.toUpperCase();
+	const initials =
+		`${post.user.firstName.charAt(0)}${post.user.lastName.charAt(0)}`.toUpperCase();
 
 	const {
 		register,
@@ -221,7 +228,9 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 					{post.title}
 				</h2>
 				<div className="markdown-prose max-w-none">
-					<Markdown remarkPlugins={[remarkGfm]}>{post.content}</Markdown>
+					<Markdown remarkPlugins={[remarkGfm]}>
+						{post.content}
+					</Markdown>
 				</div>
 			</div>
 
