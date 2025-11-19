@@ -8,9 +8,20 @@ export const useProfileService = () => {
 	const { fetchJson } = useFetch();
 	const { token } = useAuth();
 
-	const getUserProfile = useCallback(
+	const getCurrentUserProfile = useCallback(
 		() =>
 			fetchJson<UserProfile>('/@api/users/profile', {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
+		[fetchJson, token]
+	);
+
+	const getProfileByUserId = useCallback(
+		(userId: number) =>
+			fetchJson<UserProfile>(`/@api/users/${userId}/profile`, {
 				method: 'GET',
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -78,7 +89,8 @@ export const useProfileService = () => {
 	);
 
 	return {
-		getUserProfile,
+		getCurrentUserProfile,
+		getProfileByUserId,
 		updateUserProfile,
 		updateProfileImage,
 		resetProfileImage,

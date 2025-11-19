@@ -27,6 +27,7 @@ import {
 } from '@shadcn/components/ui/empty';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle.ts';
 import { useNavigate } from 'react-router';
+import { useDetermineProfile } from '@/hooks/useDetermineProfile.ts';
 
 export default function ProfilePage() {
 	const [activeTab, setActiveTab] = useState<'posts' | 'media' | 'about'>(
@@ -40,12 +41,14 @@ export default function ProfilePage() {
 	const coverImageModalRef = useRef<ModalImperativeHandle>(null);
 
 	const { user } = useAuth();
-	const { profile, loading, refetch } = useProfile();
+	const { profileUserId, isMyProfile } = useDetermineProfile();
+
+	const { profile, loading, refetch } = useProfile(profileUserId);
 	const {
 		posts,
 		loading: postsLoading,
 		refetch: refetchPosts,
-	} = usePosts(user?.id ? Number(user.id) : undefined);
+	} = usePosts(profileUserId);
 
 	if (!user) {
 		return (
@@ -93,13 +96,15 @@ export default function ProfilePage() {
 						: 'no-repeat',
 				}}
 			>
-				<button
-					onClick={() => coverImageModalRef.current?.openModal()}
-					className="cursor-pointer absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-background transition-colors"
-				>
-					<Camera className="h-4 w-4" />
-					<span className="text-sm font-medium">Edit Cover</span>
-				</button>
+				{isMyProfile && (
+					<button
+						onClick={() => coverImageModalRef.current?.openModal()}
+						className="cursor-pointer absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-background transition-colors"
+					>
+						<Camera className="h-4 w-4" />
+						<span className="text-sm font-medium">Edit Cover</span>
+					</button>
+				)}
 			</div>
 
 			<div className="container mx-auto px-4 max-w-5xl">
@@ -111,29 +116,33 @@ export default function ProfilePage() {
 								alt={`${profile.firstName} ${profile.lastName}`}
 								className="w-40 h-40 rounded-full border-4 border-background object-cover"
 							/>
-							<CustomTooltip content="Change profile picture">
-								<button
-									onClick={() =>
-										imageModalRef.current?.openModal()
-									}
-									className="cursor-pointer absolute bottom-2 right-2 bg-primary text-primary-foreground p-2.5 rounded-full hover:scale-110 hover:shadow-lg transition-all duration-200 ring-2 ring-background"
-								>
-									<Upload className="h-4.5 w-4.5" />
-								</button>
-							</CustomTooltip>
+							{isMyProfile && (
+								<CustomTooltip content="Change profile picture">
+									<button
+										onClick={() =>
+											imageModalRef.current?.openModal()
+										}
+										className="cursor-pointer absolute bottom-2 right-2 bg-primary text-primary-foreground p-2.5 rounded-full hover:scale-110 hover:shadow-lg transition-all duration-200 ring-2 ring-background"
+									>
+										<Upload className="h-4.5 w-4.5" />
+									</button>
+								</CustomTooltip>
+							)}
 						</div>
 					</div>
 
 					<div className="pt-6 flex justify-end gap-3">
-						<Button
-							className="cursor-pointer"
-							onClick={() => modalRef.current?.openModal()}
-							variant="outline"
-							size="sm"
-						>
-							<Settings2 className="h-4 w-4 mr-2" />
-							Edit Profile
-						</Button>
+						{isMyProfile && (
+							<Button
+								className="cursor-pointer"
+								onClick={() => modalRef.current?.openModal()}
+								variant="outline"
+								size="sm"
+							>
+								<Settings2 className="h-4 w-4 mr-2" />
+								Edit Profile
+							</Button>
+						)}
 						<Button size="sm" className="cursor-pointer">
 							Share Profile
 						</Button>

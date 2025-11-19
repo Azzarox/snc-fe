@@ -39,6 +39,7 @@ function App() {
 					<Route path="/register" element={<RegisterPage />} />
 					<Route path="/discover" element={<DiscoverPage />} />
 					<Route path="/profile" element={<ProfilePage />} />
+					<Route path="/profile/:userId" element={<ProfilePage />} />
 					<Route path="/settings" element={<SettingsPage />} />
 					<Route
 						path="/posts/:postId/details"
