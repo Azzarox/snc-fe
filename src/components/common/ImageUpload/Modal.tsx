@@ -22,6 +22,7 @@ import { Spinner } from '@shadcn/components/ui/spinner';
 import { ImageUpload } from './ImageUpload';
 import { useUploadState } from './hooks/useUploadState';
 import { useUploadActions } from './hooks/useUploadActions';
+import { toastService } from '@/services/common/toastService';
 
 type ModalProps = {
 	title?: string;
@@ -61,9 +62,6 @@ const ModalContent = ({
 		const result = await uploadImage(uploadFn);
 
 		if (result.success) {
-			const { toastService } = await import(
-				'@/services/common/toastService'
-			);
 			toastService.success(successMessage);
 			onSuccess();
 			handleClose();
@@ -84,16 +82,10 @@ const ModalContent = ({
 
 		try {
 			await onReset();
-			const { toastService } = await import(
-				'@/services/common/toastService'
-			);
 			toastService.success('Image successfully reset!');
 			onSuccess();
 			handleClose();
 		} catch (error) {
-			const { toastService } = await import(
-				'@/services/common/toastService'
-			);
 			toastService.error('Failed to reset image!');
 		}
 	};

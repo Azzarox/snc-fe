@@ -12,7 +12,7 @@ export const useImageUploadContext = () => {
 	const context = useContext(ImageUploadContext);
 	if (!context) {
 		throw new Error(
-			'Image upload compound components must be used within ImageUpload component'
+			'useImageUploadContext must be used within ImageUploadProvider'
 		);
 	}
 	return context;
