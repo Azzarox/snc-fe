@@ -8,7 +8,6 @@ export const useProfile = (userId?: number) => {
 	const [profile, setProfile] = useState<UserProfile | null>(null);
 	const [loading, setLoading] = useState(false);
 
-
 	const { token } = useAuth();
 
 	const fetchProfile = useCallback(async () => {

@@ -26,7 +26,6 @@ import {
 	EmptyDescription,
 } from '@shadcn/components/ui/empty';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle.ts';
-import { useNavigate } from 'react-router';
 import { useDetermineProfile } from '@/hooks/useDetermineProfile.ts';
 import { formatDate } from '@/utils/formatters.ts';
 

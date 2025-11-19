@@ -65,7 +65,7 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 						</h3>
 						<p className="text-sm text-muted-foreground">
 							<button
-								onClick={handleNavigateToProfile(post.userId)}
+								onClick={() => handleNavigateToProfile(post.userId)}
 								className="hover:underline cursor-pointer"
 							>
 								&#64;{post.user.username}
