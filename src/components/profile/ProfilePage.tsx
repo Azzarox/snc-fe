@@ -35,8 +35,6 @@ export default function ProfilePage() {
 		'posts'
 	);
 
-	const navigate = useNavigate();
-
 	const modalRef = useRef<ModalImperativeHandle>(null);
 	const imageModalRef = useRef<ModalImperativeHandle>(null);
 	const coverImageModalRef = useRef<ModalImperativeHandle>(null);
@@ -50,16 +48,6 @@ export default function ProfilePage() {
 		loading: postsLoading,
 		refetch: refetchPosts,
 	} = usePosts(profileUserId);
-
-	if (!user) {
-		return (
-			<UnableToLoad
-				title="Authentication Required"
-				message="Please log in to view your profile."
-				onGoBack={() => navigate('/login')}
-			/>
-		);
-	}
 
 	if (!profile) {
 		return loading ? (
