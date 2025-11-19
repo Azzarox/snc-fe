@@ -44,7 +44,7 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 			<div className="p-4 flex items-start justify-between">
 				<div className="flex items-start gap-3">
 					<button
-						onClick={() => handleNavigateToProfile(post.userId)}
+						onClick={handleNavigateToProfile(post.userId)}
 						className="w-10 h-10 rounded-full bg-muted flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity cursor-pointer"
 					>
 						{post.user.avatarUrl ? (
@@ -65,7 +65,7 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 						</h3>
 						<p className="text-sm text-muted-foreground">
 							<button
-								onClick={() => handleNavigateToProfile(post.userId)}
+								onClick={handleNavigateToProfile(post.userId)}
 								className="hover:underline cursor-pointer"
 							>
 								&#64;{post.user.username}

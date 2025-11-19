@@ -63,7 +63,7 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 			<div className="flex items-start justify-between mb-3">
 				<div className="flex items-start gap-3">
 					<button
-						onClick={() => handleNavigateToProfile(comment.userId)}
+						onClick={handleNavigateToProfile(comment.userId)}
 						className="w-8 h-8 rounded-full bg-muted flex items-center justify-center overflow-hidden flex-shrink-0 hover:opacity-80 transition-opacity cursor-pointer"
 					>
 						{comment.user.avatarUrl ? (
@@ -84,7 +84,7 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 						</h4>
 						<p className="text-xs text-muted-foreground">
 							<button
-								onClick={() => handleNavigateToProfile(
+								onClick={handleNavigateToProfile(
 									comment.userId
 								)}
 								className="hover:underline cursor-pointer"

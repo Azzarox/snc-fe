@@ -8,13 +8,13 @@ import {
 } from 'lucide-react';
 import { Button } from '@shadcn/components/ui/button';
 import { useState, useRef } from 'react';
-import { useAuth } from '@/context/AuthContext';
 import PageLoader from '../common/PageLoader.tsx';
 import ProfileAbout from './components/ProfileAbout.tsx';
 import { UnableToLoad } from '../common/PageUnableToLoad.tsx';
 import { EditProfileModal } from './EditProfileModal.tsx';
 import { EditProfileImageModal } from './EditProfileImageModal.tsx';
 import { EditCoverImageModal } from './EditCoverImageModal.tsx';
+import { ShareProfileModal } from './ShareProfileModal.tsx';
 import { CustomTooltip } from '../common/CustomTooltip.tsx';
 import { useProfile } from '@/hooks/useProfile.ts';
 import { usePosts } from '@/hooks/usePosts.ts';
@@ -37,8 +37,8 @@ export default function ProfilePage() {
 	const modalRef = useRef<ModalImperativeHandle>(null);
 	const imageModalRef = useRef<ModalImperativeHandle>(null);
 	const coverImageModalRef = useRef<ModalImperativeHandle>(null);
+	const shareModalRef = useRef<ModalImperativeHandle>(null);
 
-	const { user } = useAuth();
 	const { profileUserId, isMyProfile } = useDetermineProfile();
 
 	const { profile, loading, refetch } = useProfile(profileUserId);
@@ -123,7 +123,11 @@ export default function ProfilePage() {
 								Edit Profile
 							</Button>
 						)}
-						<Button size="sm" className="cursor-pointer">
+						<Button
+							size="sm"
+							className="cursor-pointer"
+							onClick={() => shareModalRef.current?.openModal()}
+						>
 							Share Profile
 						</Button>
 					</div>
@@ -134,9 +138,9 @@ export default function ProfilePage() {
 						{profile.firstName} {profile.lastName}
 					</h1>
 
-					{user?.username && (
+					{profile?.username && (
 						<p className="text-muted-foreground mt-1">
-							@{user?.username}
+							@{profile?.username}
 						</p>
 					)}
 
@@ -307,6 +311,14 @@ export default function ProfilePage() {
 				onSuccess={() => refetch()}
 				currentImageUrl={profile.coverUrl}
 			/>
+
+			{profileUserId && (
+				<ShareProfileModal
+					ref={shareModalRef}
+					userId={profileUserId}
+					username={profile.username}
+				/>
+			)}
 		</div>
 	);
 }
