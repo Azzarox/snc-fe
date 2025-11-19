@@ -10,6 +10,7 @@ import { MoreHorizontal, Edit, Trash2 } from 'lucide-react';
 import type { Comment } from '@/types/domain/comment';
 import { useAuth } from '@/context/AuthContext';
 import { useCommentActions } from '@/hooks/useCommentActions';
+import { useCommonActions } from '@/hooks/useCommonActions';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
 import { CommentForm } from './CommentForm';
 import {
@@ -35,6 +36,7 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 		handleEditSuccess,
 		deleteConfirmModal,
 	} = useCommentActions({ comment, onUpdate });
+	const { handleNavigateToProfile } = useCommonActions();
 
 	const isOwner = checkIsOwner(user?.id, comment.userId);
 	const formattedDate = formatDate(comment.createdAt);
@@ -60,7 +62,10 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 		<article className="bg-card rounded-lg border border-border p-4">
 			<div className="flex items-start justify-between mb-3">
 				<div className="flex items-start gap-3">
-					<div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center overflow-hidden flex-shrink-0">
+					<button
+						onClick={handleNavigateToProfile(comment.userId)}
+						className="w-8 h-8 rounded-full bg-muted flex items-center justify-center overflow-hidden flex-shrink-0 hover:opacity-80 transition-opacity cursor-pointer"
+					>
 						{comment.user.avatarUrl ? (
 							<img
 								src={comment.user.avatarUrl}
@@ -72,13 +77,19 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 								{initials}
 							</span>
 						)}
-					</div>
+					</button>
 					<div>
 						<h4 className="font-semibold text-card-foreground text-sm">
 							{fullName}
 						</h4>
 						<p className="text-xs text-muted-foreground">
-							@{comment.user.username} · {formattedDate}
+							<button
+								onClick={handleNavigateToProfile(comment.userId)}
+								className="hover:underline cursor-pointer"
+							>
+								@{comment.user.username}
+							</button>{' '}
+							· {formattedDate}
 						</p>
 					</div>
 				</div>

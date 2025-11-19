@@ -28,6 +28,7 @@ import {
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle.ts';
 import { useNavigate } from 'react-router';
 import { useDetermineProfile } from '@/hooks/useDetermineProfile.ts';
+import { formatDate } from '@/utils/formatters.ts';
 
 export default function ProfilePage() {
 	const [activeTab, setActiveTab] = useState<'posts' | 'media' | 'about'>(
@@ -61,7 +62,9 @@ export default function ProfilePage() {
 	}
 
 	if (!profile) {
-		return (
+		return loading ? (
+			<PageLoader />
+		) : (
 			<UnableToLoad
 				title="Profile not found"
 				message="We couldn't load this profile. It may have been deleted or there was a connection issue."
@@ -69,17 +72,7 @@ export default function ProfilePage() {
 		);
 	}
 
-	const displayJoined = new Date(profile.createdAt).toLocaleDateString(
-		'en-US',
-		{
-			month: 'long',
-			year: 'numeric',
-		}
-	);
-
-	if (loading) {
-		return <PageLoader />;
-	}
+	const displayJoined = formatDate(profile.createdAt, false);
 
 	return (
 		<div className="min-h-screen bg-background">

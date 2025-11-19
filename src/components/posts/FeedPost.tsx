@@ -10,6 +10,7 @@ import { MoreHorizontal, Eye, Trash2, MessageCircle } from 'lucide-react';
 import type { Post } from '@/types/domain/post';
 import { useAuth } from '@/context/AuthContext';
 import { usePostActions } from '@/hooks/usePostActions';
+import { useCommonActions } from '@/hooks/useCommonActions';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -26,6 +27,7 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 		post,
 		onUpdate,
 	});
+	const { handleNavigateToProfile } = useCommonActions();
 
 	const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
 		month: 'short',
@@ -41,7 +43,10 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 		<article className="bg-card rounded-lg border border-border overflow-hidden">
 			<div className="p-4 flex items-start justify-between">
 				<div className="flex items-start gap-3">
-					<div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+					<button
+						onClick={() => handleNavigateToProfile(post.userId)}
+						className="w-10 h-10 rounded-full bg-muted flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity cursor-pointer"
+					>
 						{post.user.avatarUrl ? (
 							<img
 								src={post.user.avatarUrl}
@@ -53,13 +58,19 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 								{initials}
 							</span>
 						)}
-					</div>
+					</button>
 					<div>
 						<h3 className="font-semibold text-card-foreground">
 							{fullName}
 						</h3>
 						<p className="text-sm text-muted-foreground">
-							&#64;{post.user.username} · {formattedDate}
+							<button
+								onClick={handleNavigateToProfile(post.userId)}
+								className="hover:underline cursor-pointer"
+							>
+								&#64;{post.user.username}
+							</button>{' '}
+							· {formattedDate}
 						</p>
 					</div>
 				</div>
