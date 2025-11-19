@@ -9,12 +9,7 @@ import { Button } from '@shadcn/components/ui/button';
 import { Separator } from '@shadcn/components/ui/separator';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import {
-	Empty,
-	EmptyHeader,
-	EmptyTitle,
-	EmptyDescription,
-} from '@shadcn/components/ui/empty';
+import { UnableToLoad } from '@/components/common/PageUnableToLoad';
 
 const PostDetailsPage = () => {
 	const { postId } = useParams<{ postId: string }>();
@@ -55,25 +50,12 @@ const PostDetailsPage = () => {
 
 	if (error || !post) {
 		return (
-			<div className="container mx-auto px-4 max-w-2xl py-8">
-				<Button variant="ghost" onClick={handleBack} className="mb-6">
-					<ArrowLeft className="h-4 w-4 mr-2" />
-					Back
-				</Button>
-				<Empty>
-					<EmptyHeader>
-						<div className="text-6xl">404</div>
-					</EmptyHeader>
-					<EmptyTitle>Post Not Found</EmptyTitle>
-					<EmptyDescription>
-						The post you're looking for doesn't exist or has been
-						removed.
-					</EmptyDescription>
-					<Button onClick={() => navigate('/')} className="mt-4">
-						Go Home
-					</Button>
-				</Empty>
-			</div>
+			<UnableToLoad
+				title="Unable to Load Post"
+				message="We couldn't load this post. It may have been deleted or you don't have permission to view it."
+				onRetry={refetchPost}
+				onGoBack={handleBack}
+			/>
 		);
 	}
 
