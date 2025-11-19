@@ -2,6 +2,7 @@ import { usePostService } from './usePostService';
 import { useConfirmModal } from './useConfirmModal';
 import type { Post } from '@/types/domain/post';
 import { toastService } from '@/services/common/toastService';
+import { useNavigate } from 'react-router';
 
 type UsePostActionsProps = {
 	post: Post;
@@ -10,6 +11,7 @@ type UsePostActionsProps = {
 
 export const usePostActions = ({ post, onUpdate }: UsePostActionsProps) => {
 	const { deletePost } = usePostService();
+	const navigate = useNavigate();
 
 	const deleteConfirmModal = useConfirmModal({
 		onConfirm: async () => {
@@ -24,7 +26,7 @@ export const usePostActions = ({ post, onUpdate }: UsePostActionsProps) => {
 	});
 
 	const handleViewDetails = () => {
-		console.log('View details:', post);
+		navigate(`/posts/${post.id}/details`)
 	};
 
 	return {

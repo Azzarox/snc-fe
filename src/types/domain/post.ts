@@ -1,3 +1,5 @@
+import type { Comment } from "./comment";
+
 export type Post = {
 	id: number;
 	userId: number;
@@ -7,6 +9,7 @@ export type Post = {
 	createdAt: string;
 	updatedAt: string;
 	commentsCount: number;
+	comments?: Comment[]
 };
 
 
