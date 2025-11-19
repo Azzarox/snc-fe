@@ -17,7 +17,6 @@ export const usePostService = () => {
 		[fetchJson, token]
 	);
 
-
 	const getOnePost = useCallback(
 		(id: number, includeComments = false) =>
 			fetchJson<Post>(
@@ -45,7 +44,6 @@ export const usePostService = () => {
 			),
 		[fetchJson, token]
 	);
-
 
 	const createPost = useCallback(
 		(body: CreatePostFormData) =>
@@ -81,5 +79,12 @@ export const usePostService = () => {
 		[fetchJson, token]
 	);
 
-	return { getAllPosts, getAllUserPosts, getOnePost, createPost, updatePost, deletePost };
+	return {
+		getAllPosts,
+		getAllUserPosts,
+		getOnePost,
+		createPost,
+		updatePost,
+		deletePost,
+	};
 };

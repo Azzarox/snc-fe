@@ -27,7 +27,11 @@ import {
 	updatePostSchema,
 	type UpdatePostFormData,
 } from '@/schemas/posts/updatePostSchema';
-import { formatDate, getUserFullName, getUserInitials } from '@/utils/formatters';
+import {
+	formatDate,
+	getUserFullName,
+	getUserInitials,
+} from '@/utils/formatters';
 import { checkIsOwner } from '@/utils/authHelpers';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';

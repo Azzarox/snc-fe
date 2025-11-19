@@ -12,7 +12,11 @@ import { useAuth } from '@/context/AuthContext';
 import { useCommentActions } from '@/hooks/useCommentActions';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
 import { CommentForm } from './CommentForm';
-import { formatDate, getUserFullName, getUserInitials } from '@/utils/formatters';
+import {
+	formatDate,
+	getUserFullName,
+	getUserInitials,
+} from '@/utils/formatters';
 import { checkIsOwner } from '@/utils/authHelpers';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -31,7 +35,7 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 		handleEditSuccess,
 		deleteConfirmModal,
 	} = useCommentActions({ comment, onUpdate });
-	
+
 	const isOwner = checkIsOwner(user?.id, comment.userId);
 	const formattedDate = formatDate(comment.createdAt);
 	const fullName = getUserFullName(comment.user);

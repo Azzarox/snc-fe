@@ -3,10 +3,6 @@ import {
 	MapPin,
 	Calendar,
 	LinkIcon,
-	Heart,
-	MessageCircle,
-	Share2,
-	MoreHorizontal,
 	Upload,
 	Settings2,
 } from 'lucide-react';
@@ -266,7 +262,8 @@ export default function ProfilePage() {
 								<Empty>
 									<EmptyTitle>No posts yet</EmptyTitle>
 									<EmptyDescription>
-										You haven't created any posts yet. Start sharing your thoughts!
+										You haven't created any posts yet. Start
+										sharing your thoughts!
 									</EmptyDescription>
 								</Empty>
 							) : (
