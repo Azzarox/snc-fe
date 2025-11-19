@@ -2,24 +2,18 @@ import { useCallback, useEffect, useState } from 'react';
 import { usePostService } from './usePostService';
 import type { Post } from '@/types/domain/post';
 
-export const usePosts = () => {
-	const { getPosts } = usePostService();
+export const usePosts = (userId?: number) => {
+	const { getAllPosts, getAllUserPosts } = usePostService();
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [loading, setLoading] = useState(false);
 
-	// NOTE: Currently the backend returns posts without need of authentication
-	// const { token } = useAuth();
-
 	const fetchPosts = useCallback(async () => {
-		// if (!token) {
-		// 	setPosts([]);
-		// 	return;
-		// }
-
 		setLoading(true);
 
 		try {
-			const res = await getPosts();
+			const res = userId
+				? await getAllUserPosts(userId)
+				: await getAllPosts();
 
 			if (res.data) {
 				setPosts(res.data);
@@ -31,8 +25,7 @@ export const usePosts = () => {
 		} finally {
 			setLoading(false);
 		}
-	}, [getPosts]);
-	// }, [token, getPosts]);
+	}, [getAllPosts, getAllUserPosts, userId]);
 
 	useEffect(() => {
 		fetchPosts();

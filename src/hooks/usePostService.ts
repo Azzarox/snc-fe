@@ -9,7 +9,7 @@ export const usePostService = () => {
 	const { fetchJson } = useFetch();
 	const { token } = useAuth();
 
-	const getPosts = useCallback(
+	const getAllPosts = useCallback(
 		() =>
 			fetchJson<Post[]>('/@api/posts', {
 				method: 'GET',
@@ -17,19 +17,8 @@ export const usePostService = () => {
 		[fetchJson, token]
 	);
 
-	const createPost = useCallback(
-		(body: CreatePostFormData) =>
-			fetchJson<Post>('/@api/posts', {
-				method: 'POST',
-				body: JSON.stringify(body),
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}),
-		[fetchJson, token]
-	);
 
-	const getPost = useCallback(
+	const getOnePost = useCallback(
 		(id: number, includeComments = false) =>
 			fetchJson<Post>(
 				`/@api/posts/${id}?includeComments=${includeComments}`,
@@ -43,6 +32,32 @@ export const usePostService = () => {
 		[fetchJson, token]
 	);
 
+	const getAllUserPosts = useCallback(
+		(userId: number, includeComments = false) =>
+			fetchJson<Post[]>(
+				`/@api/users/${userId}/posts/?includeComments=${includeComments}`,
+				{
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			),
+		[fetchJson, token]
+	);
+
+
+	const createPost = useCallback(
+		(body: CreatePostFormData) =>
+			fetchJson<Post>('/@api/posts', {
+				method: 'POST',
+				body: JSON.stringify(body),
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
+		[fetchJson, token]
+	);
 	const updatePost = useCallback(
 		(id: number, body: UpdatePostFormData) =>
 			fetchJson<Post>(`/@api/posts/${id}`, {
@@ -66,5 +81,5 @@ export const usePostService = () => {
 		[fetchJson, token]
 	);
 
-	return { getPosts, getPost, createPost, updatePost, deletePost };
+	return { getAllPosts, getAllUserPosts, getOnePost, createPost, updatePost, deletePost };
 };

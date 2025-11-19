@@ -21,44 +21,23 @@ import { EditProfileImageModal } from './EditProfileImageModal.tsx';
 import { EditCoverImageModal } from './EditCoverImageModal.tsx';
 import { CustomTooltip } from '../common/CustomTooltip.tsx';
 import { useProfile } from '@/hooks/useProfile.ts';
+import { usePosts } from '@/hooks/usePosts.ts';
+import FeedPost from '@/components/posts/FeedPost.tsx';
+import { Spinner } from '@shadcn/components/ui/spinner';
+import {
+	Empty,
+	EmptyTitle,
+	EmptyDescription,
+} from '@shadcn/components/ui/empty';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle.ts';
-
-interface ProfilePost {
-	id: number;
-	content: string;
-	image?: string;
-	timestamp: string;
-	likes: number;
-	comments: number;
-	shares: number;
-}
-
-const userPosts: ProfilePost[] = [
-	{
-		id: 1,
-		content:
-			"Just finished recording my new acoustic piece! The Martin D-28 sounds absolutely incredible on this track. Can't wait to share the full version with you all 🎸✨",
-		image: '/acoustic-guitar-recording-studio.jpg',
-		timestamp: '2h ago',
-		likes: 234,
-		comments: 45,
-		shares: 12,
-	},
-	{
-		id: 2,
-		content:
-			'Practice tip: Try playing your favorite riffs in different positions on the neck. It really helps with fretboard visualization and opens up new creative possibilities! 🎵',
-		timestamp: '1d ago',
-		likes: 412,
-		comments: 89,
-		shares: 156,
-	},
-];
+import { useNavigate } from 'react-router';
 
 export default function ProfilePage() {
 	const [activeTab, setActiveTab] = useState<'posts' | 'media' | 'about'>(
 		'posts'
 	);
+
+	const navigate = useNavigate();
 
 	const modalRef = useRef<ModalImperativeHandle>(null);
 	const imageModalRef = useRef<ModalImperativeHandle>(null);
@@ -66,6 +45,21 @@ export default function ProfilePage() {
 
 	const { user } = useAuth();
 	const { profile, loading, refetch } = useProfile();
+	const {
+		posts,
+		loading: postsLoading,
+		refetch: refetchPosts,
+	} = usePosts(user?.id ? Number(user.id) : undefined);
+
+	if (!user) {
+		return (
+			<UnableToLoad
+				title="Authentication Required"
+				message="Please log in to view your profile."
+				onGoBack={() => navigate('/login')}
+			/>
+		);
+	}
 
 	if (!profile) {
 		return (
@@ -264,80 +258,26 @@ export default function ProfilePage() {
 				<div className="mt-6 pb-12">
 					{activeTab === 'posts' && (
 						<div className="space-y-6">
-							{userPosts.map((post) => (
-								<article
-									key={post.id}
-									className="bg-card rounded-lg border border-border overflow-hidden"
-								>
-									{/* Post Header */}
-									<div className="p-4 flex items-start justify-between">
-										<div className="flex items-start gap-3">
-											<img
-												src="/woman-guitarist.jpg"
-												alt="Sarah Mitchell"
-												className="w-10 h-10 rounded-full object-cover"
-											/>
-											<div>
-												<h3 className="font-semibold text-card-foreground">
-													Sarah Mitchell
-												</h3>
-												<p className="text-sm text-muted-foreground">
-													@sarahmitchell ·{' '}
-													{post.timestamp}
-												</p>
-											</div>
-										</div>
-										<Button variant="ghost" size="icon">
-											<MoreHorizontal className="h-5 w-5" />
-										</Button>
-									</div>
-
-									{/* Post Content */}
-									<div className="px-4 pb-3">
-										<p className="text-card-foreground leading-relaxed">
-											{post.content}
-										</p>
-									</div>
-
-									{/* Post Image */}
-									{post.image && (
-										<div className="relative w-full aspect-video bg-muted">
-											<img
-												src={
-													post.image ||
-													'/placeholder.svg'
-												}
-												alt="Post content"
-												className="w-full h-full object-cover"
-											/>
-										</div>
-									)}
-
-									{/* Post Actions */}
-									<div className="p-4 flex items-center justify-between border-t border-border">
-										<div className="flex items-center gap-6">
-											<button className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors group">
-												<Heart className="h-5 w-5 group-hover:fill-accent" />
-												<span className="text-sm font-medium">
-													{post.likes}
-												</span>
-											</button>
-											<button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-												<MessageCircle className="h-5 w-5" />
-												<span className="text-sm font-medium">
-													{post.comments}
-												</span>
-											</button>
-											<button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-												<Share2 className="h-5 w-5" />
-												<span className="text-sm font-medium">
-													{post.shares}
-												</span>
-											</button>
-										</div>
-									</div>
-								</article>
-							))}
+							{postsLoading ? (
+								<div className="flex justify-center py-8">
+									<Spinner />
+								</div>
+							) : posts.length === 0 ? (
+								<Empty>
+									<EmptyTitle>No posts yet</EmptyTitle>
+									<EmptyDescription>
+										You haven't created any posts yet. Start sharing your thoughts!
+									</EmptyDescription>
+								</Empty>
+							) : (
+								posts.map((post) => (
+									<FeedPost
+										key={post.id}
+										post={post}
+										onUpdate={refetchPosts}
+									/>
+								))
+							)}
 						</div>
 					)}
 

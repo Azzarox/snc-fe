@@ -3,7 +3,7 @@ import { usePostService } from './usePostService';
 import type { Post } from '@/types/domain/post';
 
 export const usePost = (postId: number) => {
-	const { getPost } = usePostService();
+	const { getOnePost } = usePostService();
 	const [post, setPost] = useState<Post | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -12,7 +12,7 @@ export const usePost = (postId: number) => {
 		setLoading(true);
 		setError(null);
 		try {
-			const res = await getPost(postId);
+			const res = await getOnePost(postId);
 			if (res.data) {
 				setPost(res.data);
 			} else {
@@ -25,7 +25,7 @@ export const usePost = (postId: number) => {
 		} finally {
 			setLoading(false);
 		}
-	}, [getPost, postId]);
+	}, [getOnePost, postId]);
 
 	useEffect(() => {
 		fetchPost();
