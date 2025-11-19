@@ -27,6 +27,8 @@ import {
 	updatePostSchema,
 	type UpdatePostFormData,
 } from '@/schemas/posts/updatePostSchema';
+import { formatDate, getUserFullName, getUserInitials } from '@/utils/formatters';
+import { checkIsOwner } from '@/utils/authHelpers';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -40,19 +42,10 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 	const { updatePost, deletePost } = usePostService();
 	const navigate = useNavigate();
 	const [isEditing, setIsEditing] = useState(false);
-	const isOwner = user?.id ? Number(user.id) === post.userId : false;
-
-	const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
-		month: 'short',
-		day: 'numeric',
-		year: 'numeric',
-		hour: '2-digit',
-		minute: '2-digit',
-	});
-
-	const fullName = `${post.user.firstName} ${post.user.lastName}`;
-	const initials =
-		`${post.user.firstName.charAt(0)}${post.user.lastName.charAt(0)}`.toUpperCase();
+	const isOwner = checkIsOwner(user?.id, post.userId);
+	const formattedDate = formatDate(post.createdAt, true);
+	const fullName = getUserFullName(post.user);
+	const initials = getUserInitials(post.user);
 
 	const {
 		register,

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Button } from '@shadcn/components/ui/button';
 import {
 	DropdownMenu,
@@ -10,11 +9,11 @@ import {
 import { MoreHorizontal, Edit, Trash2 } from 'lucide-react';
 import type { Comment } from '@/types/domain/comment';
 import { useAuth } from '@/context/AuthContext';
-import { useCommentService } from '@/hooks/useCommentService';
+import { useCommentActions } from '@/hooks/useCommentActions';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
-import { useConfirmModal } from '@/hooks/useConfirmModal';
-import { toastService } from '@/services/common/toastService';
 import { CommentForm } from './CommentForm';
+import { formatDate, getUserFullName, getUserInitials } from '@/utils/formatters';
+import { checkIsOwner } from '@/utils/authHelpers';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -25,47 +24,18 @@ type CommentItemProps = {
 
 export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 	const { user } = useAuth();
-	const { deleteComment } = useCommentService();
-	const [isEditing, setIsEditing] = useState(false);
-	const isOwner = user?.id ? Number(user.id) === comment.userId : false;
-
-	// TODO: Move that in function or hook. Used in the posts as well ...
-	const formattedDate = new Date(comment.createdAt).toLocaleDateString(
-		'en-US',
-		{
-			month: 'short',
-			day: 'numeric',
-			year: 'numeric',
-		}
-	);
-
-	const fullName = `${comment.user.firstName} ${comment.user.lastName}`;
-	const initials =
-		`${comment.user.firstName.charAt(0)}${comment.user.lastName.charAt(0)}`.toUpperCase();
-
-	const deleteConfirmModal = useConfirmModal({
-		onConfirm: async () => {
-			const response = await deleteComment(comment.postId, comment.id);
-			if (response.success) {
-				toastService.success('Comment deleted successfully!');
-				onUpdate?.();
-			}
-		},
-	});
-
-	// TODO: move that in useCommentsAction hook
-	const handleEdit = () => {
-		setIsEditing(true);
-	};
-
-	const handleCancelEdit = () => {
-		setIsEditing(false);
-	};
-
-	const handleEditSuccess = () => {
-		setIsEditing(false);
-		onUpdate?.();
-	};
+	const {
+		isEditing,
+		handleEdit,
+		handleCancelEdit,
+		handleEditSuccess,
+		deleteConfirmModal,
+	} = useCommentActions({ comment, onUpdate });
+	
+	const isOwner = checkIsOwner(user?.id, comment.userId);
+	const formattedDate = formatDate(comment.createdAt);
+	const fullName = getUserFullName(comment.user);
+	const initials = getUserInitials(comment.user);
 
 	if (isEditing) {
 		return (
