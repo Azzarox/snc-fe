@@ -31,5 +31,13 @@ export const usePosts = (userId?: number) => {
 		fetchPosts();
 	}, [fetchPosts]);
 
-	return { posts, loading, refetch: fetchPosts };
+	const handlePostUpdate = useCallback((postId: number, updates: Partial<Post>) => {
+		setPosts((prevPosts) =>
+			prevPosts.map((post) =>
+				post.id === postId ? { ...post, ...updates } : post
+			)
+		);
+	}, []);
+
+	return { posts, loading, refetch: fetchPosts, handlePostUpdate };
 };

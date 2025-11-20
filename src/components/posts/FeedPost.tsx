@@ -23,15 +23,17 @@ import remarkGfm from 'remark-gfm';
 
 type FeedPostProps = {
 	post: Post;
-	onUpdate?: () => void;
+	onPostUpdate?: (postId: number, updates: Partial<Post>) => void;
+	onPostDelete?: () => void;
 };
 
-const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
+const FeedPost = ({ post, onPostUpdate, onPostDelete }: FeedPostProps) => {
 	const { token, user } = useAuth();
 	const isOwner = user?.id ? Number(user.id) === post.userId : false;
 	const { handleViewDetails, handleTogglePostLike, deleteConfirmModal} = usePostActions({
 		post,
-		onUpdate,
+		onPostUpdate,
+		onPostDelete,
 	});
 	const { handleNavigateToProfile } = useCommonActions();
 
@@ -130,8 +132,21 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 					</span>
 				</button>
 
-				{ token && <button onClick={handleTogglePostLike} className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors group">
-					<Heart className="h-5 w-5 group-hover:fill-accent" />
+				{ token && <button
+					onClick={handleTogglePostLike}
+					className={`flex items-center gap-2 transition-colors group ${
+						post.isLikedByCurrentUser
+							? 'text-accent'
+							: 'text-muted-foreground hover:text-accent'
+					}`}
+				>
+					<Heart
+						className={`h-5 w-5 ${
+							post.isLikedByCurrentUser
+								? 'fill-accent'
+								: 'group-hover:fill-accent'
+						}`}
+					/>
 					<span className="text-sm font-medium">
 						{post.likesCount}
 					</span>

@@ -14,7 +14,7 @@ import {
 
 const HomePage = () => {
 	const { token, user } = useAuth();
-	const { posts, loading, refetch } = usePosts();
+	const { posts, loading, refetch, handlePostUpdate } = usePosts();
 
 	return (
 		<main className="container mx-auto px-4 py-6 max-w-7xl">
@@ -46,7 +46,8 @@ const HomePage = () => {
 								<FeedPost
 									key={post.id}
 									post={post}
-									onUpdate={refetch}
+									onPostUpdate={handlePostUpdate}
+									onPostDelete={refetch}
 								/>
 							))}
 						</div>

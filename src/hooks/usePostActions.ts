@@ -6,10 +6,11 @@ import { useNavigate } from 'react-router';
 
 type UsePostActionsProps = {
 	post: Post;
-	onUpdate?: () => void;
+	onPostUpdate?: (postId: number, updates: Partial<Post>) => void;
+	onPostDelete?: () => void;
 };
 
-export const usePostActions = ({ post, onUpdate }: UsePostActionsProps) => {
+export const usePostActions = ({ post, onPostUpdate, onPostDelete }: UsePostActionsProps) => {
 	const { deletePost, togglePostLike } = usePostService();
 	const navigate = useNavigate();
 
@@ -19,7 +20,7 @@ export const usePostActions = ({ post, onUpdate }: UsePostActionsProps) => {
 
 			if (response.success) {
 				toastService.success('Post deleted successfully!');
-				onUpdate?.();
+				onPostDelete?.();
 			}
 		},
 	});
@@ -29,10 +30,22 @@ export const usePostActions = ({ post, onUpdate }: UsePostActionsProps) => {
 	};
 
 	const handleTogglePostLike = async () => {
+		const wasLiked = post.isLikedByCurrentUser;
+		const optimisticUpdates: Partial<Post> = {
+			isLikedByCurrentUser: !wasLiked,
+			likesCount: wasLiked ? post.likesCount - 1 : post.likesCount + 1,
+		};
+
+		onPostUpdate?.(post.id, optimisticUpdates);
+
 		const response = await togglePostLike(post.id);
 
-		if (response.success) {
-			onUpdate?.();
+		if (!response.success) {
+			onPostUpdate?.(post.id, {
+				isLikedByCurrentUser: wasLiked,
+				likesCount: post.likesCount,
+			});
+			toastService.error('Something went wrong liking the post!')
 		}
 	};
 

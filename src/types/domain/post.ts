@@ -10,6 +10,7 @@ export type Post = {
 	updatedAt: string;
 	commentsCount: number;
 	likesCount: number;
+	isLikedByCurrentUser: boolean;
 	comments?: Comment[];
 };
 
