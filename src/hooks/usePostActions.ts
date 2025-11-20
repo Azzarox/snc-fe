@@ -10,7 +10,11 @@ type UsePostActionsProps = {
 	onPostDelete?: () => void;
 };
 
-export const usePostActions = ({ post, onPostUpdate, onPostDelete }: UsePostActionsProps) => {
+export const usePostActions = ({
+	post,
+	onPostUpdate,
+	onPostDelete,
+}: UsePostActionsProps) => {
 	const { deletePost, togglePostLike } = usePostService();
 	const navigate = useNavigate();
 
@@ -45,7 +49,7 @@ export const usePostActions = ({ post, onPostUpdate, onPostDelete }: UsePostActi
 				isLikedByCurrentUser: wasLiked,
 				likesCount: post.likesCount,
 			});
-			toastService.error('Something went wrong liking the post!')
+			toastService.error('Something went wrong liking the post!');
 		}
 	};
 

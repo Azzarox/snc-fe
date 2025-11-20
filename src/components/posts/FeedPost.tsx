@@ -30,11 +30,12 @@ type FeedPostProps = {
 const FeedPost = ({ post, onPostUpdate, onPostDelete }: FeedPostProps) => {
 	const { token, user } = useAuth();
 	const isOwner = user?.id ? Number(user.id) === post.userId : false;
-	const { handleViewDetails, handleTogglePostLike, deleteConfirmModal} = usePostActions({
-		post,
-		onPostUpdate,
-		onPostDelete,
-	});
+	const { handleViewDetails, handleTogglePostLike, deleteConfirmModal } =
+		usePostActions({
+			post,
+			onPostUpdate,
+			onPostDelete,
+		});
 	const { handleNavigateToProfile } = useCommonActions();
 
 	const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
@@ -132,25 +133,27 @@ const FeedPost = ({ post, onPostUpdate, onPostDelete }: FeedPostProps) => {
 					</span>
 				</button>
 
-				{ token && <button
-					onClick={handleTogglePostLike}
-					className={`flex items-center gap-2 transition-colors group ${
-						post.isLikedByCurrentUser
-							? 'text-red-500'
-							: 'text-muted-foreground hover:text-red-500'
-					}`}
-				>
-					<Heart
-						className={`h-5 w-5 transition-all ${
+				{token && (
+					<button
+						onClick={handleTogglePostLike}
+						className={`flex items-center gap-2 transition-colors group ${
 							post.isLikedByCurrentUser
-								? 'fill-red-500 stroke-red-500'
-								: 'fill-transparent group-hover:fill-red-500/50'
+								? 'text-red-500'
+								: 'text-muted-foreground hover:text-red-500'
 						}`}
-					/>
-					<span className="text-sm font-medium">
-						{post.likesCount}
-					</span>
-				</button>}
+					>
+						<Heart
+							className={`h-5 w-5 transition-all ${
+								post.isLikedByCurrentUser
+									? 'fill-red-500 stroke-red-500'
+									: 'fill-transparent group-hover:fill-red-500/50'
+							}`}
+						/>
+						<span className="text-sm font-medium">
+							{post.likesCount}
+						</span>
+					</button>
+				)}
 			</div>
 
 			{/* {post.image && (

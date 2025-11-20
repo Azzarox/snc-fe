@@ -111,7 +111,10 @@ const Header = () => {
 				</div>
 			</div>
 
-			<MobileMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen} />
+			<MobileMenu
+				open={mobileMenuOpen}
+				onOpenChange={setMobileMenuOpen}
+			/>
 		</header>
 	);
 };

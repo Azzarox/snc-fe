@@ -7,7 +7,7 @@ import {
 import { Separator } from '@shadcn/components/ui/separator';
 import { Button } from '@shadcn/components/ui/button';
 import { useNavigate } from 'react-router';
-import { Home, Compass, BookOpen, Settings, User, LogOut } from 'lucide-react';
+import { Home, Compass, Settings, User, LogOut } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useProfile } from '@/hooks/useProfile';
 import { getUserFullName, getUserInitials } from '@/utils/formatters';
@@ -38,13 +38,16 @@ export const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
 
 	return (
 		<Sheet open={open} onOpenChange={onOpenChange}>
-			<SheetContent side="left" className="w-[300px] sm:w-[350px] flex flex-col h-full p-0">
+			<SheetContent
+				side="left"
+				className="w-[300px] sm:w-[350px] flex flex-col h-full p-0"
+			>
 				<SheetHeader className="px-6 pt-6 pb-4">
 					<SheetTitle className="text-left">Menu</SheetTitle>
 				</SheetHeader>
 
 				<div className="flex-1 flex flex-col px-6 overflow-y-auto">
-					{token && user && profile  && (
+					{token && user && profile && (
 						<>
 							<div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 mb-4">
 								<div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center overflow-hidden">
@@ -109,7 +112,9 @@ export const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
 								<Button
 									variant="ghost"
 									className="justify-start gap-3 h-11"
-									onClick={() => handleNavigation('/settings')}
+									onClick={() =>
+										handleNavigation('/settings')
+									}
 								>
 									<Settings className="h-5 w-5" />
 									<span>Settings</span>
