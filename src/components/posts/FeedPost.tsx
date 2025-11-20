@@ -6,7 +6,13 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 } from '@shadcn/components/ui/dropdown-menu';
-import { MoreHorizontal, Eye, Trash2, MessageCircle } from 'lucide-react';
+import {
+	MoreHorizontal,
+	Eye,
+	Trash2,
+	MessageCircle,
+	Heart,
+} from 'lucide-react';
 import type { Post } from '@/types/domain/post';
 import { useAuth } from '@/context/AuthContext';
 import { usePostActions } from '@/hooks/usePostActions';
@@ -23,7 +29,7 @@ type FeedPostProps = {
 const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 	const { token, user } = useAuth();
 	const isOwner = user?.id ? Number(user.id) === post.userId : false;
-	const { handleViewDetails, deleteConfirmModal } = usePostActions({
+	const { handleViewDetails, handleTogglePostLike, deleteConfirmModal} = usePostActions({
 		post,
 		onUpdate,
 	});
@@ -123,6 +129,13 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 						{post.commentsCount}
 					</span>
 				</button>
+
+				{ token && <button onClick={handleTogglePostLike} className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors group">
+					<Heart className="h-5 w-5 group-hover:fill-accent" />
+					<span className="text-sm font-medium">
+						{post.likesCount}
+					</span>
+				</button>}
 			</div>
 
 			{/* {post.image && (
@@ -135,18 +148,18 @@ const FeedPost = ({ post, onUpdate }: FeedPostProps) => {
 				<div className="flex items-center gap-6">
 					<button className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors group">
 						<Heart className="h-5 w-5 group-hover:fill-accent" />
-						<span className="text-sm font-medium">{post.likes}</span>
+						<span className="text-sm font-medium">{post.likesCount}</span>
 					</button>
-					<button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+					 <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
 						<MessageCircle className="h-5 w-5" />
 						<span className="text-sm font-medium">{post.comments}</span>
 					</button>
 					<button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
 						<Share2 className="h-5 w-5" />
 						<span className="text-sm font-medium">{post.shares}</span>
-					</button>
+					</button> 
 				</div>
-			</div> */}
+			</div>  */}
 
 			<ConfirmModal
 				ref={deleteConfirmModal.modalRef}

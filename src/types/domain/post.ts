@@ -9,6 +9,7 @@ export type Post = {
 	createdAt: string;
 	updatedAt: string;
 	commentsCount: number;
+	likesCount: number;
 	comments?: Comment[];
 };
 

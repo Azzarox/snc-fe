@@ -79,6 +79,17 @@ export const usePostService = () => {
 		[fetchJson, token]
 	);
 
+	const togglePostLike = useCallback(
+		(id: number) =>
+			fetchJson<Post>(`/@api/posts/${id}/likes`, {
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
+		[fetchJson, token]
+	);
+
 	return {
 		getAllPosts,
 		getAllUserPosts,
@@ -86,5 +97,6 @@ export const usePostService = () => {
 		createPost,
 		updatePost,
 		deletePost,
+		togglePostLike,
 	};
 };

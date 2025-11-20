@@ -10,7 +10,7 @@ type UsePostActionsProps = {
 };
 
 export const usePostActions = ({ post, onUpdate }: UsePostActionsProps) => {
-	const { deletePost } = usePostService();
+	const { deletePost, togglePostLike } = usePostService();
 	const navigate = useNavigate();
 
 	const deleteConfirmModal = useConfirmModal({
@@ -28,8 +28,17 @@ export const usePostActions = ({ post, onUpdate }: UsePostActionsProps) => {
 		navigate(`/posts/${post.id}/details`);
 	};
 
+	const handleTogglePostLike = async () => {
+		const response = await togglePostLike(post.id);
+
+		if (response.success) {
+			onUpdate?.();
+		}
+	};
+
 	return {
 		handleViewDetails,
+		handleTogglePostLike,
 		deleteConfirmModal,
 	};
 };
