@@ -2,9 +2,13 @@ import { Button } from '@shadcn/components/ui/button';
 import { Input } from '@shadcn/components/ui/input';
 import { Bell, Search, Menu } from 'lucide-react';
 import { Link } from 'react-router';
+import { useState } from 'react';
 import HeaderAuthButtons from './HeaderAuthButtons';
+import { MobileMenu } from './MobileMenu';
 
 const Header = () => {
+	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
 			<div className="container mx-auto px-4 max-w-7xl">
@@ -99,12 +103,15 @@ const Header = () => {
 							variant="ghost"
 							size="icon"
 							className="md:hidden"
+							onClick={() => setMobileMenuOpen(true)}
 						>
 							<Menu className="h-5 w-5" />
 						</Button>
 					</div>
 				</div>
 			</div>
+
+			<MobileMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen} />
 		</header>
 	);
 };
