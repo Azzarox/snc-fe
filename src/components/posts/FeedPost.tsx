@@ -136,15 +136,15 @@ const FeedPost = ({ post, onPostUpdate, onPostDelete }: FeedPostProps) => {
 					onClick={handleTogglePostLike}
 					className={`flex items-center gap-2 transition-colors group ${
 						post.isLikedByCurrentUser
-							? 'text-accent'
-							: 'text-muted-foreground hover:text-accent'
+							? 'text-red-500'
+							: 'text-muted-foreground hover:text-red-500'
 					}`}
 				>
 					<Heart
-						className={`h-5 w-5 ${
+						className={`h-5 w-5 transition-all ${
 							post.isLikedByCurrentUser
-								? 'fill-accent'
-								: 'group-hover:fill-accent'
+								? 'fill-red-500 stroke-red-500'
+								: 'fill-transparent group-hover:fill-red-500/50'
 						}`}
 					/>
 					<span className="text-sm font-medium">

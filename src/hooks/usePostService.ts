@@ -13,6 +13,11 @@ export const usePostService = () => {
 		() =>
 			fetchJson<Post[]>('/@api/posts', {
 				method: 'GET',
+				...(token && {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}),
 			}),
 		[fetchJson, token]
 	);
