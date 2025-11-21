@@ -96,6 +96,7 @@ export const EditProfileModal = forwardRef<
 							id="firstName"
 							{...register('firstName')}
 							placeholder="Enter your first name"
+							autoFocus
 						/>
 						{errors.firstName && (
 							<FieldError>{errors.firstName?.message}</FieldError>

@@ -11,4 +11,6 @@ export type UserProfile = {
 	description?: string;
 	bio?: string;
 	createdAt: string;
+	avatarUrl?: string;
+	coverUrl?: string;
 };
