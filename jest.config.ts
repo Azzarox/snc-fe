@@ -2,7 +2,9 @@ export default {
 	preset: 'ts-jest',
 	testEnvironment: 'jest-environment-jsdom',
 	transform: {
-		'^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.test.json' }],
+		'^.+\\.(ts|tsx)$': ['ts-jest', {
+			tsconfig: 'tsconfig.test.json',
+		}],
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
 	setupFilesAfterEnv: ['<rootDir>/test/setupTests.ts'], // moved

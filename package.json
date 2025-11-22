@@ -10,7 +10,8 @@
 		"lint": "eslint . --fix",
 		"prettier:format": "prettier --write .",
 		"prettier:check": "prettier --check .",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"test": "jest"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.2.2",
