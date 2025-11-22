@@ -29,28 +29,6 @@ import { useAuthService } from '@/hooks/useAuthService';
 import DissmissableErrorAlert from '@/components/common/DismissableErrorAlert';
 import { ErrorMessages } from '@/consts/errors';
 
-const GUITAR_SKILLS = [
-	'Acoustic Guitar',
-	'Electric Guitar',
-	'Bass Guitar',
-	'Classical Guitar',
-	'Fingerstyle',
-	'Flamenco',
-	'Jazz',
-	'Blues',
-	'Rock',
-	'Metal',
-	'Folk',
-	'Country',
-];
-
-const EXPERIENCE_LEVELS = [
-	{ value: 'beginner', label: 'Beginner (0-1 years)' },
-	{ value: 'intermediate', label: 'Intermediate (1-3 years)' },
-	{ value: 'advanced', label: 'Advanced (3-5 years)' },
-	{ value: 'expert', label: 'Expert (5+ years)' },
-];
-
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 	const [currentStep, setCurrentStep] = useState(1);
 
@@ -74,8 +52,6 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 			lastName: '',
 			bio: '',
 			description: '',
-			// primarySkill: '',
-			// yearsExperience: '',
 		},
 	});
 

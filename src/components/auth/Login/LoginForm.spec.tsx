@@ -26,7 +26,7 @@ jest.mock('react-router', () => ({
 }));
 
 describe('LoginForm', () => {
-	beforeEach(() => jest.clearAllMocks());
+	afterEach(() => jest.clearAllMocks());
 
 	it('should render all form elements', () => {
 		render(
