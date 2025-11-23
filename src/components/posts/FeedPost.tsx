@@ -6,13 +6,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 } from '@shadcn/components/ui/dropdown-menu';
-import {
-	MoreHorizontal,
-	Eye,
-	Trash2,
-	MessageCircle,
-	Heart,
-} from 'lucide-react';
+import { MoreHorizontal, Eye, Trash2, MessageCircle, Heart } from 'lucide-react';
 import type { Post } from '@/types/domain/post';
 import { useAuth } from '@/context/AuthContext';
 import { usePostActions } from '@/hooks/usePostActions';
@@ -30,12 +24,11 @@ type FeedPostProps = {
 const FeedPost = ({ post, onPostUpdate, onPostDelete }: FeedPostProps) => {
 	const { token, user } = useAuth();
 	const isOwner = user?.id ? Number(user.id) === post.userId : false;
-	const { handleViewDetails, handleTogglePostLike, deleteConfirmModal } =
-		usePostActions({
-			post,
-			onPostUpdate,
-			onPostDelete,
-		});
+	const { handleViewDetails, handleTogglePostLike, deleteConfirmModal } = usePostActions({
+		post,
+		onPostUpdate,
+		onPostDelete,
+	});
 	const { handleNavigateToProfile } = useCommonActions();
 
 	const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
@@ -45,8 +38,7 @@ const FeedPost = ({ post, onPostUpdate, onPostDelete }: FeedPostProps) => {
 	});
 
 	const fullName = `${post.user.firstName} ${post.user.lastName}`;
-	const initials =
-		`${post.user.firstName.charAt(0)}${post.user.lastName.charAt(0)}`.toUpperCase();
+	const initials = `${post.user.firstName.charAt(0)}${post.user.lastName.charAt(0)}`.toUpperCase();
 
 	return (
 		<article className="bg-card rounded-lg border border-border overflow-hidden">
@@ -57,26 +49,15 @@ const FeedPost = ({ post, onPostUpdate, onPostDelete }: FeedPostProps) => {
 						className="w-10 h-10 rounded-full bg-muted flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity cursor-pointer"
 					>
 						{post.user.avatarUrl ? (
-							<img
-								src={post.user.avatarUrl}
-								alt={fullName}
-								className="w-full h-full object-cover"
-							/>
+							<img src={post.user.avatarUrl} alt={fullName} className="w-full h-full object-cover" />
 						) : (
-							<span className="text-sm font-medium text-muted-foreground">
-								{initials}
-							</span>
+							<span className="text-sm font-medium text-muted-foreground">{initials}</span>
 						)}
 					</button>
 					<div>
-						<h3 className="font-semibold text-card-foreground">
-							{fullName}
-						</h3>
+						<h3 className="font-semibold text-card-foreground">{fullName}</h3>
 						<p className="text-sm text-muted-foreground">
-							<button
-								onClick={handleNavigateToProfile(post.userId)}
-								className="hover:underline cursor-pointer"
-							>
+							<button onClick={handleNavigateToProfile(post.userId)} className="hover:underline cursor-pointer">
 								&#64;{post.user.username}
 							</button>{' '}
 							· {formattedDate}
@@ -87,7 +68,7 @@ const FeedPost = ({ post, onPostUpdate, onPostDelete }: FeedPostProps) => {
 				{token && (
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button variant="ghost" size="icon" aria-label='more options'>
+							<Button variant="ghost" size="icon" aria-label="more options">
 								<MoreHorizontal className="h-5 w-5" />
 							</Button>
 						</DropdownMenuTrigger>
@@ -100,10 +81,7 @@ const FeedPost = ({ post, onPostUpdate, onPostDelete }: FeedPostProps) => {
 							{isOwner && (
 								<>
 									<DropdownMenuSeparator />
-									<DropdownMenuItem
-										variant="destructive"
-										onClick={deleteConfirmModal.openModal}
-									>
+									<DropdownMenuItem variant="destructive" onClick={deleteConfirmModal.openModal}>
 										<Trash2 />
 										Delete
 									</DropdownMenuItem>
@@ -115,31 +93,24 @@ const FeedPost = ({ post, onPostUpdate, onPostDelete }: FeedPostProps) => {
 			</div>
 
 			<div className="px-4 pb-3">
-				<h4 className="text-lg font-semibold text-card-foreground mb-2">
-					{post.title}
-				</h4>
+				<h4 className="text-lg font-semibold text-card-foreground mb-2">{post.title}</h4>
 				<div className="markdown-prose max-w-none">
-					<Markdown remarkPlugins={[remarkGfm]}>
-						{post.content}
-					</Markdown>
+					<Markdown remarkPlugins={[remarkGfm]}>{post.content}</Markdown>
 				</div>
 			</div>
 
 			<div className="px-4 pb-4 flex items-center gap-6">
 				<button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
 					<MessageCircle className="h-5 w-5" />
-					<span className="text-sm font-medium">
-						{post.commentsCount}
-					</span>
+					<span className="text-sm font-medium">{post.commentsCount}</span>
 				</button>
 
 				{token && (
 					<button
+						aria-label="like-button"
 						onClick={handleTogglePostLike}
 						className={`flex items-center gap-2 transition-colors group ${
-							post.isLikedByCurrentUser
-								? 'text-red-500'
-								: 'text-muted-foreground hover:text-red-500'
+							post.isLikedByCurrentUser ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'
 						}`}
 					>
 						<Heart
@@ -149,9 +120,7 @@ const FeedPost = ({ post, onPostUpdate, onPostDelete }: FeedPostProps) => {
 									: 'fill-transparent group-hover:fill-red-500/50'
 							}`}
 						/>
-						<span className="text-sm font-medium">
-							{post.likesCount}
-						</span>
+						<span className="text-sm font-medium">{post.likesCount}</span>
 					</button>
 				)}
 			</div>

@@ -3,9 +3,29 @@ import { MemoryRouter } from 'react-router';
 import FeedPost from './FeedPost';
 import { render, screen, waitFor } from '@testing-library/react';
 import { User } from '@/types/domain/user';
-import userEvent from '@testing-library/user-event';
+import userEvent, { UserEvent } from '@testing-library/user-event';
+import { usePost } from '@/hooks/usePost';
+import { Button } from '@shadcn/components/ui/button';
+import React from 'react';
+import { regex } from 'zod';
+import { Regex } from 'lucide-react';
 
 const useAuth = jest.fn();
+
+const usePostActions = {
+	handleViewDetails: jest.fn(),
+	deleteConfirmModal: {
+		openModal: jest.fn(),
+		closeModal: jest.fn(),
+		handleConfirm: jest.fn(),
+	},
+	handleTogglePostLike: jest.fn(),
+};
+
+const navigate = jest.fn();
+const useCommonActions = {
+	handleNavigateToProfile: jest.fn(() => navigate),
+};
 
 jest.mock('react-markdown', () => {
 	return ({ children }: { children: string }) => <div>{children}</div>;
@@ -20,17 +40,11 @@ jest.mock('@/context/AuthContext', () => ({
 }));
 
 jest.mock('@/hooks/usePostActions', () => ({
-	usePostActions: () => ({
-		handleViewDetails: jest.fn(),
-		handleTogglePostLike: jest.fn(),
-		deleteConfirmModal: {},
-	}),
+	usePostActions: () => usePostActions,
 }));
 
 jest.mock('@/hooks/useCommonActions', () => ({
-	useCommonActions: () => ({
-		handleNavigateToProfile: jest.fn(() => jest.fn()),
-	}),
+	useCommonActions: () => useCommonActions,
 }));
 
 describe('FeedPost', () => {
@@ -73,8 +87,19 @@ describe('FeedPost', () => {
 		expect(screen.queryByRole('button', { name: /more options/i })).not.toBeInTheDocument();
 	});
 
-	describe('should render post when the user is logged in', () => {
-		it('should render post when the user is logged in IS owner', async () => {
+	describe('When user is logged in ...', () => {
+		let mock = {
+			token: 'fake-token',
+			user: { id: 1, username: 'test 123' } as User,
+		};
+
+		let user: UserEvent;
+		beforeEach(() => {
+			user = userEvent.setup();
+			useAuth.mockReturnValue(mock);
+		});
+
+		it('should render post when the user IS the owner of the post', async () => {
 			const post = {
 				id: 1,
 				userId: 1,
@@ -90,18 +115,12 @@ describe('FeedPost', () => {
 				likesCount: 11,
 			} as Post;
 
-			useAuth.mockReturnValue({
-				token: 'fake token',
-				user: { id: 1, username: 'test123' } as User,
-			});
-
 			render(
 				<MemoryRouter>
 					<FeedPost post={post} />
 				</MemoryRouter>
 			);
 
-			const user = userEvent.setup();
 			const fullName = `${post.user.firstName} ${post.user.lastName}`;
 
 			expect(screen.getByText(post.title)).toBeInTheDocument();
@@ -118,7 +137,7 @@ describe('FeedPost', () => {
 			expect(screen.getByRole('menuitem', { name: /delete/i })).toBeInTheDocument();
 		});
 
-		it('should render post when the user is logged in IS NOT owner', async () => {
+		it('should render post when the user IS NOT owner of the post', async () => {
 			const post = {
 				id: 1,
 				userId: 1,
@@ -145,7 +164,6 @@ describe('FeedPost', () => {
 				</MemoryRouter>
 			);
 
-			const user = userEvent.setup();
 			const fullName = `${post.user.firstName} ${post.user.lastName}`;
 
 			expect(screen.getByText(post.title)).toBeInTheDocument();
@@ -160,6 +178,146 @@ describe('FeedPost', () => {
 			await user.click(screen.getByRole('button', { name: /more options/i }));
 			expect(screen.getByRole('menuitem', { name: /view details/i })).toBeInTheDocument();
 			expect(screen.queryByRole('menuitem', { name: /delete/i })).not.toBeInTheDocument();
+		});
+
+		it('should call the handleViewDetails when "View Details" is clicked', async () => {
+			const post = {
+				id: 1,
+				userId: 1,
+				title: 'post title',
+				content: 'post content',
+				user: {
+					firstName: 'Test',
+					lastName: 'Testing',
+					avatarUrl: 'some url',
+					username: 'test123',
+				},
+				commentsCount: 10,
+				likesCount: 11,
+			} as Post;
+
+			render(
+				<MemoryRouter>
+					<FeedPost post={post} />
+				</MemoryRouter>
+			);
+
+			await user.click(screen.getByRole('button', { name: /more options/i }));
+			await user.click(screen.getByRole('menuitem', { name: /view details/i }));
+
+			expect(usePostActions.handleViewDetails).toHaveBeenCalled();
+		});
+
+		it('should call openModal upon when "Delete" is clicked', async () => {
+			const post = {
+				id: 1,
+				userId: 1,
+				title: 'post title',
+				content: 'post content',
+				user: {
+					firstName: 'Test',
+					lastName: 'Testing',
+					avatarUrl: 'some url',
+					username: 'test123',
+				},
+				commentsCount: 10,
+				likesCount: 11,
+			} as Post;
+
+			render(
+				<MemoryRouter>
+					<FeedPost post={post} />
+				</MemoryRouter>
+			);
+
+			await user.click(screen.getByRole('button', { name: /more options/i }));
+			await user.click(screen.getByRole('menuitem', { name: /delete/i }));
+
+			expect(usePostActions.deleteConfirmModal.openModal).toHaveBeenCalled();
+		});
+
+		it('should call handleToggleLikePostLike upon when like button is clicked', async () => {
+			const post = {
+				id: 1,
+				userId: 1,
+				title: 'post title',
+				content: 'post content',
+				user: {
+					firstName: 'Test',
+					lastName: 'Testing',
+					avatarUrl: 'some url',
+					username: 'test123',
+				},
+				commentsCount: 10,
+				likesCount: 11,
+			} as Post;
+
+			render(
+				<MemoryRouter>
+					<FeedPost post={post} />
+				</MemoryRouter>
+			);
+
+			await user.click(screen.getByRole('button', { name: 'like-button' }));
+			expect(usePostActions.handleTogglePostLike).toHaveBeenCalled();
+		});
+
+		describe('should navigate to profile', () => {
+			it('when username is clicked', async () => {
+				const post = {
+					id: 1,
+					userId: 1,
+					title: 'post title',
+					content: 'post content',
+					user: {
+						firstName: 'Test',
+						lastName: 'Testing',
+						avatarUrl: 'some url',
+						username: 'test123',
+					},
+					commentsCount: 10,
+					likesCount: 11,
+				} as Post;
+
+				render(
+					<MemoryRouter>
+						<FeedPost post={post} />
+					</MemoryRouter>
+				);
+
+				await user.click(screen.getByRole('button', { name: `@${post.user.username}` }));
+				expect(useCommonActions.handleNavigateToProfile).toHaveBeenCalledWith(post.userId);
+				expect(navigate).toHaveBeenCalled();
+			});
+
+			it('when avatar image is clicked', async () => {
+				const post = {
+					id: 1,
+					userId: 1,
+					title: 'post title',
+					content: 'post content',
+					user: {
+						firstName: 'Test',
+						lastName: 'Testing',
+						avatarUrl: 'some url',
+						username: 'test123',
+					},
+					commentsCount: 10,
+					likesCount: 11,
+				} as Post;
+
+				const fullName = post.user.firstName + ' ' + post.user.lastName;
+
+				render(
+					<MemoryRouter>
+						<FeedPost post={post} />
+					</MemoryRouter>
+				);
+
+				await user.click(screen.getByRole('img', { name: new RegExp(fullName, 'i') }));
+				expect(useCommonActions.handleNavigateToProfile).toHaveBeenCalledWith(post.userId);
+				expect(navigate).toHaveBeenCalled();
+			});
 		});
 	});
 });
