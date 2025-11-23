@@ -70,11 +70,7 @@ describe('FeedPost', () => {
 			commentsCount: 10,
 		} as Post;
 
-		render(
-			<MemoryRouter>
-				<FeedPost post={post} />
-			</MemoryRouter>
-		);
+		render(<FeedPost post={post} />);
 
 		const fullName = `${post.user.firstName} ${post.user.lastName}`;
 
