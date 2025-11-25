@@ -92,7 +92,7 @@ describe('PostDetail', () => {
 		fullname = post.user.firstName + ' ' + post.user.lastName;
 	});
 
-	describe('Component should render properly when ...', () => {
+	describe('Component renders properly when ...', () => {
 		let fullnameDisplay: RegExp;
 		let usernameDisplay: RegExp;
 		let commentsCountDisplay: RegExp;
@@ -103,7 +103,7 @@ describe('PostDetail', () => {
 			commentsCountDisplay = new RegExp(`${post.commentsCount}\\s+comments?`, 'i');
 		});
 
-		it('when user IS owner', async () => {
+		it('user IS owner', async () => {
 			render(<PostDetail post={post} />);
 
 			expect(screen.getByRole('img', { name: fullnameDisplay })).toHaveAttribute('src', post.user.avatarUrl);
@@ -122,7 +122,7 @@ describe('PostDetail', () => {
 			expect(screen.getByRole('menuitem', { name: /delete post/i })).toBeInTheDocument();
 		});
 
-		it('when user IS NOT owner', () => {
+		it('user IS NOT owner', () => {
 			post.userId = 2;
 
 			render(<PostDetail post={post} />);
