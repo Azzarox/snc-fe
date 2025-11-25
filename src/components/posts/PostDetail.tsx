@@ -10,31 +10,19 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 } from '@shadcn/components/ui/dropdown-menu';
-import {
-	MoreHorizontal,
-	Edit,
-	Trash2,
-	MessageCircle,
-	Info,
-} from 'lucide-react';
+import { MoreHorizontal, Edit, Trash2, MessageCircle, Info, Heart } from 'lucide-react';
 import type { Post } from '@/types/domain/post';
 import { useAuth } from '@/context/AuthContext';
 import { usePostService } from '@/hooks/usePostService';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
 import { useConfirmModal } from '@/hooks/useConfirmModal';
 import { toastService } from '@/services/common/toastService';
-import {
-	updatePostSchema,
-	type UpdatePostFormData,
-} from '@/schemas/posts/updatePostSchema';
-import {
-	formatDate,
-	getUserFullName,
-	getUserInitials,
-} from '@/utils/formatters';
+import { updatePostSchema, type UpdatePostFormData } from '@/schemas/posts/updatePostSchema';
+import { formatDate, getUserFullName, getUserInitials } from '@/utils/formatters';
 import { checkIsOwner } from '@/utils/authHelpers';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { usePostActions } from '@/hooks/usePostActions';
 
 type PostDetailProps = {
 	post: Post;
@@ -101,9 +89,7 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 	if (isEditing) {
 		return (
 			<article className="bg-card rounded-lg border border-border p-4">
-				<h2 className="text-lg font-semibold mb-4 text-card-foreground">
-					Edit Post
-				</h2>
+				<h2 className="text-lg font-semibold mb-4 text-card-foreground">Edit Post</h2>
 				<form onSubmit={handleSubmit(onFormSubmit)}>
 					<div className="space-y-3">
 						<div>
@@ -113,11 +99,7 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 								placeholder="Post title..."
 								className="w-full p-3 bg-background border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground"
 							/>
-							{errors.title && (
-								<p className="text-sm text-destructive mt-1">
-									{errors.title.message}
-								</p>
-							)}
+							{errors.title && <p className="text-sm text-destructive mt-1">{errors.title.message}</p>}
 						</div>
 
 						<div>
@@ -127,9 +109,7 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 								className="w-full min-h-32 p-3 bg-background border border-input rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground font-mono text-sm"
 							/>
 							{errors.content ? (
-								<p className="text-sm text-destructive mt-1">
-									{errors.content.message}
-								</p>
+								<p className="text-sm text-destructive mt-1">{errors.content.message}</p>
 							) : (
 								<div className="flex items-center gap-1.5 mt-1.5 text-xs text-muted-foreground">
 									<Info className="h-3.5 w-3.5" />
@@ -140,12 +120,7 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 					</div>
 
 					<div className="flex items-center justify-end gap-2 mt-3">
-						<Button
-							type="button"
-							variant="outline"
-							onClick={handleCancelEdit}
-							disabled={isSubmitting}
-						>
+						<Button type="button" variant="outline" onClick={handleCancelEdit} disabled={isSubmitting}>
 							Cancel
 						</Button>
 						<Button type="submit" disabled={isSubmitting}>
@@ -174,21 +149,13 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 				<div className="flex items-start gap-3">
 					<div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center overflow-hidden">
 						{post.user.avatarUrl ? (
-							<img
-								src={post.user.avatarUrl}
-								alt={fullName}
-								className="w-full h-full object-cover"
-							/>
+							<img src={post.user.avatarUrl} alt={fullName} className="w-full h-full object-cover" />
 						) : (
-							<span className="text-sm font-medium text-muted-foreground">
-								{initials}
-							</span>
+							<span className="text-sm font-medium text-muted-foreground">{initials}</span>
 						)}
 					</div>
 					<div>
-						<h3 className="font-semibold text-card-foreground">
-							{fullName}
-						</h3>
+						<h3 className="font-semibold text-card-foreground">{fullName}</h3>
 						<p className="text-sm text-muted-foreground">
 							@{post.user.username} · {formattedDate}
 						</p>
@@ -221,13 +188,9 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 			</div>
 
 			<div className="px-4 pb-3">
-				<h2 className="text-xl font-bold text-card-foreground mb-3">
-					{post.title}
-				</h2>
+				<h2 className="text-xl font-bold text-card-foreground mb-3">{post.title}</h2>
 				<div className="markdown-prose max-w-none">
-					<Markdown remarkPlugins={[remarkGfm]}>
-						{post.content}
-					</Markdown>
+					<Markdown remarkPlugins={[remarkGfm]}>{post.content}</Markdown>
 				</div>
 			</div>
 
@@ -235,10 +198,25 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 				<div className="flex items-center gap-2 text-muted-foreground">
 					<MessageCircle className="h-5 w-5" />
 					<span className="text-sm font-medium">
-						{post.commentsCount}{' '}
-						{post.commentsCount === 1 ? 'comment' : 'comments'}
+						{post.commentsCount} {post.commentsCount === 1 ? 'comment' : 'comments'}
 					</span>
 				</div>
+
+				<button
+					aria-label="like-button"
+					className={`flex items-center gap-2 transition-colors group ${
+						post.isLikedByCurrentUser ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'
+					}`}
+				>
+					<Heart
+						className={`h-5 w-5 transition-all ${
+							post.isLikedByCurrentUser
+								? 'fill-red-500 stroke-red-500'
+								: 'fill-transparent group-hover:fill-red-500/50'
+						}`}
+					/>
+					<span className="text-sm font-medium">{post.likesCount}</span>
+				</button>
 			</div>
 
 			<ConfirmModal
