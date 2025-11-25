@@ -72,6 +72,7 @@ describe('PostDetail', () => {
 			title: 'My Post',
 			content: 'My content',
 			commentsCount: 10,
+			likesCount: 11,
 		} as Post;
 
 		useAuth.mockReturnValue({
@@ -116,6 +117,8 @@ describe('PostDetail', () => {
 			expect(screen.getByText(post.title)).toBeInTheDocument();
 			expect(screen.getByText(post.content)).toBeInTheDocument();
 			expect(screen.getByText(commentsCountDisplay)).toBeInTheDocument();
+			expect(screen.getByLabelText(/likes-display/i)).toHaveTextContent(post.likesCount.toString());
+
 			expect(screen.getByRole('button', { name: /more-options/i })).toBeInTheDocument();
 
 			await user.click(screen.getByRole('button', { name: /more-options/i }));
@@ -135,6 +138,8 @@ describe('PostDetail', () => {
 			expect(screen.getByText(post.title)).toBeInTheDocument();
 			expect(screen.getByText(post.content)).toBeInTheDocument();
 			expect(screen.getByText(commentsCountDisplay)).toBeInTheDocument();
+			expect(screen.getByLabelText(/likes-display/i)).toHaveTextContent(post.likesCount.toString());
+			
 			expect(screen.queryByRole('button', { name: 'more-options' })).not.toBeInTheDocument();
 		});
 	});

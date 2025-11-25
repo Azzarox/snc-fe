@@ -202,8 +202,8 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 					</span>
 				</div>
 
-				<button
-					aria-label="like-button"
+				<div
+					aria-label="likes-display"
 					className={`flex items-center gap-2 transition-colors group ${
 						post.isLikedByCurrentUser ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'
 					}`}
@@ -216,7 +216,7 @@ export const PostDetail = ({ post, onUpdate }: PostDetailProps) => {
 						}`}
 					/>
 					<span className="text-sm font-medium">{post.likesCount}</span>
-				</button>
+				</div>
 			</div>
 
 			<ConfirmModal
