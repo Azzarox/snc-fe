@@ -264,7 +264,7 @@ export default function ProfilePage() {
 									<FeedPost
 										key={post.id}
 										post={post}
-										onUpdate={refetchPosts}
+										onPostDelete={refetchPosts}
 									/>
 								))
 							)}
