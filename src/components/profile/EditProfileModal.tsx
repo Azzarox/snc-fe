@@ -8,6 +8,7 @@ import {
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
+	DialogDescription,
 } from '@shadcn/components/ui/dialog';
 import {
 	Field,
@@ -87,6 +88,7 @@ export const EditProfileModal = forwardRef<
 			<DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
 				<DialogHeader>
 					<DialogTitle>Edit Profile</DialogTitle>
+					<DialogDescription>Update your profile information</DialogDescription>
 				</DialogHeader>
 
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
