@@ -3,57 +3,31 @@ import {
 	MapPin,
 	Calendar,
 	LinkIcon,
-	Heart,
-	MessageCircle,
-	Share2,
-	MoreHorizontal,
 	Upload,
 	Settings2,
 } from 'lucide-react';
 import { Button } from '@shadcn/components/ui/button';
 import { useState, useRef } from 'react';
-import { useAuth } from '@/context/AuthContext';
 import PageLoader from '../common/PageLoader.tsx';
 import ProfileAbout from './components/ProfileAbout.tsx';
 import { UnableToLoad } from '../common/PageUnableToLoad.tsx';
 import { EditProfileModal } from './EditProfileModal.tsx';
 import { EditProfileImageModal } from './EditProfileImageModal.tsx';
 import { EditCoverImageModal } from './EditCoverImageModal.tsx';
+import { ShareProfileModal } from './ShareProfileModal.tsx';
 import { CustomTooltip } from '../common/CustomTooltip.tsx';
 import { useProfile } from '@/hooks/useProfile.ts';
+import { usePosts } from '@/hooks/usePosts.ts';
+import FeedPost from '@/components/posts/FeedPost.tsx';
+import { Spinner } from '@shadcn/components/ui/spinner';
+import {
+	Empty,
+	EmptyTitle,
+	EmptyDescription,
+} from '@shadcn/components/ui/empty';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle.ts';
-
-interface ProfilePost {
-	id: number;
-	content: string;
-	image?: string;
-	timestamp: string;
-	likes: number;
-	comments: number;
-	shares: number;
-}
-
-const userPosts: ProfilePost[] = [
-	{
-		id: 1,
-		content:
-			"Just finished recording my new acoustic piece! The Martin D-28 sounds absolutely incredible on this track. Can't wait to share the full version with you all 🎸✨",
-		image: '/acoustic-guitar-recording-studio.jpg',
-		timestamp: '2h ago',
-		likes: 234,
-		comments: 45,
-		shares: 12,
-	},
-	{
-		id: 2,
-		content:
-			'Practice tip: Try playing your favorite riffs in different positions on the neck. It really helps with fretboard visualization and opens up new creative possibilities! 🎵',
-		timestamp: '1d ago',
-		likes: 412,
-		comments: 89,
-		shares: 156,
-	},
-];
+import { useDetermineProfile } from '@/hooks/useDetermineProfile.ts';
+import { formatDate } from '@/utils/formatters.ts';
 
 export default function ProfilePage() {
 	const [activeTab, setActiveTab] = useState<'posts' | 'media' | 'about'>(
@@ -63,12 +37,21 @@ export default function ProfilePage() {
 	const modalRef = useRef<ModalImperativeHandle>(null);
 	const imageModalRef = useRef<ModalImperativeHandle>(null);
 	const coverImageModalRef = useRef<ModalImperativeHandle>(null);
+	const shareModalRef = useRef<ModalImperativeHandle>(null);
 
-	const { user } = useAuth();
-	const { profile, loading, refetch } = useProfile();
+	const { profileUserId, isMyProfile } = useDetermineProfile();
+
+	const { profile, loading, refetch } = useProfile(profileUserId);
+	const {
+		posts,
+		loading: postsLoading,
+		refetch: refetchPosts,
+	} = usePosts(profileUserId);
 
 	if (!profile) {
-		return (
+		return loading ? (
+			<PageLoader />
+		) : (
 			<UnableToLoad
 				title="Profile not found"
 				message="We couldn't load this profile. It may have been deleted or there was a connection issue."
@@ -76,17 +59,7 @@ export default function ProfilePage() {
 		);
 	}
 
-	const displayJoined = new Date(profile.createdAt).toLocaleDateString(
-		'en-US',
-		{
-			month: 'long',
-			year: 'numeric',
-		}
-	);
-
-	if (loading) {
-		return <PageLoader />;
-	}
+	const displayJoined = formatDate(profile.createdAt, false);
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -103,13 +76,15 @@ export default function ProfilePage() {
 						: 'no-repeat',
 				}}
 			>
-				<button
-					onClick={() => coverImageModalRef.current?.openModal()}
-					className="cursor-pointer absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-background transition-colors"
-				>
-					<Camera className="h-4 w-4" />
-					<span className="text-sm font-medium">Edit Cover</span>
-				</button>
+				{isMyProfile && (
+					<button
+						onClick={() => coverImageModalRef.current?.openModal()}
+						className="cursor-pointer absolute bottom-4 right-4 bg-background/80 backdrop-blur-sm text-foreground px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-background transition-colors"
+					>
+						<Camera className="h-4 w-4" />
+						<span className="text-sm font-medium">Edit Cover</span>
+					</button>
+				)}
 			</div>
 
 			<div className="container mx-auto px-4 max-w-5xl">
@@ -121,30 +96,38 @@ export default function ProfilePage() {
 								alt={`${profile.firstName} ${profile.lastName}`}
 								className="w-40 h-40 rounded-full border-4 border-background object-cover"
 							/>
-							<CustomTooltip content="Change profile picture">
-								<button
-									onClick={() =>
-										imageModalRef.current?.openModal()
-									}
-									className="cursor-pointer absolute bottom-2 right-2 bg-primary text-primary-foreground p-2.5 rounded-full hover:scale-110 hover:shadow-lg transition-all duration-200 ring-2 ring-background"
-								>
-									<Upload className="h-4.5 w-4.5" />
-								</button>
-							</CustomTooltip>
+							{isMyProfile && (
+								<CustomTooltip content="Change profile picture">
+									<button
+										onClick={() =>
+											imageModalRef.current?.openModal()
+										}
+										className="cursor-pointer absolute bottom-2 right-2 bg-primary text-primary-foreground p-2.5 rounded-full hover:scale-110 hover:shadow-lg transition-all duration-200 ring-2 ring-background"
+									>
+										<Upload className="h-4.5 w-4.5" />
+									</button>
+								</CustomTooltip>
+							)}
 						</div>
 					</div>
 
 					<div className="pt-6 flex justify-end gap-3">
+						{isMyProfile && (
+							<Button
+								className="cursor-pointer"
+								onClick={() => modalRef.current?.openModal()}
+								variant="outline"
+								size="sm"
+							>
+								<Settings2 className="h-4 w-4 mr-2" />
+								Edit Profile
+							</Button>
+						)}
 						<Button
-							className="cursor-pointer"
-							onClick={() => modalRef.current?.openModal()}
-							variant="outline"
 							size="sm"
+							className="cursor-pointer"
+							onClick={() => shareModalRef.current?.openModal()}
 						>
-							<Settings2 className="h-4 w-4 mr-2" />
-							Edit Profile
-						</Button>
-						<Button size="sm" className="cursor-pointer">
 							Share Profile
 						</Button>
 					</div>
@@ -155,9 +138,9 @@ export default function ProfilePage() {
 						{profile.firstName} {profile.lastName}
 					</h1>
 
-					{user?.username && (
+					{profile?.username && (
 						<p className="text-muted-foreground mt-1">
-							@{user?.username}
+							@{profile?.username}
 						</p>
 					)}
 
@@ -264,80 +247,27 @@ export default function ProfilePage() {
 				<div className="mt-6 pb-12">
 					{activeTab === 'posts' && (
 						<div className="space-y-6">
-							{userPosts.map((post) => (
-								<article
-									key={post.id}
-									className="bg-card rounded-lg border border-border overflow-hidden"
-								>
-									{/* Post Header */}
-									<div className="p-4 flex items-start justify-between">
-										<div className="flex items-start gap-3">
-											<img
-												src="/woman-guitarist.jpg"
-												alt="Sarah Mitchell"
-												className="w-10 h-10 rounded-full object-cover"
-											/>
-											<div>
-												<h3 className="font-semibold text-card-foreground">
-													Sarah Mitchell
-												</h3>
-												<p className="text-sm text-muted-foreground">
-													@sarahmitchell ·{' '}
-													{post.timestamp}
-												</p>
-											</div>
-										</div>
-										<Button variant="ghost" size="icon">
-											<MoreHorizontal className="h-5 w-5" />
-										</Button>
-									</div>
-
-									{/* Post Content */}
-									<div className="px-4 pb-3">
-										<p className="text-card-foreground leading-relaxed">
-											{post.content}
-										</p>
-									</div>
-
-									{/* Post Image */}
-									{post.image && (
-										<div className="relative w-full aspect-video bg-muted">
-											<img
-												src={
-													post.image ||
-													'/placeholder.svg'
-												}
-												alt="Post content"
-												className="w-full h-full object-cover"
-											/>
-										</div>
-									)}
-
-									{/* Post Actions */}
-									<div className="p-4 flex items-center justify-between border-t border-border">
-										<div className="flex items-center gap-6">
-											<button className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors group">
-												<Heart className="h-5 w-5 group-hover:fill-accent" />
-												<span className="text-sm font-medium">
-													{post.likes}
-												</span>
-											</button>
-											<button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-												<MessageCircle className="h-5 w-5" />
-												<span className="text-sm font-medium">
-													{post.comments}
-												</span>
-											</button>
-											<button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-												<Share2 className="h-5 w-5" />
-												<span className="text-sm font-medium">
-													{post.shares}
-												</span>
-											</button>
-										</div>
-									</div>
-								</article>
-							))}
+							{postsLoading ? (
+								<div className="flex justify-center py-8">
+									<Spinner />
+								</div>
+							) : posts.length === 0 ? (
+								<Empty>
+									<EmptyTitle>No posts yet</EmptyTitle>
+									<EmptyDescription>
+										You haven't created any posts yet. Start
+										sharing your thoughts!
+									</EmptyDescription>
+								</Empty>
+							) : (
+								posts.map((post) => (
+									<FeedPost
+										key={post.id}
+										post={post}
+										onUpdate={refetchPosts}
+									/>
+								))
+							)}
 						</div>
 					)}
 
@@ -381,6 +311,14 @@ export default function ProfilePage() {
 				onSuccess={() => refetch()}
 				currentImageUrl={profile.coverUrl}
 			/>
+
+			{profileUserId && (
+				<ShareProfileModal
+					ref={shareModalRef}
+					userId={profileUserId}
+					username={profile.username}
+				/>
+			)}
 		</div>
 	);
 }

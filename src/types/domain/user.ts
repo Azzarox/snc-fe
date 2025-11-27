@@ -1,11 +1,13 @@
 export type User = {
-	id: string;
+	id: number;
 	email: string;
 	username: string;
 };
 
 export type UserProfile = {
-	id: string;
+	id: number;
+	userId: number;
+	username: string;
 	firstName: string;
 	lastName: string;
 	description?: string;

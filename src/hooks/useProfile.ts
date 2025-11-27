@@ -3,8 +3,8 @@ import { useProfileService } from './useProfileService';
 import type { UserProfile } from '@/types/domain/user';
 import { useAuth } from '@/context/AuthContext';
 
-export const useProfile = () => {
-	const { getUserProfile } = useProfileService();
+export const useProfile = (userId?: number) => {
+	const { getCurrentUserProfile, getProfileByUserId } = useProfileService();
 	const [profile, setProfile] = useState<UserProfile | null>(null);
 	const [loading, setLoading] = useState(false);
 
@@ -19,7 +19,9 @@ export const useProfile = () => {
 		setLoading(true);
 
 		try {
-			const res = await getUserProfile();
+			const res = userId
+				? await getProfileByUserId(userId)
+				: await getCurrentUserProfile();
 
 			if (res.data) {
 				setProfile(res.data);
@@ -31,7 +33,7 @@ export const useProfile = () => {
 		} finally {
 			setLoading(false);
 		}
-	}, [token, getUserProfile]);
+	}, [token, getCurrentUserProfile, getProfileByUserId, userId]);
 
 	useEffect(() => {
 		fetchProfile();

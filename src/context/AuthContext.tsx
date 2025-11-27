@@ -82,7 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				setUser(null);
 			})
 			.finally(() => setLoading(false));
-	}, [token]);
+	}, [token, getAuthenticatedUserData]);
 
 	const handleTokenExpired = useCallback(() => {
 		logout();
