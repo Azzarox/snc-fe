@@ -1,18 +1,7 @@
 import { cn } from '@shadcn/lib/utils';
 import { Button } from '@shadcn/components/ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@shadcn/components/ui/card';
-import {
-	Field,
-	FieldDescription,
-	FieldGroup,
-	FieldLabel,
-} from '@shadcn/components/ui/field';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shadcn/components/ui/card';
+import { Field, FieldDescription, FieldGroup, FieldLabel } from '@shadcn/components/ui/field';
 import { Input } from '@shadcn/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,10 +13,7 @@ import { ErrorMessages } from '@/consts/errors';
 import { useAuth } from '@/context/AuthContext';
 import { type LoginFormData, loginSchema } from '@/schemas/auth/loginSchema';
 
-export function LoginForm({
-	className,
-	...props
-}: React.ComponentProps<'div'>) {
+export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
 	const { login } = useAuth();
 
 	const { loginUser } = useAuthService();
@@ -69,27 +55,19 @@ export function LoginForm({
 			<Card>
 				<CardHeader>
 					<CardTitle>Login to your account</CardTitle>
-					<CardDescription>
-						Enter your email or username below to login to your
-						account
-					</CardDescription>
+					<CardDescription>Enter your email or username below to login to your account</CardDescription>
 				</CardHeader>
 				<CardContent>
 					{errors.root && (
 						<>
-							<DissmissableErrorAlert
-								title="Login Failed"
-								message={errors.root && errors.root.message}
-							/>
+							<DissmissableErrorAlert title="Login Failed" message={errors.root && errors.root.message} />
 						</>
 					)}
 
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<FieldGroup>
 							<Field>
-								<FieldLabel htmlFor="identifier">
-									Email or Username
-								</FieldLabel>
+								<FieldLabel htmlFor="identifier">Email or Username</FieldLabel>
 								<Input
 									id="identifier"
 									type="identifier"
@@ -99,17 +77,13 @@ export function LoginForm({
 								/>
 								{errors.identifier && (
 									<>
-										<FieldDescription className="text-red-500">
-											{errors.identifier.message}
-										</FieldDescription>
+										<FieldDescription className="text-red-500">{errors.identifier.message}</FieldDescription>
 									</>
 								)}
 							</Field>
 							<Field>
 								<div className="flex items-center">
-									<FieldLabel htmlFor="password">
-										Password
-									</FieldLabel>
+									<FieldLabel htmlFor="password">Password</FieldLabel>
 									{/* <a
 										href="#"
 										className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
@@ -126,26 +100,19 @@ export function LoginForm({
 								/>
 								{errors.password && (
 									<>
-										<FieldDescription className="text-red-500">
-											{errors.password.message}
-										</FieldDescription>
+										<FieldDescription className="text-red-500">{errors.password.message}</FieldDescription>
 									</>
 								)}
 							</Field>
 							<Field>
-								<Button
-									className="cursor-pointer"
-									type="submit"
-									disabled={isSubmitting}
-								>
+								<Button className="cursor-pointer" type="submit" disabled={isSubmitting}>
 									{isSubmitting ? 'Loading...' : 'Login'}
 								</Button>
 								{/* <Button variant="outline" type="button">
 									Login with Google
 								</Button> */}
 								<FieldDescription className="text-center">
-									Don&apos;t have an account?{' '}
-									<Link to="/register">Sign up</Link>
+									Don&apos;t have an account? <Link to="/register">Sign up</Link>
 								</FieldDescription>
 							</Field>
 						</FieldGroup>

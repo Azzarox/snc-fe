@@ -8,20 +8,14 @@ const AppearanceSettings = () => {
 		<>
 			<div className="space-y-6">
 				<div>
-					<h2 className="text-lg font-semibold text-foreground mb-2">
-						Appearance
-					</h2>
+					<h2 className="text-lg font-semibold text-foreground mb-2">Appearance</h2>
 
-					<p className="text-sm text-muted-foreground">
-						Customize how StringHub looks on your device
-					</p>
+					<p className="text-sm text-muted-foreground">Customize how StringHub looks on your device</p>
 				</div>
 
 				<div className="space-y-4">
 					<div>
-						<h3 className="text-sm font-medium text-foreground mb-3">
-							Theme
-						</h3>
+						<h3 className="text-sm font-medium text-foreground mb-3">Theme</h3>
 						<div className="grid grid-cols-3 gap-4">
 							<button
 								onClick={() => setTheme('light')}
@@ -32,9 +26,7 @@ const AppearanceSettings = () => {
 								}`}
 							>
 								<Sun className="h-6 w-6" />
-								<span className="text-sm font-medium">
-									Light
-								</span>
+								<span className="text-sm font-medium">Light</span>
 							</button>
 
 							<button
@@ -46,9 +38,7 @@ const AppearanceSettings = () => {
 								}`}
 							>
 								<Moon className="h-6 w-6" />
-								<span className="text-sm font-medium">
-									Dark
-								</span>
+								<span className="text-sm font-medium">Dark</span>
 							</button>
 
 							<button
@@ -60,9 +50,7 @@ const AppearanceSettings = () => {
 								}`}
 							>
 								<Monitor className="h-6 w-6" />
-								<span className="text-sm font-medium">
-									System
-								</span>
+								<span className="text-sm font-medium">System</span>
 							</button>
 						</div>
 						<p className="text-xs text-muted-foreground mt-3">

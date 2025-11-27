@@ -19,9 +19,7 @@ export const DiscoverPage = () => {
 };
 
 const ProfilePage = lazy(() => import('./components/profile/ProfilePage'));
-const PostDetailsPage = lazy(
-	() => import('./components/posts/PostDetailsPage')
-);
+const PostDetailsPage = lazy(() => import('./components/posts/PostDetailsPage'));
 
 function App() {
 	return (
@@ -40,16 +38,10 @@ function App() {
 					{/* Protected Routes */}
 					<Route element={<AuthenticatedLayout />}>
 						<Route path="/profile" element={<ProfilePage />} />
-						<Route
-							path="/profile/:userId"
-							element={<ProfilePage />}
-						/>
+						<Route path="/profile/:userId" element={<ProfilePage />} />
 						<Route path="/settings" element={<SettingsPage />} />
 						<Route path="/discover" element={<DiscoverPage />} />
-						<Route
-							path="/posts/:postId/details"
-							element={<PostDetailsPage />}
-						/>
+						<Route path="/posts/:postId/details" element={<PostDetailsPage />} />
 					</Route>
 
 					<Route path="*" element={<NotFoundPage />}></Route>

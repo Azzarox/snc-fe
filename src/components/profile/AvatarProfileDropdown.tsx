@@ -7,11 +7,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@shadcn/components/ui/dropdown-menu';
-import {
-	AvatarFallback,
-	AvatarImage,
-	Avatar,
-} from '@shadcn/components/ui/avatar';
+import { AvatarFallback, AvatarImage, Avatar } from '@shadcn/components/ui/avatar';
 import { useAuth } from '@/context/AuthContext';
 import { Link } from 'react-router';
 import { LogOutIcon, Settings, UserIcon } from 'lucide-react';
@@ -27,28 +23,14 @@ const AvatarProfileDropdown = () => {
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild className="size-9 cursor-pointer">
 				<Avatar>
-					<AvatarImage
-						className="rounded"
-						src={profile?.avatarUrl}
-						alt="Sarah Mitchell"
-					/>
+					<AvatarImage className="rounded" src={profile?.avatarUrl} alt="Sarah Mitchell" />
 					<AvatarFallback className="text-xs">SM</AvatarFallback>
 				</Avatar>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent
-				className="w-64"
-				align="end"
-				side="bottom"
-				sideOffset={8}
-				alignOffset={0}
-			>
+			<DropdownMenuContent className="w-64" align="end" side="bottom" sideOffset={8} alignOffset={0}>
 				<DropdownMenuLabel className="flex items-center gap-2">
 					<Avatar className="size-10">
-						<AvatarImage
-							className="rounded-md"
-							src={profile?.avatarUrl}
-							alt="Hallie Richards"
-						/>
+						<AvatarImage className="rounded-md" src={profile?.avatarUrl} alt="Hallie Richards" />
 						<AvatarFallback className="text-xs">HR</AvatarFallback>
 					</Avatar>
 					<div className="flex flex-1 flex-col">
@@ -79,10 +61,7 @@ const AvatarProfileDropdown = () => {
 				</DropdownMenuGroup>
 
 				<DropdownMenuSeparator />
-				<DropdownMenuItem
-					onClick={handleLogout}
-					className="cursor-pointer"
-				>
+				<DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
 					<LogOutIcon></LogOutIcon>
 					<span>Log out</span>
 				</DropdownMenuItem>

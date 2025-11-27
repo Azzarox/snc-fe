@@ -1,5 +1,5 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
-import { MemoryRouter, useResolvedPath } from 'react-router';
+import { MemoryRouter } from 'react-router';
 import { LoginForm } from './LoginForm';
 import userEvent from '@testing-library/user-event';
 import { ErrorResponse, SuccessResponse } from '@/types/api/response';

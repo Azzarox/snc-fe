@@ -17,17 +17,8 @@ const PostDetailsPage = () => {
 	const { token } = useAuth();
 	const postIdNumber = postId ? parseInt(postId, 10) : 0;
 
-	const {
-		post,
-		loading: postLoading,
-		error,
-		refetch: refetchPost,
-	} = usePost(postIdNumber);
-	const {
-		comments,
-		loading: commentsLoading,
-		refetch: refetchComments,
-	} = useComments(postIdNumber);
+	const { post, loading: postLoading, error, refetch: refetchPost } = usePost(postIdNumber);
+	const { comments, loading: commentsLoading, refetch: refetchComments } = useComments(postIdNumber);
 
 	const handleBack = () => {
 		navigate(-1);
@@ -73,21 +64,12 @@ const PostDetailsPage = () => {
 
 				{token && (
 					<div>
-						<h3 className="text-lg font-semibold text-card-foreground mb-4">
-							Add a Comment
-						</h3>
-						<CommentForm
-							postId={postIdNumber}
-							onCommentCreated={handleUpdate}
-						/>
+						<h3 className="text-lg font-semibold text-card-foreground mb-4">Add a Comment</h3>
+						<CommentForm postId={postIdNumber} onCommentCreated={handleUpdate} />
 					</div>
 				)}
 
-				<CommentList
-					comments={comments}
-					loading={commentsLoading}
-					onUpdate={refetchComments}
-				/>
+				<CommentList comments={comments} loading={commentsLoading} onUpdate={refetchComments} />
 			</div>
 		</div>
 	);

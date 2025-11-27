@@ -29,7 +29,7 @@
 		"paths": {
 			"@shadcn/*": ["@shadcn/*"],
 			"@/*": ["./src/*"]
-		},
+		}
 	},
 	"include": ["src", "@shadcn/**/*"],
 	"exclude": ["**/*.spec.ts", "**/*.spec.tsx", "test"]

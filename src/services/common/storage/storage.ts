@@ -10,9 +10,7 @@ export enum StorageKeys {
 const storageSchema = {
 	[StorageKeys.ACCESS_TOKEN_KEY]: z.string(),
 	[StorageKeys.THEME]: z.enum([Theme.DARK, Theme.LIGHT, Theme.SYSTEM]),
-	[StorageKeys.USER]: z
-		.null()
-		.or(z.object({ username: z.string().nonoptional() })),
+	[StorageKeys.USER]: z.null().or(z.object({ username: z.string().nonoptional() })),
 } as const;
 
 type StorageSchemas = typeof storageSchema;

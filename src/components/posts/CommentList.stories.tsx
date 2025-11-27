@@ -18,9 +18,7 @@ const createComment = (id: number, userId?: number) => ({
 });
 
 const createComments = (count: number, mixedOwners = false) =>
-	Array.from({ length: count }, (_, i) =>
-		createComment(i, mixedOwners ? (i % 2 === 0 ? 1 : 2) : 1)
-	);
+	Array.from({ length: count }, (_, i) => createComment(i, mixedOwners ? (i % 2 === 0 ? 1 : 2) : 1));
 
 const meta = {
 	title: 'Components/Posts/CommentList',

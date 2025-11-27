@@ -4,7 +4,7 @@ import type { Post } from '@/types/domain/post';
 
 const post: Post = {
 	id: 1,
-	userId: 1, 
+	userId: 1,
 	user: {
 		username: 'test123',
 		firstName: 'Test',

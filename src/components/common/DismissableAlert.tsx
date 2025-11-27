@@ -8,10 +8,7 @@ type DismissableAlertProps = {
 	className: string;
 };
 
-export function DismissableAlert({
-	children,
-	className,
-}: DismissableAlertProps) {
+export function DismissableAlert({ children, className }: DismissableAlertProps) {
 	const [visible, setVisible] = useState(true);
 	if (!visible) return null;
 

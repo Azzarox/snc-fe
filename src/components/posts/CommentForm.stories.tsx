@@ -18,16 +18,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const CreateMode: Story = {
-    args: {
-        mode: 'create'
-    }
-}
+	args: {
+		mode: 'create',
+	},
+};
 
 export const EditMode: Story = {
-    args: {
-        mode: 'edit',
-        commentId: 1,
-        initialValue: 'This is an existing comment that can be edited',
-        onCancel:fn(),
-    }
-}
+	args: {
+		mode: 'edit',
+		commentId: 1,
+		initialValue: 'This is an existing comment that can be edited',
+		onCancel: fn(),
+	},
+};

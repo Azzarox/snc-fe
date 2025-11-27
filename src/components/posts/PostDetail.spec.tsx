@@ -186,7 +186,7 @@ describe('PostDetail', () => {
 	it('should call "updatePost" when update is confirmed', async () => {
 		usePostService.updatePost.mockResolvedValue({ success: true });
 		const onUpdate = jest.fn();
-		render(<PostDetail post={post} onUpdate={onUpdate}  />);
+		render(<PostDetail post={post} onUpdate={onUpdate} />);
 
 		await user.click(screen.getByRole('button', { name: /more-options/i }));
 		await user.click(screen.getByRole('menuitem', { name: /edit post/i }));

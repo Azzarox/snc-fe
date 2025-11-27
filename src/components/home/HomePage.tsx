@@ -5,12 +5,7 @@ import TrendingTopics from './components/TrendingTopics';
 import { PostForm } from '../posts/PostForm';
 import { usePosts } from '@/hooks/usePosts';
 import { Spinner } from '@shadcn/components/ui/spinner';
-import {
-	Empty,
-	EmptyHeader,
-	EmptyTitle,
-	EmptyDescription,
-} from '@shadcn/components/ui/empty';
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@shadcn/components/ui/empty';
 
 const HomePage = () => {
 	const { token, user } = useAuth();
@@ -35,20 +30,13 @@ const HomePage = () => {
 						<Empty>
 							<EmptyHeader>
 								<EmptyTitle>No posts yet</EmptyTitle>
-								<EmptyDescription>
-									Be the first to share with the community!
-								</EmptyDescription>
+								<EmptyDescription>Be the first to share with the community!</EmptyDescription>
 							</EmptyHeader>
 						</Empty>
 					) : (
 						<div className="space-y-6">
 							{posts.map((post) => (
-								<FeedPost
-									key={post.id}
-									post={post}
-									onPostUpdate={handlePostUpdate}
-									onPostDelete={refetch}
-								/>
+								<FeedPost key={post.id} post={post} onPostUpdate={handlePostUpdate} onPostDelete={refetch} />
 							))}
 						</div>
 					)}

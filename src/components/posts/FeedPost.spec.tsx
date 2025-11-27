@@ -1,14 +1,10 @@
 import { Post } from '@/types/domain/post';
 import { MemoryRouter } from 'react-router';
 import FeedPost from './FeedPost';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { User } from '@/types/domain/user';
 import userEvent, { UserEvent } from '@testing-library/user-event';
-import { usePost } from '@/hooks/usePost';
-import { Button } from '@shadcn/components/ui/button';
 import React from 'react';
-import { regex } from 'zod';
-import { Regex } from 'lucide-react';
 
 const useAuth = jest.fn();
 
@@ -84,7 +80,7 @@ describe('FeedPost', () => {
 	});
 
 	describe('When user is logged in ...', () => {
-		let mock = {
+		const mock = {
 			token: 'fake-token',
 			user: { id: 1, username: 'test 123' } as User,
 		};

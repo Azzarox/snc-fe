@@ -1,10 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toastService } from '@/services/common/toastService';
-import {
-	createCommentSchema,
-	type CreateCommentFormData,
-} from '@/schemas/comments/createCommentSchema';
+import { createCommentSchema, type CreateCommentFormData } from '@/schemas/comments/createCommentSchema';
 import { useCommentService } from '@/hooks/useCommentService';
 import { useConfirmModal } from '@/hooks/useConfirmModal';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
@@ -84,22 +81,14 @@ export const CommentForm = ({
 							className="w-full min-h-24 p-3 bg-background border border-input rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground font-mono text-sm"
 						/>
 						{errors.content ? (
-							<p className="text-sm text-destructive mt-1">
-								{errors.content.message}
-							</p>
+							<p className="text-sm text-destructive mt-1">{errors.content.message}</p>
 						) : (
 							<div className="flex items-center justify-between mt-1.5">
 								<div className="flex items-center gap-1.5 text-xs text-muted-foreground">
 									<Info className="h-3.5 w-3.5" />
 									<span>Markdown formatting supported!</span>
 								</div>
-								<span
-									className={`text-xs ${
-										charCount > 1000
-											? 'text-destructive'
-											: 'text-muted-foreground'
-									}`}
-								>
+								<span className={`text-xs ${charCount > 1000 ? 'text-destructive' : 'text-muted-foreground'}`}>
 									{charCount}/1000
 								</span>
 							</div>
@@ -109,23 +98,12 @@ export const CommentForm = ({
 
 				<div className="flex items-center justify-end gap-2 mt-3">
 					{mode === 'edit' && onCancel && (
-						<Button
-							type="button"
-							variant="outline"
-							onClick={onCancel}
-							disabled={isSubmitting}
-						>
+						<Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
 							Cancel
 						</Button>
 					)}
 					<Button type="submit" disabled={isSubmitting}>
-						{isSubmitting
-							? mode === 'edit'
-								? 'Updating...'
-								: 'Posting...'
-							: mode === 'edit'
-								? 'Update'
-								: 'Comment'}
+						{isSubmitting ? (mode === 'edit' ? 'Updating...' : 'Posting...') : mode === 'edit' ? 'Update' : 'Comment'}
 					</Button>
 				</div>
 			</form>

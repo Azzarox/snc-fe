@@ -1,11 +1,4 @@
-import {
-	Camera,
-	MapPin,
-	Calendar,
-	LinkIcon,
-	Upload,
-	Settings2,
-} from 'lucide-react';
+import { Camera, MapPin, Calendar, LinkIcon, Upload, Settings2 } from 'lucide-react';
 import { Button } from '@shadcn/components/ui/button';
 import { useState, useRef } from 'react';
 import PageLoader from '../common/PageLoader.tsx';
@@ -20,19 +13,13 @@ import { useProfile } from '@/hooks/useProfile.ts';
 import { usePosts } from '@/hooks/usePosts.ts';
 import FeedPost from '@/components/posts/FeedPost.tsx';
 import { Spinner } from '@shadcn/components/ui/spinner';
-import {
-	Empty,
-	EmptyTitle,
-	EmptyDescription,
-} from '@shadcn/components/ui/empty';
+import { Empty, EmptyTitle, EmptyDescription } from '@shadcn/components/ui/empty';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle.ts';
 import { useDetermineProfile } from '@/hooks/useDetermineProfile.ts';
 import { formatDate } from '@/utils/formatters.ts';
 
 export default function ProfilePage() {
-	const [activeTab, setActiveTab] = useState<'posts' | 'media' | 'about'>(
-		'posts'
-	);
+	const [activeTab, setActiveTab] = useState<'posts' | 'media' | 'about'>('posts');
 
 	const modalRef = useRef<ModalImperativeHandle>(null);
 	const imageModalRef = useRef<ModalImperativeHandle>(null);
@@ -42,11 +29,7 @@ export default function ProfilePage() {
 	const { profileUserId, isMyProfile } = useDetermineProfile();
 
 	const { profile, loading, refetch } = useProfile(profileUserId);
-	const {
-		posts,
-		loading: postsLoading,
-		refetch: refetchPosts,
-	} = usePosts(profileUserId);
+	const { posts, loading: postsLoading, refetch: refetchPosts } = usePosts(profileUserId);
 
 	if (!profile) {
 		return loading ? (
@@ -67,13 +50,9 @@ export default function ProfilePage() {
 				className="relative w-full h-64 bg-muted"
 				style={{
 					backgroundImage: `url(${profile.coverUrl})`,
-					backgroundSize: profile.coverUrl?.startsWith('data:')
-						? 'auto'
-						: 'cover',
+					backgroundSize: profile.coverUrl?.startsWith('data:') ? 'auto' : 'cover',
 					backgroundPosition: 'center',
-					backgroundRepeat: profile.coverUrl?.startsWith('data:')
-						? 'repeat'
-						: 'no-repeat',
+					backgroundRepeat: profile.coverUrl?.startsWith('data:') ? 'repeat' : 'no-repeat',
 				}}
 			>
 				{isMyProfile && (
@@ -99,9 +78,7 @@ export default function ProfilePage() {
 							{isMyProfile && (
 								<CustomTooltip content="Change profile picture">
 									<button
-										onClick={() =>
-											imageModalRef.current?.openModal()
-										}
+										onClick={() => imageModalRef.current?.openModal()}
 										className="cursor-pointer absolute bottom-2 right-2 bg-primary text-primary-foreground p-2.5 rounded-full hover:scale-110 hover:shadow-lg transition-all duration-200 ring-2 ring-background"
 									>
 										<Upload className="h-4.5 w-4.5" />
@@ -123,11 +100,7 @@ export default function ProfilePage() {
 								Edit Profile
 							</Button>
 						)}
-						<Button
-							size="sm"
-							className="cursor-pointer"
-							onClick={() => shareModalRef.current?.openModal()}
-						>
+						<Button size="sm" className="cursor-pointer" onClick={() => shareModalRef.current?.openModal()}>
 							Share Profile
 						</Button>
 					</div>
@@ -138,17 +111,9 @@ export default function ProfilePage() {
 						{profile.firstName} {profile.lastName}
 					</h1>
 
-					{profile?.username && (
-						<p className="text-muted-foreground mt-1">
-							@{profile?.username}
-						</p>
-					)}
+					{profile?.username && <p className="text-muted-foreground mt-1">@{profile?.username}</p>}
 
-					{profile?.bio && (
-						<p className="mt-4 text-foreground leading-relaxed max-w-2xl">
-							{profile.bio}
-						</p>
-					)}
+					{profile?.bio && <p className="mt-4 text-foreground leading-relaxed max-w-2xl">{profile.bio}</p>}
 
 					<div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
 						<div className="flex items-center gap-1">
@@ -157,10 +122,7 @@ export default function ProfilePage() {
 						</div>
 						<div className="flex items-center gap-1">
 							<LinkIcon className="h-4 w-4" />
-							<a
-								href="#"
-								className="text-primary hover:underline"
-							>
+							<a href="#" className="text-primary hover:underline">
 								sarahmitchellmusic.com
 							</a>
 						</div>
@@ -176,28 +138,16 @@ export default function ProfilePage() {
 
 					<div className="mt-6 flex items-center gap-6">
 						<div>
-							<span className="font-bold text-foreground">
-								1,234
-							</span>
-							<span className="text-muted-foreground ml-1">
-								Posts
-							</span>
+							<span className="font-bold text-foreground">1,234</span>
+							<span className="text-muted-foreground ml-1">Posts</span>
 						</div>
 						<div>
-							<span className="font-bold text-foreground">
-								12.5K
-							</span>
-							<span className="text-muted-foreground ml-1">
-								Followers
-							</span>
+							<span className="font-bold text-foreground">12.5K</span>
+							<span className="text-muted-foreground ml-1">Followers</span>
 						</div>
 						<div>
-							<span className="font-bold text-foreground">
-								892
-							</span>
-							<span className="text-muted-foreground ml-1">
-								Following
-							</span>
+							<span className="font-bold text-foreground">892</span>
+							<span className="text-muted-foreground ml-1">Following</span>
 						</div>
 					</div>
 				</div>
@@ -206,41 +156,29 @@ export default function ProfilePage() {
 					<button
 						onClick={() => setActiveTab('posts')}
 						className={`pb-4 px-2 font-medium transition-colors relative ${
-							activeTab === 'posts'
-								? 'text-primary'
-								: 'text-muted-foreground hover:text-foreground'
+							activeTab === 'posts' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
 						}`}
 					>
 						Posts
-						{activeTab === 'posts' && (
-							<div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
-						)}
+						{activeTab === 'posts' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />}
 					</button>
 					<button
 						onClick={() => setActiveTab('media')}
 						className={`pb-4 px-2 font-medium transition-colors relative ${
-							activeTab === 'media'
-								? 'text-primary'
-								: 'text-muted-foreground hover:text-foreground'
+							activeTab === 'media' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
 						}`}
 					>
 						Media
-						{activeTab === 'media' && (
-							<div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
-						)}
+						{activeTab === 'media' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />}
 					</button>
 					<button
 						onClick={() => setActiveTab('about')}
 						className={`pb-4 px-2 font-medium transition-colors relative ${
-							activeTab === 'about'
-								? 'text-primary'
-								: 'text-muted-foreground hover:text-foreground'
+							activeTab === 'about' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
 						}`}
 					>
 						About
-						{activeTab === 'about' && (
-							<div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
-						)}
+						{activeTab === 'about' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />}
 					</button>
 				</div>
 
@@ -255,18 +193,11 @@ export default function ProfilePage() {
 								<Empty>
 									<EmptyTitle>No posts yet</EmptyTitle>
 									<EmptyDescription>
-										You haven't created any posts yet. Start
-										sharing your thoughts!
+										You haven't created any posts yet. Start sharing your thoughts!
 									</EmptyDescription>
 								</Empty>
 							) : (
-								posts.map((post) => (
-									<FeedPost
-										key={post.id}
-										post={post}
-										onPostDelete={refetchPosts}
-									/>
-								))
+								posts.map((post) => <FeedPost key={post.id} post={post} onPostDelete={refetchPosts} />)
 							)}
 						</div>
 					)}
@@ -274,10 +205,7 @@ export default function ProfilePage() {
 					{activeTab === 'media' && (
 						<div className="grid grid-cols-3 gap-2">
 							{[1, 2, 3, 4, 5, 6].map((i) => (
-								<div
-									key={i}
-									className="aspect-square bg-muted rounded-lg overflow-hidden"
-								>
+								<div key={i} className="aspect-square bg-muted rounded-lg overflow-hidden">
 									<img
 										src={`/guitar-music-.jpg?height=300&width=300&query=guitar+music+${i}`}
 										alt={`Media ${i}`}
@@ -288,37 +216,17 @@ export default function ProfilePage() {
 						</div>
 					)}
 
-					{activeTab === 'about' && (
-						<ProfileAbout profile={profile} />
-					)}
+					{activeTab === 'about' && <ProfileAbout profile={profile} />}
 				</div>
 			</div>
 
-			<EditProfileModal
-				ref={modalRef}
-				onSuccess={() => refetch()}
-				profile={profile}
-			/>
+			<EditProfileModal ref={modalRef} onSuccess={() => refetch()} profile={profile} />
 
-			<EditProfileImageModal
-				ref={imageModalRef}
-				onSuccess={() => refetch()}
-				currentImageUrl={profile.avatarUrl}
-			/>
+			<EditProfileImageModal ref={imageModalRef} onSuccess={() => refetch()} currentImageUrl={profile.avatarUrl} />
 
-			<EditCoverImageModal
-				ref={coverImageModalRef}
-				onSuccess={() => refetch()}
-				currentImageUrl={profile.coverUrl}
-			/>
+			<EditCoverImageModal ref={coverImageModalRef} onSuccess={() => refetch()} currentImageUrl={profile.coverUrl} />
 
-			{profileUserId && (
-				<ShareProfileModal
-					ref={shareModalRef}
-					userId={profileUserId}
-					username={profile.username}
-				/>
-			)}
+			{profileUserId && <ShareProfileModal ref={shareModalRef} userId={profileUserId} username={profile.username} />}
 		</div>
 	);
 }

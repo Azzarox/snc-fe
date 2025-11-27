@@ -2,9 +2,12 @@ export default {
 	preset: 'ts-jest',
 	testEnvironment: 'jest-environment-jsdom',
 	transform: {
-		'^.+\\.(ts|tsx)$': ['ts-jest', {
-			tsconfig: 'tsconfig.test.json',
-		}],
+		'^.+\\.(ts|tsx)$': [
+			'ts-jest',
+			{
+				tsconfig: 'tsconfig.test.json',
+			},
+		],
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
 	setupFilesAfterEnv: ['<rootDir>/test/setupTests.ts'], // moved
@@ -13,18 +16,11 @@ export default {
 		'\\.(css|less|sass|scss)$': 'identity-obj-proxy',
 		'^@/(.*)$': '<rootDir>/src/$1',
 		'^@shadcn/(.*)$': '<rootDir>/@shadcn/$1',
-		'\\.(gif|jpg|jpeg|png|svg|webp|avif)$':
-			'<rootDir>/test/__mocks__/fileMock.ts',
+		'\\.(gif|jpg|jpeg|png|svg|webp|avif)$': '<rootDir>/test/__mocks__/fileMock.ts',
 	},
 	roots: ['<rootDir>/src', '<rootDir>/test'],
 	testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
-	collectCoverageFrom: [
-		'src/**/*.{ts,tsx}',
-		'!src/**/*.d.ts',
-		'!src/**/*.stories.tsx',
-		'!src/main.tsx',
-		'!src/vite-env.d.ts',
-	],
+	collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.stories.tsx', '!src/main.tsx', '!src/vite-env.d.ts'],
 	coverageThreshold: {
 		global: {
 			branches: 80,

@@ -19,9 +19,7 @@ export const useProfile = (userId?: number) => {
 		setLoading(true);
 
 		try {
-			const res = userId
-				? await getProfileByUserId(userId)
-				: await getCurrentUserProfile();
+			const res = userId ? await getProfileByUserId(userId) : await getCurrentUserProfile();
 
 			if (res.data) {
 				setProfile(res.data);

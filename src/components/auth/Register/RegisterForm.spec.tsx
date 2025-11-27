@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router';
 import { RegisterForm } from './RegisterForm';
 import userEvent from '@testing-library/user-event';
 import { ErrorResponse, SuccessResponse } from '@/types/api/response';
-import { register } from 'module';
 
 const navigate = jest.fn();
 const registerUser = jest.fn();

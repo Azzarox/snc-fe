@@ -1,9 +1,4 @@
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from '@shadcn/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@shadcn/components/ui/tooltip';
 import type { ReactNode } from 'react';
 
 type CustomTooltipProps = {
@@ -14,13 +9,7 @@ type CustomTooltipProps = {
 	className?: string;
 };
 
-export function CustomTooltip({
-	children,
-	content,
-	side = 'bottom',
-	delayDuration = 200,
-	className,
-}: CustomTooltipProps) {
+export function CustomTooltip({ children, content, side = 'bottom', delayDuration = 200, className }: CustomTooltipProps) {
 	return (
 		<TooltipProvider delayDuration={delayDuration}>
 			<Tooltip>
@@ -32,11 +21,7 @@ export function CustomTooltip({
 						'bg-card/90 backdrop-blur-sm text-card-foreground border border-border shadow-lg [&_svg]:invisible'
 					}
 				>
-					{typeof content === 'string' ? (
-						<p className="text-sm font-medium">{content}</p>
-					) : (
-						content
-					)}
+					{typeof content === 'string' ? <p className="text-sm font-medium">{content}</p> : content}
 				</TooltipContent>
 			</Tooltip>
 		</TooltipProvider>

@@ -26,10 +26,7 @@ export default defineConfig([
 			prettier: pluginPrettier,
 		},
 		rules: {
-			'@typescript-eslint/no-unused-vars': [
-				'warn',
-				{ argsIgnorePattern: '^_' },
-			],
+			'@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
 			'@typescript-eslint/explicit-function-return-type': 'off',
 			'no-unused-vars': 'off',
 			'@typescript-eslint/no-unused-vars': 'warn',

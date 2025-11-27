@@ -1,9 +1,4 @@
-import {
-	Sheet,
-	SheetContent,
-	SheetHeader,
-	SheetTitle,
-} from '@shadcn/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@shadcn/components/ui/sheet';
 import { Separator } from '@shadcn/components/ui/separator';
 import { Button } from '@shadcn/components/ui/button';
 import { useNavigate } from 'react-router';
@@ -38,10 +33,7 @@ export const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
 
 	return (
 		<Sheet open={open} onOpenChange={onOpenChange}>
-			<SheetContent
-				side="left"
-				className="w-[300px] sm:w-[350px] flex flex-col h-full p-0"
-			>
+			<SheetContent side="left" className="w-[300px] sm:w-[350px] flex flex-col h-full p-0">
 				<SheetHeader className="px-6 pt-6 pb-4">
 					<SheetTitle className="text-left">Menu</SheetTitle>
 				</SheetHeader>
@@ -58,18 +50,12 @@ export const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
 											className="w-full h-full object-cover"
 										/>
 									) : (
-										<span className="text-sm font-medium text-muted-foreground">
-											{initials}
-										</span>
+										<span className="text-sm font-medium text-muted-foreground">{initials}</span>
 									)}
 								</div>
 								<div className="flex-1 min-w-0">
-									<p className="font-semibold text-sm truncate">
-										{fullName}
-									</p>
-									<p className="text-xs text-muted-foreground truncate">
-										@{user.username}
-									</p>
+									<p className="font-semibold text-sm truncate">{fullName}</p>
+									<p className="text-xs text-muted-foreground truncate">@{user.username}</p>
 								</div>
 							</div>
 							<Separator className="mb-4" />
@@ -77,11 +63,7 @@ export const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
 					)}
 
 					<nav className="flex flex-col gap-2 mb-4">
-						<Button
-							variant="ghost"
-							className="justify-start gap-3 h-11"
-							onClick={() => handleNavigation('/')}
-						>
+						<Button variant="ghost" className="justify-start gap-3 h-11" onClick={() => handleNavigation('/')}>
 							<Home className="h-5 w-5" />
 							<span>Feed</span>
 						</Button>
@@ -112,9 +94,7 @@ export const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
 								<Button
 									variant="ghost"
 									className="justify-start gap-3 h-11"
-									onClick={() =>
-										handleNavigation('/settings')
-									}
+									onClick={() => handleNavigation('/settings')}
 								>
 									<Settings className="h-5 w-5" />
 									<span>Settings</span>
@@ -136,18 +116,10 @@ export const MobileMenu = ({ open, onOpenChange }: MobileMenuProps) => {
 						</Button>
 					) : (
 						<div className="flex flex-col gap-2">
-							<Button
-								variant="default"
-								className="w-full"
-								onClick={() => handleNavigation('/login')}
-							>
+							<Button variant="default" className="w-full" onClick={() => handleNavigation('/login')}>
 								Sign In
 							</Button>
-							<Button
-								variant="outline"
-								className="w-full"
-								onClick={() => handleNavigation('/register')}
-							>
+							<Button variant="outline" className="w-full" onClick={() => handleNavigation('/register')}>
 								Join Now
 							</Button>
 						</div>

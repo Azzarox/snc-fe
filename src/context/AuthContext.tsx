@@ -1,10 +1,4 @@
-import {
-	createContext,
-	useContext,
-	useEffect,
-	useState,
-	useCallback,
-} from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { localStorageService } from '@/services/common/storage/localStorageService';
 import { useAuthService } from '@/hooks/useAuthService';
 import { isTokenExpired } from '@/services/utils/jwtUtils';
@@ -94,11 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 	useTokenExpiration(token, handleTokenExpired);
 
-	return (
-		<AuthContext.Provider value={{ user, token, loading, login, logout }}>
-			{children}
-		</AuthContext.Provider>
-	);
+	return <AuthContext.Provider value={{ user, token, loading, login, logout }}>{children}</AuthContext.Provider>;
 }
 export const useAuth = () => useContext(AuthContext);
 export { AuthContext };

@@ -9,10 +9,7 @@ type UseCommentActionsProps = {
 	onUpdate?: () => void;
 };
 
-export const useCommentActions = ({
-	comment,
-	onUpdate,
-}: UseCommentActionsProps) => {
+export const useCommentActions = ({ comment, onUpdate }: UseCommentActionsProps) => {
 	const { deleteComment } = useCommentService();
 	const [isEditing, setIsEditing] = useState(false);
 

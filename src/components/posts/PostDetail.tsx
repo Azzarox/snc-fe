@@ -22,7 +22,6 @@ import { formatDate, getUserFullName, getUserInitials } from '@/utils/formatters
 import { checkIsOwner } from '@/utils/authHelpers';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { usePostActions } from '@/hooks/usePostActions';
 
 type PostDetailProps = {
 	post: Post;
