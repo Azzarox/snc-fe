@@ -11,34 +11,33 @@ type EditProfileImageModalProps = {
 	onSuccess: () => void;
 };
 
-export const EditProfileImageModal = forwardRef<
-	ModalImperativeHandle,
-	EditProfileImageModalProps
->(({ currentImageUrl, onSuccess }, ref) => {
-	const { updateProfileImage, resetProfileImage } = useProfileService();
+export const EditProfileImageModal = forwardRef<ModalImperativeHandle, EditProfileImageModalProps>(
+	({ currentImageUrl, onSuccess }, ref) => {
+		const { updateProfileImage, resetProfileImage } = useProfileService();
 
-	const handleReset = async () => {
-		await resetProfileImage();
-	};
+		const handleReset = async () => {
+			await resetProfileImage();
+		};
 
-	return (
-		<ImageUpload.Modal
-			ref={ref}
-			title="Update Profile Image"
-			description="Upload a new profile picture (max 5MB)"
-			currentImageUrl={currentImageUrl}
-			imageClassName="w-32 h-32 rounded-full object-cover border-4 border-border"
-			onSuccess={onSuccess}
-			uploadFn={updateProfileImage}
-			successMessage="Profile image updated successfully!"
-			uploadOptions={{
-				maxSizeMB: MAX_SIZE_MB,
-				acceptedTypes: ACCEPTED_TYPES,
-			}}
-			onReset={handleReset}
-			showResetButton={true}
-		/>
-	);
-});
+		return (
+			<ImageUpload.Modal
+				ref={ref}
+				title="Update Profile Image"
+				description="Upload a new profile picture (max 5MB)"
+				currentImageUrl={currentImageUrl}
+				imageClassName="w-32 h-32 rounded-full object-cover border-4 border-border"
+				onSuccess={onSuccess}
+				uploadFn={updateProfileImage}
+				successMessage="Profile image updated successfully!"
+				uploadOptions={{
+					maxSizeMB: MAX_SIZE_MB,
+					acceptedTypes: ACCEPTED_TYPES,
+				}}
+				onReset={handleReset}
+				showResetButton={true}
+			/>
+		);
+	}
+);
 
 EditProfileImageModal.displayName = 'EditProfileImageModal';

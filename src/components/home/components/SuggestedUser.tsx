@@ -24,15 +24,10 @@ const users = [
 const SuggestedUsers = () => {
 	return (
 		<div className="bg-card rounded-lg border border-border p-4">
-			<h2 className="font-semibold text-card-foreground mb-4">
-				Suggested for You
-			</h2>
+			<h2 className="font-semibold text-card-foreground mb-4">Suggested for You</h2>
 			<div className="space-y-4">
 				{users.map((user) => (
-					<div
-						key={user.username}
-						className="flex items-center justify-between"
-					>
+					<div key={user.username} className="flex items-center justify-between">
 						<div className="flex items-center gap-3">
 							{/* <Image
                 src={user.avatar || "/placeholder.svg"}
@@ -42,12 +37,8 @@ const SuggestedUsers = () => {
                 className="rounded-full"
               /> */}
 							<div>
-								<p className="font-medium text-sm text-card-foreground">
-									{user.name}
-								</p>
-								<p className="text-xs text-muted-foreground">
-									{user.followers} followers
-								</p>
+								<p className="font-medium text-sm text-card-foreground">{user.name}</p>
+								<p className="text-xs text-muted-foreground">{user.followers} followers</p>
 							</div>
 						</div>
 						<Button size="sm" variant="outline">

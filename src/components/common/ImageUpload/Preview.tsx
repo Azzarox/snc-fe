@@ -32,11 +32,7 @@ const Preview = ({
 						}}
 					/>
 				) : (
-					<img
-						src={displayUrl}
-						alt="Preview"
-						className={imageClassName}
-					/>
+					<img src={displayUrl} alt="Preview" className={imageClassName} />
 				)}
 				{previewUrl && (
 					<button

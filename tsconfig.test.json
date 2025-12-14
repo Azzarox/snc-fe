@@ -1,9 +1,10 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"types": ["jest", "node"],
+		"types": ["jest", "node", "@testing-library/jest-dom"],
 		"jsx": "react-jsx",
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"isolatedModules": true
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts", "test/**/*.tsx"]
 }

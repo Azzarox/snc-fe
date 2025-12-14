@@ -11,9 +11,7 @@ export const usePosts = (userId?: number) => {
 		setLoading(true);
 
 		try {
-			const res = userId
-				? await getAllUserPosts(userId)
-				: await getAllPosts();
+			const res = userId ? await getAllUserPosts(userId) : await getAllPosts();
 
 			if (res.data) {
 				setPosts(res.data);
@@ -31,16 +29,9 @@ export const usePosts = (userId?: number) => {
 		fetchPosts();
 	}, [fetchPosts]);
 
-	const handlePostUpdate = useCallback(
-		(postId: number, updates: Partial<Post>) => {
-			setPosts((prevPosts) =>
-				prevPosts.map((post) =>
-					post.id === postId ? { ...post, ...updates } : post
-				)
-			);
-		},
-		[]
-	);
+	const handlePostUpdate = useCallback((postId: number, updates: Partial<Post>) => {
+		setPosts((prevPosts) => prevPosts.map((post) => (post.id === postId ? { ...post, ...updates } : post)));
+	}, []);
 
 	return { posts, loading, refetch: fetchPosts, handlePostUpdate };
 };

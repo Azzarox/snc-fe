@@ -22,29 +22,19 @@ export function UnableToLoad({
 				<AlertCircle className="h-16 w-16 text-muted-foreground" />
 
 				<div className="space-y-2">
-					<h1 className="text-2xl font-semibold text-foreground">
-						{title}
-					</h1>
+					<h1 className="text-2xl font-semibold text-foreground">{title}</h1>
 					<p className="text-muted-foreground text-sm">{message}</p>
 				</div>
 
 				<div className="flex gap-3 pt-2">
 					{onRetry && (
-						<Button
-							onClick={onRetry}
-							variant="default"
-							className="gap-2 cursor-pointer"
-						>
+						<Button onClick={onRetry} variant="default" className="gap-2 cursor-pointer">
 							<RotateCcw className="h-4 w-4" />
 							Retry
 						</Button>
 					)}
 					{onGoBack && (
-						<Button
-							onClick={onGoBack}
-							variant="outline"
-							className="cursor-pointer"
-						>
+						<Button onClick={onGoBack} variant="outline" className="cursor-pointer">
 							Go Back
 						</Button>
 					)}

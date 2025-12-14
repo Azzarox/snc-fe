@@ -10,11 +10,7 @@ type UsePostActionsProps = {
 	onPostDelete?: () => void;
 };
 
-export const usePostActions = ({
-	post,
-	onPostUpdate,
-	onPostDelete,
-}: UsePostActionsProps) => {
+export const usePostActions = ({ post, onPostUpdate, onPostDelete }: UsePostActionsProps) => {
 	const { deletePost, togglePostLike } = usePostService();
 	const navigate = useNavigate();
 

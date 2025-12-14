@@ -4,13 +4,7 @@ import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useLocation } from 'react-router';
 
-function ErrorFallback({
-	error,
-	resetErrorBoundary,
-}: {
-	error: Error;
-	resetErrorBoundary: () => void;
-}) {
+function ErrorFallback({ error, resetErrorBoundary }: { error: Error; resetErrorBoundary: () => void }) {
 	return (
 		<div className="flex flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
 			<div>
@@ -23,19 +17,12 @@ function ErrorFallback({
 						<h3 className="mt-4 scroll-m-20 text-2xl font-semibold tracking-tight text-red-500">
 							Error: {error.message}
 						</h3>
-						<small className="italic text-red-400">
-							This error shows only on DEV mode
-						</small>
+						<small className="italic text-red-400">This error shows only on DEV mode</small>
 					</>
 				)}
-				<p className="mt-4 text-muted-foreground">
-					An unexpected error has occurred.
-				</p>
+				<p className="mt-4 text-muted-foreground">An unexpected error has occurred.</p>
 				<div className="mt-6">
-					<Button
-						className="cursor-pointer"
-						onClick={resetErrorBoundary}
-					>
+					<Button className="cursor-pointer" onClick={resetErrorBoundary}>
 						{' '}
 						Try again
 					</Button>
@@ -45,11 +32,7 @@ function ErrorFallback({
 	);
 }
 
-export const ErrorBoundaryWrapper = ({
-	children,
-}: {
-	children: React.ReactNode;
-}) => {
+export const ErrorBoundaryWrapper = ({ children }: { children: React.ReactNode }) => {
 	const location = useLocation();
 	return (
 		<ErrorBoundary

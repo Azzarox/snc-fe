@@ -15,9 +15,7 @@ type ImageUploadProps = {
 };
 
 export function ImageUpload({ children, options }: ImageUploadProps) {
-	return (
-		<ImageUploadProvider options={options}>{children}</ImageUploadProvider>
-	);
+	return <ImageUploadProvider options={options}>{children}</ImageUploadProvider>;
 }
 
 ImageUpload.Preview = Preview;

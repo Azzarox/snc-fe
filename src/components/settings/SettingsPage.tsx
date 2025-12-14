@@ -10,9 +10,7 @@ type SettingsPageProps = {
 };
 
 export function SettingsPage({ onBack }: SettingsPageProps) {
-	const [activeTab, setActiveTab] = useState<'appearance' | 'other'>(
-		'appearance'
-	);
+	const [activeTab, setActiveTab] = useState<'appearance' | 'other'>('appearance');
 
 	return (
 		<div className="min-h-screen bg-background">
@@ -24,9 +22,7 @@ export function SettingsPage({ onBack }: SettingsPageProps) {
 							<ArrowLeft className="h-5 w-5" />
 						</Button>
 					)}
-					<h1 className="text-2xl font-bold text-foreground">
-						Settings
-					</h1>
+					<h1 className="text-2xl font-bold text-foreground">Settings</h1>
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -63,9 +59,7 @@ export function SettingsPage({ onBack }: SettingsPageProps) {
 					{/* Main Content */}
 					<div className="md:col-span-3">
 						<Card className="p-6">
-							{activeTab === 'appearance' && (
-								<AppearanceSettings />
-							)}
+							{activeTab === 'appearance' && <AppearanceSettings />}
 
 							{activeTab === 'other' && <OtherSettings />}
 						</Card>

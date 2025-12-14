@@ -18,26 +18,17 @@ const Header = () => {
 						<Link to="/">
 							<div className="flex items-center gap-2">
 								<div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-									<svg
-										className="w-5 h-5 text-primary-foreground"
-										fill="currentColor"
-										viewBox="0 0 24 24"
-									>
+									<svg className="w-5 h-5 text-primary-foreground" fill="currentColor" viewBox="0 0 24 24">
 										<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
 									</svg>
 								</div>
-								<span className="text-xl font-bold text-card-foreground">
-									StringHub
-								</span>
+								<span className="text-xl font-bold text-card-foreground">StringHub</span>
 							</div>
 						</Link>
 
 						{/* Desktop Navigation */}
 						<nav className="hidden md:flex items-center gap-6">
-							<a
-								href="#"
-								className="text-sm font-medium text-foreground hover:text-primary transition-colors"
-							>
+							<a href="#" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
 								Feed
 							</a>
 							<Link
@@ -76,20 +67,12 @@ const Header = () => {
 
 					{/* Right Actions */}
 					<div className="flex items-center gap-3">
-						<Button
-							variant="ghost"
-							size="icon"
-							className="relative"
-						>
+						<Button variant="ghost" size="icon" className="relative">
 							<Bell className="h-5 w-5" />
 							<span className="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full" />
 						</Button>
 
-						<Button
-							variant="ghost"
-							size="icon"
-							className="md:hidden"
-						>
+						<Button variant="ghost" size="icon" className="md:hidden">
 							<Search className="h-5 w-5" />
 						</Button>
 
@@ -99,22 +82,14 @@ const Header = () => {
 							<HeaderAuthButtons />
 						</div>
 
-						<Button
-							variant="ghost"
-							size="icon"
-							className="md:hidden"
-							onClick={() => setMobileMenuOpen(true)}
-						>
+						<Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileMenuOpen(true)}>
 							<Menu className="h-5 w-5" />
 						</Button>
 					</div>
 				</div>
 			</div>
 
-			<MobileMenu
-				open={mobileMenuOpen}
-				onOpenChange={setMobileMenuOpen}
-			/>
+			<MobileMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen} />
 		</header>
 	);
 };

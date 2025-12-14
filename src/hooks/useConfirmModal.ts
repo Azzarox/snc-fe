@@ -6,10 +6,7 @@ type UseConfirmModalProps = {
 	onCancel?: () => void;
 };
 
-export const useConfirmModal = ({
-	onConfirm,
-	onCancel,
-}: UseConfirmModalProps) => {
+export const useConfirmModal = ({ onConfirm, onCancel }: UseConfirmModalProps) => {
 	const modalRef = useRef<ModalImperativeHandle>(null);
 
 	const openModal = () => {

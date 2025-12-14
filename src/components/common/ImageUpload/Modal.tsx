@@ -1,15 +1,6 @@
 import { Button } from '@shadcn/components/ui/button';
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-} from '@shadcn/components/ui/dialog';
-import {
-	Field,
-	FieldLabel,
-	FieldDescription,
-} from '@shadcn/components/ui/field';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shadcn/components/ui/dialog';
+import { Field, FieldLabel, FieldDescription } from '@shadcn/components/ui/field';
 import { forwardRef, useRef } from 'react';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle';
 import { useModal } from '@/hooks/useModal';
@@ -51,8 +42,7 @@ const ModalContent = ({
 }: Omit<ModalProps, 'uploadOptions'> & {
 	closeModal: () => void;
 }) => {
-	const { selectedFile, error, isUploading, enableCropping, previewUrl } =
-		useUploadState();
+	const { selectedFile, error, isUploading, enableCropping, previewUrl } = useUploadState();
 	const { uploadImage, reset } = useUploadActions();
 	const confirmModalRef = useRef<ModalImperativeHandle>(null);
 
@@ -122,10 +112,7 @@ const ModalContent = ({
 							<ImageUpload.CropperPreview />
 						) : (
 							<>
-								<ImageUpload.Preview
-									currentImageUrl={currentImageUrl}
-									imageClassName={imageClassName}
-								/>
+								<ImageUpload.Preview currentImageUrl={currentImageUrl} imageClassName={imageClassName} />
 
 								<ImageUpload.UploadZone />
 							</>
@@ -147,11 +134,7 @@ const ModalContent = ({
 					>
 						Cancel
 					</Button>
-					<Button
-						className="cursor-pointer"
-						type="submit"
-						disabled={isUploading || !selectedFile}
-					>
+					<Button className="cursor-pointer" type="submit" disabled={isUploading || !selectedFile}>
 						{isUploading ? (
 							<div className="flex flex-row-reverse justify-between items-center gap-x-1">
 								<span>Uploading</span>
@@ -199,11 +182,7 @@ const Modal = forwardRef<ModalImperativeHandle, ModalProps>(
 			<Dialog open={isOpen} onOpenChange={closeModal}>
 				<ImageUpload options={uploadOptions}>
 					<DialogContent
-						className={
-							uploadOptions?.enableCropping
-								? 'max-w-3xl max-h-[90vh] overflow-y-auto'
-								: 'max-w-md'
-						}
+						className={uploadOptions?.enableCropping ? 'max-w-3xl max-h-[90vh] overflow-y-auto' : 'max-w-md'}
 						onOpenAutoFocus={(e) => e.preventDefault()}
 					>
 						<ModalContent

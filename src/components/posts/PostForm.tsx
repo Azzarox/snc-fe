@@ -1,10 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toastService } from '@/services/common/toastService';
-import {
-	createPostSchema,
-	type CreatePostFormData,
-} from '@/schemas/posts/createPostSchema';
+import { createPostSchema, type CreatePostFormData } from '@/schemas/posts/createPostSchema';
 import { usePostService } from '@/hooks/usePostService';
 import { useConfirmModal } from '@/hooks/useConfirmModal';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
@@ -46,9 +43,7 @@ export const PostForm = ({ onPostCreated }: PostFormProps) => {
 
 	return (
 		<div className="bg-card rounded-lg border border-border p-4">
-			<h2 className="text-lg font-semibold mb-4 text-card-foreground">
-				Share with the community
-			</h2>
+			<h2 className="text-lg font-semibold mb-4 text-card-foreground">Share with the community</h2>
 			<form onSubmit={handleSubmit(onFormSubmit)}>
 				<div className="space-y-3">
 					<div>
@@ -58,11 +53,7 @@ export const PostForm = ({ onPostCreated }: PostFormProps) => {
 							placeholder="Post title..."
 							className="w-full p-3 bg-background border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground"
 						/>
-						{errors.title && (
-							<p className="text-sm text-destructive mt-1">
-								{errors.title.message}
-							</p>
-						)}
+						{errors.title && <p className="text-sm text-destructive mt-1">{errors.title.message}</p>}
 					</div>
 
 					<div>
@@ -72,9 +63,7 @@ export const PostForm = ({ onPostCreated }: PostFormProps) => {
 							className="w-full min-h-32 p-3 bg-background border border-input rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground font-mono text-sm"
 						/>
 						{errors.content ? (
-							<p className="text-sm text-destructive mt-1">
-								{errors.content.message}
-							</p>
+							<p className="text-sm text-destructive mt-1">{errors.content.message}</p>
 						) : (
 							<div className="flex items-center gap-1.5 mt-1.5 text-xs text-muted-foreground">
 								<Info className="h-3.5 w-3.5" />

@@ -1,11 +1,5 @@
 import { forwardRef, useState } from 'react';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-} from '@shadcn/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@shadcn/components/ui/dialog';
 import { Button } from '@shadcn/components/ui/button';
 import { Input } from '@shadcn/components/ui/input';
 import { Copy, Check } from 'lucide-react';
@@ -18,10 +12,7 @@ type ShareProfileModalProps = {
 	username?: string;
 };
 
-export const ShareProfileModal = forwardRef<
-	ModalImperativeHandle,
-	ShareProfileModalProps
->(({ userId, username }, ref) => {
+export const ShareProfileModal = forwardRef<ModalImperativeHandle, ShareProfileModalProps>(({ userId, username }, ref) => {
 	const { isOpen, openModal, closeModal } = useModal(ref);
 	const [copied, setCopied] = useState(false);
 
@@ -47,9 +38,7 @@ export const ShareProfileModal = forwardRef<
 			<DialogContent className="sm:max-w-md">
 				<DialogHeader>
 					<DialogTitle>Share Profile</DialogTitle>
-					<DialogDescription>
-						Share this profile with others
-					</DialogDescription>
+					<DialogDescription>Share this profile with others</DialogDescription>
 				</DialogHeader>
 
 				<div className="flex flex-col items-center gap-6 py-4">
@@ -67,25 +56,12 @@ export const ShareProfileModal = forwardRef<
 						</div>
 					</div>
 
-					{username && (
-						<p className="text-2xl uppercase font-mono tracking-wider font-bold">
-							@{username}
-						</p>
-					)}
+					{username && <p className="text-2xl uppercase font-mono tracking-wider font-bold">@{username}</p>}
 
 					<div className="flex w-full items-center gap-2">
 						<Input value={profileUrl} readOnly className="flex-1" />
-						<Button
-							size="icon"
-							variant="outline"
-							onClick={handleCopyLink}
-							className="cursor-pointer"
-						>
-							{copied ? (
-								<Check className="h-4 w-4 text-green-500" />
-							) : (
-								<Copy className="h-4 w-4" />
-							)}
+						<Button size="icon" variant="outline" onClick={handleCopyLink} className="cursor-pointer">
+							{copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
 						</Button>
 					</div>
 

@@ -11,8 +11,7 @@ export type ImageUploadOptions = {
 
 const VALIDATION_ERRORS = {
 	INVALID_TYPE: 'Please select a valid image file',
-	FILE_TOO_LARGE: (sizeMB: number) =>
-		`Image size must be less than ${sizeMB}MB`,
+	FILE_TOO_LARGE: (sizeMB: number) => `Image size must be less than ${sizeMB}MB`,
 	NO_FILE_SELECTED: 'Please select an image',
 	CROP_REQUIRED: 'Please adjust the crop area',
 	UPLOAD_FAILED: 'Upload failed',
@@ -36,15 +35,11 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 
 	const [crop, setCrop] = useState({ x: 0, y: 0 });
 	const [zoom, setZoom] = useState(1);
-	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(
-		null
-	);
+	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
 
 	const validateFile = useCallback(
 		(file: File): string | null => {
-			const isValidType = acceptedTypes.some((type) =>
-				file.type.startsWith(type.split('/')[0])
-			);
+			const isValidType = acceptedTypes.some((type) => file.type.startsWith(type.split('/')[0]));
 
 			if (!isValidType) {
 				return VALIDATION_ERRORS.INVALID_TYPE;
@@ -148,10 +143,7 @@ export const useImageUpload = (options: ImageUploadOptions = {}) => {
 		formData.append('image', selectedFile!);
 
 		if (enableCropping && croppedAreaPixels) {
-			formData.append(
-				'croppedAreaPixels',
-				JSON.stringify(croppedAreaPixels)
-			);
+			formData.append('croppedAreaPixels', JSON.stringify(croppedAreaPixels));
 		}
 
 		return formData;

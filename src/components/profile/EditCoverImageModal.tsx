@@ -11,35 +11,34 @@ type EditCoverImageModalProps = {
 	onSuccess: () => void;
 };
 
-export const EditCoverImageModal = forwardRef<
-	ModalImperativeHandle,
-	EditCoverImageModalProps
->(({ currentImageUrl, onSuccess }, ref) => {
-	const { updateCoverImage, resetCoverImage } = useProfileService();
+export const EditCoverImageModal = forwardRef<ModalImperativeHandle, EditCoverImageModalProps>(
+	({ currentImageUrl, onSuccess }, ref) => {
+		const { updateCoverImage, resetCoverImage } = useProfileService();
 
-	const handleReset = async () => {
-		await resetCoverImage();
-	};
+		const handleReset = async () => {
+			await resetCoverImage();
+		};
 
-	return (
-		<ImageUpload.Modal
-			ref={ref}
-			title="Update Cover Image"
-			description="Upload a new cover image (max 5MB)"
-			currentImageUrl={currentImageUrl}
-			imageClassName="w-full h-32 rounded-lg object-cover border-4 border-border"
-			onSuccess={onSuccess}
-			uploadFn={updateCoverImage}
-			successMessage="Cover image updated successfully!"
-			uploadOptions={{
-				maxSizeMB: MAX_SIZE_MB,
-				acceptedTypes: ACCEPTED_TYPES,
-				enableCropping: true,
-			}}
-			onReset={handleReset}
-			showResetButton={true}
-		/>
-	);
-});
+		return (
+			<ImageUpload.Modal
+				ref={ref}
+				title="Update Cover Image"
+				description="Upload a new cover image (max 5MB)"
+				currentImageUrl={currentImageUrl}
+				imageClassName="w-full h-32 rounded-lg object-cover border-4 border-border"
+				onSuccess={onSuccess}
+				uploadFn={updateCoverImage}
+				successMessage="Cover image updated successfully!"
+				uploadOptions={{
+					maxSizeMB: MAX_SIZE_MB,
+					acceptedTypes: ACCEPTED_TYPES,
+					enableCropping: true,
+				}}
+				onReset={handleReset}
+				showResetButton={true}
+			/>
+		);
+	}
+);
 
 EditCoverImageModal.displayName = 'EditCoverImageModal';

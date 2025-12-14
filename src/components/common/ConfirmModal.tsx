@@ -1,10 +1,6 @@
 import { Button } from '@shadcn/components/ui/button';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import {
-	DialogHeader,
-	DialogTitle,
-	DialogDescription,
-} from '@shadcn/components/ui/dialog';
+import { DialogHeader, DialogTitle, DialogDescription } from '@shadcn/components/ui/dialog';
 import { forwardRef } from 'react';
 import type { ModalImperativeHandle } from '@/types/common/ModalImpretiveHandle';
 import { useModal } from '@/hooks/useModal';
@@ -20,10 +16,7 @@ type ConfirmModalProps = {
 	isLoading?: boolean;
 };
 
-export const ConfirmModal = forwardRef<
-	ModalImperativeHandle,
-	ConfirmModalProps
->(
+export const ConfirmModal = forwardRef<ModalImperativeHandle, ConfirmModalProps>(
 	(
 		{
 			title,
@@ -67,12 +60,7 @@ export const ConfirmModal = forwardRef<
 							>
 								{cancelText}
 							</Button>
-							<Button
-								className="cursor-pointer"
-								variant={variant}
-								onClick={handleConfirm}
-								disabled={isLoading}
-							>
+							<Button className="cursor-pointer" variant={variant} onClick={handleConfirm} disabled={isLoading}>
 								{isLoading ? 'Processing...' : confirmText}
 							</Button>
 						</div>

@@ -19,10 +19,7 @@ export function useFetch() {
 	const { handleLogout } = useLogout();
 
 	const fetchJson = useCallback(
-		async <T>(
-			url: string,
-			options?: FetchOptions
-		): Promise<ApiResponse<T> | never> => {
+		async <T>(url: string, options?: FetchOptions): Promise<ApiResponse<T> | never> => {
 			try {
 				if (token && isTokenExpired(token)) {
 					handleLogout();
@@ -35,9 +32,7 @@ export function useFetch() {
 
 				const isFormData = fetchOptions.body instanceof FormData;
 				const headers = {
-					...(isFormData
-						? {}
-						: { 'Content-Type': 'application/json' }),
+					...(isFormData ? {} : { 'Content-Type': 'application/json' }),
 					...fetchOptions.headers,
 				};
 
@@ -60,9 +55,7 @@ export function useFetch() {
 				// Context Errors (conditional toast)
 				if (isErrorResponse(json)) {
 					if (json.errors && toast) {
-						toastService.error(
-							`Error occurred: ${json.message}; Errors: ${Object.values(json.errors).join(', ')}`
-						);
+						toastService.error(`Error occurred: ${json.message}; Errors: ${Object.values(json.errors).join(', ')}`);
 						return json;
 					}
 
@@ -81,9 +74,7 @@ export function useFetch() {
 					});
 				} else {
 					toastService.error(
-						isDev
-							? `Fetch Error: ${err.message}`
-							: 'Oops! Something went wrong! Unexpected Error Occurred!'
+						isDev ? `Fetch Error: ${err.message}` : 'Oops! Something went wrong! Unexpected Error Occurred!'
 					);
 				}
 

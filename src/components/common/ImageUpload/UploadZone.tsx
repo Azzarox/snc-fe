@@ -13,14 +13,9 @@ const UploadZone = () => {
 		>
 			<Upload className="h-10 w-10 mx-auto mb-4 text-muted-foreground" />
 			<p className="text-sm text-foreground mb-1">
-				<span className="text-primary font-medium">
-					Click to upload
-				</span>{' '}
-				or drag and drop
+				<span className="text-primary font-medium">Click to upload</span> or drag and drop
 			</p>
-			<p className="text-xs text-muted-foreground">
-				PNG, JPG, GIF, Webp up to 5MB
-			</p>
+			<p className="text-xs text-muted-foreground">PNG, JPG, GIF, Webp up to 5MB</p>
 		</div>
 	);
 };

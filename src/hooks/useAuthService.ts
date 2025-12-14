@@ -40,9 +40,7 @@ export function useAuthService(options?: AuthServiceOptions) {
 			const isEmail = z.email().safeParse(body.identifier).success;
 
 			const payload = {
-				...(isEmail
-					? { email: body.identifier }
-					: { username: body.identifier }),
+				...(isEmail ? { email: body.identifier } : { username: body.identifier }),
 				password: body.password,
 			};
 

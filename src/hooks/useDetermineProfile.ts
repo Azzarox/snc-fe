@@ -9,8 +9,7 @@ export const useDetermineProfile = () => {
 
 	const isMyProfile = !userIdParam;
 
-	const targetUserId =
-		profileUserId || (user?.id ? Number(user.id) : undefined);
+	const targetUserId = profileUserId || (user?.id ? Number(user.id) : undefined);
 
 	return {
 		profileUserId: targetUserId,

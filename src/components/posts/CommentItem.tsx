@@ -13,11 +13,7 @@ import { useCommentActions } from '@/hooks/useCommentActions';
 import { useCommonActions } from '@/hooks/useCommonActions';
 import { ConfirmModal } from '@/components/common/ConfirmModal';
 import { CommentForm } from './CommentForm';
-import {
-	formatDate,
-	getUserFullName,
-	getUserInitials,
-} from '@/utils/formatters';
+import { formatDate, getUserFullName, getUserInitials } from '@/utils/formatters';
 import { checkIsOwner } from '@/utils/authHelpers';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -29,13 +25,10 @@ type CommentItemProps = {
 
 export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 	const { user } = useAuth();
-	const {
-		isEditing,
-		handleEdit,
-		handleCancelEdit,
-		handleEditSuccess,
-		deleteConfirmModal,
-	} = useCommentActions({ comment, onUpdate });
+	const { isEditing, handleEdit, handleCancelEdit, handleEditSuccess, deleteConfirmModal } = useCommentActions({
+		comment,
+		onUpdate,
+	});
 	const { handleNavigateToProfile } = useCommonActions();
 
 	const isOwner = checkIsOwner(user?.id, comment.userId);
@@ -67,28 +60,15 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 						className="w-8 h-8 rounded-full bg-muted flex items-center justify-center overflow-hidden flex-shrink-0 hover:opacity-80 transition-opacity cursor-pointer"
 					>
 						{comment.user.avatarUrl ? (
-							<img
-								src={comment.user.avatarUrl}
-								alt={fullName}
-								className="w-full h-full object-cover"
-							/>
+							<img src={comment.user.avatarUrl} alt={fullName} className="w-full h-full object-cover" />
 						) : (
-							<span className="text-xs font-medium text-muted-foreground">
-								{initials}
-							</span>
+							<span className="text-xs font-medium text-muted-foreground">{initials}</span>
 						)}
 					</button>
 					<div>
-						<h4 className="font-semibold text-card-foreground text-sm">
-							{fullName}
-						</h4>
+						<h4 className="font-semibold text-card-foreground text-sm">{fullName}</h4>
 						<p className="text-xs text-muted-foreground">
-							<button
-								onClick={handleNavigateToProfile(
-									comment.userId
-								)}
-								className="hover:underline cursor-pointer"
-							>
+							<button onClick={handleNavigateToProfile(comment.userId)} className="hover:underline cursor-pointer">
 								@{comment.user.username}
 							</button>{' '}
 							· {formattedDate}
@@ -99,11 +79,7 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 				{isOwner && (
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button
-								variant="ghost"
-								size="icon"
-								className="h-8 w-8"
-							>
+							<Button variant="ghost" size="icon" className="h-8 w-8">
 								<MoreHorizontal className="h-4 w-4" />
 							</Button>
 						</DropdownMenuTrigger>
@@ -126,9 +102,7 @@ export const CommentItem = ({ comment, onUpdate }: CommentItemProps) => {
 			</div>
 
 			<div className="markdown-prose max-w-none text-sm pl-11">
-				<Markdown remarkPlugins={[remarkGfm]}>
-					{comment.content}
-				</Markdown>
+				<Markdown remarkPlugins={[remarkGfm]}>{comment.content}</Markdown>
 			</div>
 
 			<ConfirmModal

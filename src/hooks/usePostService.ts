@@ -24,29 +24,23 @@ export const usePostService = () => {
 
 	const getOnePost = useCallback(
 		(id: number, includeComments = false) =>
-			fetchJson<Post>(
-				`/@api/posts/${id}?includeComments=${includeComments}`,
-				{
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			),
+			fetchJson<Post>(`/@api/posts/${id}?includeComments=${includeComments}`, {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
 		[fetchJson, token]
 	);
 
 	const getAllUserPosts = useCallback(
 		(userId: number, includeComments = false) =>
-			fetchJson<Post[]>(
-				`/@api/users/${userId}/posts/?includeComments=${includeComments}`,
-				{
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			),
+			fetchJson<Post[]>(`/@api/users/${userId}/posts/?includeComments=${includeComments}`, {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
 		[fetchJson, token]
 	);
 
