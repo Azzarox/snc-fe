@@ -1,73 +1,142 @@
-# React + TypeScript + Vite
+# StringHub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern social networking frontend application built with **React** and **TypeScript**, featuring authentication, user profiles, posts, comments, and Storybook for component documentation.
 
-Currently, two official plugins are available:
+**Note:** Some pages are still in development and may contain hardcoded dummy data for UI demonstration purposes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Requirements
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Node.js (LTS recommended)
+* npm
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Quick Start
 
-```js
-export default defineConfig([
-	globalIgnores(['dist']),
-	{
-		files: ['**/*.{ts,tsx}'],
-		extends: [
-			// Other configs...
+Get the project running in a few commands:
 
-			// Remove tseslint.configs.recommended and replace with this
-			tseslint.configs.recommendedTypeChecked,
-			// Alternatively, use this for stricter rules
-			tseslint.configs.strictTypeChecked,
-			// Optionally, add this for stylistic rules
-			tseslint.configs.stylisticTypeChecked,
+```bash
+# Clone repository
+git clone <repository-url>
+cd snc-fe
 
-			// Other configs...
-		],
-		languageOptions: {
-			parserOptions: {
-				project: ['./tsconfig.node.json', './tsconfig.app.json'],
-				tsconfigRootDir: import.meta.dirname,
-			},
-			// other options...
-		},
-	},
-]);
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Your application will be available at `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+---
 
-export default defineConfig([
-	globalIgnores(['dist']),
-	{
-		files: ['**/*.{ts,tsx}'],
-		extends: [
-			// Other configs...
-			// Enable lint rules for React
-			reactX.configs['recommended-typescript'],
-			// Enable lint rules for React DOM
-			reactDom.configs.recommended,
-		],
-		languageOptions: {
-			parserOptions: {
-				project: ['./tsconfig.node.json', './tsconfig.app.json'],
-				tsconfigRootDir: import.meta.dirname,
-			},
-			// other options...
-		},
-	},
-]);
+## Tech Stack
+
+* TypeScript
+* React
+* React Router
+* Vite
+* Tailwind CSS
+* shadcn/ui
+* Jest + React Testing Library
+* Storybook
+
+---
+
+## Project Structure
+
 ```
+├─ /.github                # GitHub Actions workflows
+├─ /.storybook             # Storybook configuration
+├─ /@shadcn                # shadcn/ui component library
+├─ /public                 # Static assets
+├─ /src
+│  ├─ /components          # UI components organized by feature
+│  │  ├─ /auth             # Authentication (Login, Register)
+│  │  ├─ /common           # Shared components
+│  │  ├─ /header           # Header components
+│  │  ├─ /home             # Home page components
+│  │  ├─ /layout           # Layout components
+│  │  ├─ /posts            # Posts feature components
+│  │  ├─ /profile          # User profile components
+│  │  └─ /settings         # Settings page components
+│  ├─ /context             # React context providers
+│  ├─ /hooks               # Custom React hooks
+│  ├─ /layouts             # Route layout wrappers
+│  ├─ /schemas             # Zod validation schemas
+│  ├─ /services            # API services and utilities
+│  ├─ /types               # TypeScript type definitions
+│  └─ /utils               # Utility functions
+├─ /test                   # Test setup and utilities
+├─ package.json
+├─ tsconfig.json           # TypeScript configuration
+├─ vite.config.ts          # Vite configuration
+└─ README.md
+```
+
+---
+
+## Scripts
+
+* `npm run dev` – Starts the development server with hot reload.
+* `npm run build` – Builds the application for production.
+* `npm run preview` – Previews the production build locally.
+* `npm start` – Builds and previews the application.
+* `npm run lint` – Runs ESLint and auto-fixes issues.
+* `npm test` – Runs the test suite.
+* `npm run test:coverage` – Runs tests with coverage report.
+* `npm run storybook` – Starts Storybook on port 6006.
+* `npm run build-storybook` – Builds Storybook for deployment.
+
+---
+
+## Routes
+
+| Route | Access | Description |
+|-------|--------|-------------|
+| `/` | Public | Home page |
+| `/login` | Guest only | User login |
+| `/register` | Guest only | User registration |
+| `/profile` | Authenticated | Current user profile |
+| `/profile/:userId` | Authenticated | View user profile |
+| `/settings` | Authenticated | User settings |
+| `/discover` | Authenticated | Discover content |
+| `/posts/:postId/details` | Authenticated | Post details view |
+
+---
+
+## CI/CD
+
+This project uses GitHub Actions for continuous integration. The pipeline runs on pull requests to `main` and includes:
+
+* Tests
+* Prettier formatting check
+
+---
+
+## Testing
+
+Run the test suite:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+---
+
+## Storybook
+
+View and develop components in isolation:
+
+```bash
+npm run storybook
+```
+
+Storybook will be available at `http://localhost:6006`.
