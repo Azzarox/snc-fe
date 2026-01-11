@@ -27,7 +27,7 @@ export function useAuthService(options?: AuthServiceOptions) {
 
 	const registerUser = useCallback(
 		(body: RegisterFormData) =>
-			fetchJson<RegisterData>('/@api/auth/register', {
+			fetchJson<RegisterData>(`${import.meta.env.VITE_BASE_API_URL}/auth/register`, {
 				method: 'POST',
 				body: JSON.stringify(body),
 				...options?.registerUser,
@@ -44,7 +44,7 @@ export function useAuthService(options?: AuthServiceOptions) {
 				password: body.password,
 			};
 
-			return fetchJson<LoginData>('/@api/auth/login', {
+			return fetchJson<LoginData>(`${import.meta.env.VITE_BASE_API_URL}/auth/login`, {
 				method: 'POST',
 				body: JSON.stringify(payload),
 				...options?.loginUser,
@@ -55,7 +55,7 @@ export function useAuthService(options?: AuthServiceOptions) {
 
 	const getAuthenticatedUserData = useCallback(
 		(token: string) =>
-			fetchJson<User>('/@api/auth/me', {
+			fetchJson<User>(`${import.meta.env.VITE_BASE_API_URL}/auth/me`, {
 				headers: { Authorization: `Bearer ${token}` },
 				...options?.getAuthenticatedUserData,
 			}),

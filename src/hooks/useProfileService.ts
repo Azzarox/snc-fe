@@ -10,7 +10,7 @@ export const useProfileService = () => {
 
 	const getCurrentUserProfile = useCallback(
 		() =>
-			fetchJson<UserProfile>('/@api/users/profile', {
+			fetchJson<UserProfile>(`${import.meta.env.VITE_BASE_API_URL}/users/profile`, {
 				method: 'GET',
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -21,7 +21,7 @@ export const useProfileService = () => {
 
 	const getProfileByUserId = useCallback(
 		(userId: number) =>
-			fetchJson<UserProfile>(`/@api/users/${userId}/profile`, {
+			fetchJson<UserProfile>(`${import.meta.env.VITE_BASE_API_URL}/users/${userId}/profile`, {
 				method: 'GET',
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export const useProfileService = () => {
 
 	const updateUserProfile = useCallback(
 		(body: UpdateProfileFormData) =>
-			fetchJson<UserProfile>('/@api/users/profile', {
+			fetchJson<UserProfile>(`${import.meta.env.VITE_BASE_API_URL}/users/profile`, {
 				method: 'PATCH',
 				body: JSON.stringify(body),
 				headers: {
@@ -44,7 +44,7 @@ export const useProfileService = () => {
 
 	const updateProfileImage = useCallback(
 		(formData: FormData) =>
-			fetchJson<UserProfile>('/@api/users/profile/avatar', {
+			fetchJson<UserProfile>(`${import.meta.env.VITE_BASE_API_URL}/users/profile/avatar`, {
 				method: 'PUT',
 				body: formData,
 				headers: {
@@ -56,7 +56,7 @@ export const useProfileService = () => {
 
 	const resetProfileImage = useCallback(
 		() =>
-			fetchJson<UserProfile>('/@api/users/profile/avatar', {
+			fetchJson<UserProfile>(`${import.meta.env.VITE_BASE_API_URL}/users/profile/avatar`, {
 				method: 'DELETE',
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ export const useProfileService = () => {
 
 	const updateCoverImage = useCallback(
 		(formData: FormData) =>
-			fetchJson<UserProfile>('/@api/users/profile/cover', {
+			fetchJson<UserProfile>(`${import.meta.env.VITE_BASE_API_URL}/users/profile/cover`, {
 				method: 'PUT',
 				body: formData,
 				headers: {
@@ -79,7 +79,7 @@ export const useProfileService = () => {
 
 	const resetCoverImage = useCallback(
 		() =>
-			fetchJson<UserProfile>('/@api/users/profile/cover', {
+			fetchJson<UserProfile>(`${import.meta.env.VITE_BASE_API_URL}/users/profile/cover`, {
 				method: 'DELETE',
 				headers: {
 					Authorization: `Bearer ${token}`,

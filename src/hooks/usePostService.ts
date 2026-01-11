@@ -11,7 +11,7 @@ export const usePostService = () => {
 
 	const getAllPosts = useCallback(
 		() =>
-			fetchJson<Post[]>('/@api/posts', {
+			fetchJson<Post[]>(`${import.meta.env.VITE_BASE_API_URL}/posts`, {
 				method: 'GET',
 				...(token && {
 					headers: {
@@ -24,7 +24,7 @@ export const usePostService = () => {
 
 	const getOnePost = useCallback(
 		(id: number, includeComments = false) =>
-			fetchJson<Post>(`/@api/posts/${id}?includeComments=${includeComments}`, {
+			fetchJson<Post>(`${import.meta.env.VITE_BASE_API_URL}/posts/${id}?includeComments=${includeComments}`, {
 				method: 'GET',
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -35,7 +35,7 @@ export const usePostService = () => {
 
 	const getAllUserPosts = useCallback(
 		(userId: number, includeComments = false) =>
-			fetchJson<Post[]>(`/@api/users/${userId}/posts/?includeComments=${includeComments}`, {
+			fetchJson<Post[]>(`${import.meta.env.VITE_BASE_API_URL}/users/${userId}/posts/?includeComments=${includeComments}`, {
 				method: 'GET',
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ export const usePostService = () => {
 
 	const createPost = useCallback(
 		(body: CreatePostFormData) =>
-			fetchJson<Post>('/@api/posts', {
+			fetchJson<Post>(`${import.meta.env.VITE_BASE_API_URL}/posts`, {
 				method: 'POST',
 				body: JSON.stringify(body),
 				headers: {
@@ -57,7 +57,7 @@ export const usePostService = () => {
 	);
 	const updatePost = useCallback(
 		(id: number, body: UpdatePostFormData) =>
-			fetchJson<Post>(`/@api/posts/${id}`, {
+			fetchJson<Post>(`${import.meta.env.VITE_BASE_API_URL}/posts/${id}`, {
 				method: 'PATCH',
 				body: JSON.stringify(body),
 				headers: {
@@ -69,7 +69,7 @@ export const usePostService = () => {
 
 	const deletePost = useCallback(
 		(id: number) =>
-			fetchJson<Post>(`/@api/posts/${id}`, {
+			fetchJson<Post>(`${import.meta.env.VITE_BASE_API_URL}/posts/${id}`, {
 				method: 'DELETE',
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ export const usePostService = () => {
 
 	const togglePostLike = useCallback(
 		(id: number) =>
-			fetchJson<Post>(`/@api/posts/${id}/likes`, {
+			fetchJson<Post>(`${import.meta.env.VITE_BASE_API_URL}/posts/${id}/likes`, {
 				method: 'POST',
 				headers: {
 					Authorization: `Bearer ${token}`,

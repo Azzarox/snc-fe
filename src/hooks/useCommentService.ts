@@ -11,7 +11,7 @@ export const useCommentService = () => {
 
 	const getPostComments = useCallback(
 		(postId: number) =>
-			fetchJson<Comment[]>(`/@api/posts/${postId}/comments`, {
+			fetchJson<Comment[]>(`${import.meta.env.VITE_BASE_API_URL}/posts/${postId}/comments`, {
 				method: 'GET',
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -22,7 +22,7 @@ export const useCommentService = () => {
 
 	const getAllComments = useCallback(
 		() =>
-			fetchJson<Comment[]>(`/@api/comments`, {
+			fetchJson<Comment[]>(`${import.meta.env.VITE_BASE_API_URL}/comments`, {
 				method: 'GET',
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -33,7 +33,7 @@ export const useCommentService = () => {
 
 	const createComment = useCallback(
 		(postId: number, body: CreateCommentFormData) =>
-			fetchJson<Comment>(`/@api/posts/${postId}/comments`, {
+			fetchJson<Comment>(`${import.meta.env.VITE_BASE_API_URL}/posts/${postId}/comments`, {
 				method: 'POST',
 				body: JSON.stringify(body),
 				headers: {
@@ -45,7 +45,7 @@ export const useCommentService = () => {
 
 	const updateComment = useCallback(
 		(postId: number, commentId: number, body: UpdateCommentFormData) =>
-			fetchJson<Comment>(`/@api/posts/${postId}/comments/${commentId}`, {
+			fetchJson<Comment>(`${import.meta.env.VITE_BASE_API_URL}/posts/${postId}/comments/${commentId}`, {
 				method: 'PATCH',
 				body: JSON.stringify(body),
 				headers: {
@@ -57,7 +57,7 @@ export const useCommentService = () => {
 
 	const deleteComment = useCallback(
 		(postId: number, commentId: number) =>
-			fetchJson<Comment>(`/@api/posts/${postId}/comments/${commentId}`, {
+			fetchJson<Comment>(`${import.meta.env.VITE_BASE_API_URL}/posts/${postId}/comments/${commentId}`, {
 				method: 'DELETE',
 				headers: {
 					Authorization: `Bearer ${token}`,
