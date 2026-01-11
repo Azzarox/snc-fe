@@ -13,4 +13,4 @@ services:
     env_file:
       - .env.development
     environment:
-      VITE_BASE_API_URL: http://host.docker.internal:3000/v1/ # If the API is running on the host machine, otherwise "localhost" ran from the container is the container's host
+      VITE_BASE_API_URL: http://host.docker.internal:3000/v1 # If the API is running on the host machine, otherwise "localhost" ran from the container is the container's host
