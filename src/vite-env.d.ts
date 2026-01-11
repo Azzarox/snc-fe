@@ -1,10 +1,8 @@
-
 /// <reference types="vite/client" />
 
 
-export interface ImportMetaEnv extends ViteCustomEnv {
+interface ImportMetaEnv {
   readonly VITE_BASE_API_URL: string;
-  // add more VITE_ variables here if needed
 }
 
 interface ImportMeta {
