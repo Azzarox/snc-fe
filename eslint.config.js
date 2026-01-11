@@ -31,7 +31,14 @@ export default defineConfig([
 			'no-unused-vars': 'off',
 			'@typescript-eslint/no-unused-vars': 'warn',
 			'unused-imports/no-unused-imports': 'warn',
-			'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+			'prettier/prettier': [
+				'error',
+				{},
+				{
+					endOfLine: 'auto',
+				},
+				{ usePrettierrc: true },
+			],
 		},
 	},
 	{
