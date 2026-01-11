@@ -12,15 +12,6 @@ export default ({ mode }: ConfigEnv) => {
 
 	return defineConfig({
 		plugins: [react(), tailwindcss()],
-		// server: {
-		// 	proxy: {
-		// 		'/@api': {
-		// 			target: env.VITE_BASE_API_URL,
-		// 			changeOrigin: true,
-		// 			rewrite: (path) => path.replace(/^\/@api/, ''),
-		// 		},
-		// 	},
-		// },
 		resolve: {
 			alias: {
 				'@shadcn': path.resolve(__dirname, '@shadcn'),
