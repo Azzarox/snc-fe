@@ -12,6 +12,19 @@ A modern social networking frontend application built with **React** and **TypeS
 * npm
 
 ---
+## Environment Variables
+
+This project uses **Vite environment variables**. Before running, create your environment files by copying the example:
+
+```bash
+cp .env.example .env.development
+cp .env.example .env.production
+```
+
+* **Running on your host machine:** keep `VITE_BASE_API_URL=http://localhost:3000/v1/`
+* **Running in Docker:** change it to `http://host.docker.internal:3000/v1/` if your API is running on the host maching so the container can reach your API.
+
+---
 
 ## Quick Start
 
