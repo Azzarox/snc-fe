@@ -1,16 +1,30 @@
-FROM node:22-alpine
+# Stage 1: Build the app
+FROM node:22-alpine AS build
 
 WORKDIR /app
 
+# Copy package files and install deps
 COPY package*.json ./
-
 RUN npm ci
 
+# Copy all source files
 COPY . .
 
+# Accept VITE_BASE_API_URL as build argument and set it as env var
+ARG VITE_BASE_API_URL
+ENV VITE_BASE_API_URL=$VITE_BASE_API_URL
+
+# Run the build (Vite will pick up the env var here)
 RUN npm run build:prod
 
-EXPOSE 4173
+# Stage 2: Serve with nginx
+FROM nginx:alpine
 
-CMD ["npm", "run", "preview"]
+# Copy built files from build stage
+COPY --from=build /app/dist /usr/share/nginx/html
 
+# Expose port 80 for Railway (standard HTTP port)
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
