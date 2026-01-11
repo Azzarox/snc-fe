@@ -1,24 +1,31 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv, type ConfigEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
+import { envSchema } from './config/env/envSchema'
 
 // https://vite.dev/config/
-export default defineConfig({
-	plugins: [react(), tailwindcss()],
-	server: {
-		proxy: {
-			'/@api': {
-				target: 'http://localhost:3000/v1/',
-				changeOrigin: true,
-				rewrite: (path) => path.replace(/^\/@api/, ''),
+export default ({ mode }: ConfigEnv) => {
+
+	const rawEnv = loadEnv(mode, process.cwd(), 'VITE_');
+	const env = envSchema.parse(rawEnv);
+
+	return defineConfig({
+		plugins: [react(), tailwindcss()],
+		server: {
+			proxy: {
+				'/@api': {
+					target: env.VITE_BASE_API_URL,
+					changeOrigin: true,
+					rewrite: (path) => path.replace(/^\/@api/, ''),
+				},
 			},
 		},
-	},
-	resolve: {
-		alias: {
-			'@shadcn': path.resolve(__dirname, '@shadcn'),
-			'@': path.resolve(__dirname, './src'),
+		resolve: {
+			alias: {
+				'@shadcn': path.resolve(__dirname, '@shadcn'),
+				'@': path.resolve(__dirname, './src'),
+			},
 		},
-	},
-});
+	})
+};
