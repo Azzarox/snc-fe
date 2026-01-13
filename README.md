@@ -7,7 +7,7 @@ A modern social networking frontend application built with **React** and **TypeS
 ---
 
 ## Live Demo
-- https://snc-fe-production.up.railway.app
+- https://stringhub.up.railway.app/
 ---
 
 ## Requirements
