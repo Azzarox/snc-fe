@@ -2,14 +2,15 @@
 
 A modern social networking frontend application built with **React** and **TypeScript**, featuring authentication, user profiles, posts, comments, and Storybook for component documentation.
 
-**Note:** Some pages are still in development and may contain hardcoded dummy data for UI demonstration purposes.
+**Note:** Active development in progress. Some pages use demonstration data while features are being implemented.
+
+**Related:** [API Repository](https://github.com/Azzarox/snc-api) 
 
 ---
 
 ## Live Demo
 - https://stringhub.up.railway.app/
 ---
-
 ## Requirements
 
 * Node.js (LTS recommended)
